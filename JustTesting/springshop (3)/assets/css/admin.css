@@ -1,0 +1,118 @@
+/* Admin Dashboard Specific Styles */
+
+.admin-sidebar {
+  width: 260px;
+  transition: width 0.3s ease, transform 0.3s ease;
+}
+
+.admin-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.7rem 1rem;
+  border-radius: 0.5rem;
+  color: #4b5563;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  text-decoration: none;
+}
+.dark .admin-nav-item {
+  color: #9ca3af;
+}
+
+.admin-nav-item:hover {
+  background-color: #E6F0DC;
+  color: #315220;
+}
+.dark .admin-nav-item:hover {
+  background-color: #1f301e;
+  color: #a8e090;
+}
+
+.admin-nav-item.active {
+  background-color: #55883B;
+  color: #ffffff;
+  box-shadow: 0 4px 10px rgba(85, 136, 59, 0.2);
+}
+.dark .admin-nav-item.active {
+  background-color: #55883B;
+  color: #ffffff;
+}
+
+.admin-card {
+  background-color: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+.dark .admin-card {
+  background-color: #151c15;
+  border-color: #273427;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.admin-table-container {
+  overflow-x: auto;
+  border-radius: 0.5rem;
+  border: 1px solid #e5e7eb;
+}
+.dark .admin-table-container {
+  border-color: #273427;
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 0.875rem;
+}
+
+.admin-table th {
+  background-color: #f9faf8;
+  padding: 0.75rem 1rem;
+  font-weight: 600;
+  color: #4b5563;
+  border-bottom: 1px solid #e5e7eb;
+}
+.dark .admin-table th {
+  background-color: #1c261b;
+  color: #9ca3af;
+  border-bottom-color: #273427;
+}
+
+.admin-table td {
+  padding: 0.85rem 1rem;
+  border-bottom: 1px solid #f3f4f6;
+  color: #1f2937;
+}
+.dark .admin-table td {
+  border-bottom-color: #202b20;
+  color: #e5e7eb;
+}
+
+.admin-table tr:hover td {
+  background-color: #fcfdfb;
+}
+.dark .admin-table tr:hover td {
+  background-color: #192218;
+}
+
+/* Status Badges */
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.2rem 0.65rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+}
+
+.status-PENDING { background-color: #fef3c7; color: #92400e; }
+.status-PROCESSING { background-color: #e0e7ff; color: #3730a3; }
+.status-SHIPPED { background-color: #e0f2fe; color: #075985; }
+.status-DELIVERED { background-color: #dcfce7; color: #166534; }
+.status-CANCELLED { background-color: #fee2e2; color: #991b1b; }

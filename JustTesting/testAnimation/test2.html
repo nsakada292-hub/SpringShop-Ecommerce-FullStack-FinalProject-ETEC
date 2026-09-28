@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Brand Identity & Logo ID Systems — CreativeCo</title>
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500&family=Syne:wght@500;600;700;800&family=Playfair+Display:ital,wght@1,500;1,600&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            display: ['Syne', 'sans-serif'],
+            serif: ['"Playfair Display"', 'serif'],
+          },
+          colors: {
+            brand: {
+              bg: '#08080a',
+              panel: '#101014',
+              surface: '#18181f',
+              accent: '#ff5533',
+              accentSoft: 'rgba(255, 85, 51, 0.15)',
+              ink: '#f3f2f0',
+              muted: '#7e7d82'
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Gradient vignettes to blend card edges smoothly */
+    .stage-vignette {
+      background: linear-gradient(90deg, #101014 0%, rgba(16,16,20,0) 14%, rgba(16,16,20,0) 86%, #101014 100%);
+    }
+
+    /* Glow backdrop behind cards */
+    .ambient-glow {
+      background: radial-gradient(circle at 50% 100%, rgba(255, 85, 51, 0.12), rgba(0,0,0,0) 70%);
+    }
+  </style>
+</head>
+
+<body class="bg-brand-bg text-brand-ink antialiased selection:bg-brand-accent selection:text-white min-h-screen flex flex-col justify-between">
+
+  <!-- Navigation -->
+  <header class="w-full max-w-6xl mx-auto px-6 py-6 flex items-center justify-between z-50">
+    <div class="flex items-center gap-3">
+      <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-brand-accent to-orange-400 flex items-center justify-center font-display font-extrabold text-white text-base shadow-lg shadow-brand-accent/20">
+        C
+      </div>
+      <span class="font-display font-bold text-lg tracking-tight">Creative<span class="text-brand-accent">Co.</span></span>
+    </div>
+
+    <nav class="hidden md:flex items-center gap-8 text-xs font-medium uppercase tracking-widest text-brand-muted">
+      <a href="#" class="hover:text-white transition-colors">Work</a>
+      <a href="#" class="hover:text-white transition-colors">Services</a>
+      <a href="#" class="hover:text-white transition-colors">Identity Systems</a>
+      <a href="#" class="hover:text-white transition-colors">About</a>
+    </nav>
+
+    <div class="flex items-center gap-3">
+      <a href="#" class="px-5 py-2.5 rounded-full border border-white/10 bg-white/5 hover:bg-white/10 hover:border-white/20 text-xs font-semibold uppercase tracking-wider transition-all duration-200">
+        Start Project
+      </a>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <main class="w-full max-w-6xl mx-auto px-6 py-4 flex-1 flex flex-col justify-center">
+    
+    <!-- Hero Header -->
+    <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
+      <div class="max-w-2xl">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-accentSoft border border-brand-accent/30 text-brand-accent text-xs font-semibold uppercase tracking-widest mb-3">
+          <span class="w-1.5 h-1.5 rounded-full bg-brand-accent animate-ping"></span>
+          Brand ID & Logo Systems
+        </div>
+        <h1 class="font-display font-extrabold text-3xl sm:text-4xl md:text-5xl tracking-tight leading-[1.15] text-white">
+          Visual identities that <em class="font-serif italic font-medium text-brand-accent font-normal">command presence</em> and outlive trends.
+        </h1>
+      </div>
+
+      <!-- Animation Control Button -->
+      <div class="flex items-center gap-4 self-start md:self-end">
+        <button id="toggleBtn" class="group flex items-center gap-3 px-4 py-2.5 rounded-full bg-white/[0.04] border border-white/10 hover:bg-white/[0.08] hover:border-white/25 transition-all text-xs font-semibold tracking-wider uppercase" aria-label="Toggle motion">
+          <span id="btnIcon" class="w-4 h-4 text-brand-accent flex items-center justify-center">
+            <!-- Pause Icon -->
+            <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>
+          </span>
+          <span id="btnLabel" class="text-brand-ink/90 group-hover:text-white">Pause Motion</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Interactive Fan Stage -->
+    <div class="relative w-full h-[520px] rounded-3xl bg-brand-panel border border-white/[0.08] overflow-hidden flex items-end justify-center pb-8 shadow-2xl">
+      
+      <!-- Radial Ambient Glow -->
+      <div class="absolute inset-0 ambient-glow pointer-events-none"></div>
+
+      <!-- Edge Vignette Fades -->
+      <div class="absolute inset-0 stage-vignette pointer-events-none z-30"></div>
+
+      <!-- Cards Container -->
+      <div id="cardFan" class="relative w-full h-full flex justify-center items-end pb-8">
+        <!-- 5 Cards dynamically injected by JavaScript -->
+      </div>
+
+      <!-- Stage Bottom Tag -->
+      <div class="absolute bottom-4 left-1/2 -translate-x-1/2 z-30 pointer-events-none">
+        <span class="text-[11px] uppercase tracking-[0.2em] font-medium text-brand-muted/70">
+          5 Dynamic Slots &bull; Harmonic Sway &bull; Live Brand Reel
+        </span>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer Info -->
+  <footer class="w-full max-w-6xl mx-auto px-6 py-6 flex flex-col sm:flex-row items-center justify-between text-xs text-brand-muted gap-4">
+    <p>&copy; 2026 CreativeCo Agency. All rights reserved.</p>
+    <div class="flex items-center gap-6">
+      <span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-emerald-400"></span> Available for Q2 Projects</span>
+      <span>GMT +7</span>
+    </div>
+  </footer>
+
+  <!-- JavaScript Logic -->
+  <script>
+    (function () {
+      const CARD_COUNT = 5;
+      const CENTER_INDEX = (CARD_COUNT - 1) / 2; // 2
+
+      // Curated collection of Brand Identity / Logo ID showcase imagery
+      const BRAND_PROJECTS = [
+        {
+          tag: 'Fintech & OS',
+          client: 'Vanguard',
+          desc: 'Design System & 3D Logo',
+          img: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=800&auto=format&fit=crop'
+        },
+        {
+          tag: 'Luxury Perfume',
+          client: 'AURA 09',
+          desc: 'Packaging & Monogram ID',
+          img: 'https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?q=80&w=800&auto=format&fit=crop'
+        },
+        {
+          tag: 'Spatial Studio',
+          client: 'Koto Arch',
+          desc: 'Identity & Editorial Print',
+          img: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=800&auto=format&fit=crop'
+        },
+        {
+          tag: 'Fashion Lab',
+          client: 'Maison Noir',
+          desc: 'Brand ID & Lookbook',
+          img: 'https://images.unsplash.com/photo-1509631179647-0177331693ae?q=80&w=800&auto=format&fit=crop'
+        },
+        {
+          tag: 'Modern Craft',
+          client: 'Ferra',
+          desc: 'Custom Typography Mark',
+          img: 'https://images.unsplash.com/photo-1579783902614-a3fb3927b675?q=80&w=800&auto=format&fit=crop'
+        },
+        {
+          tag: 'Audio Hardware',
+          client: 'Nomad Hi-Fi',
+          desc: 'Industrial ID System',
+          img: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=800&auto=format&fit=crop'
+        },
+        {
+          tag: 'Specialty Brew',
+          client: 'Kōhī Origin',
+          desc: 'Embossed ID & Packaging',
+          img: 'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?q=80&w=800&auto=format&fit=crop'
+        },
+        {
+          tag: 'AI Platform',
+          client: 'Synth Corp',
+          desc: 'Generative Visual Token',
+          img: 'https://images.unsplash.com/photo-1634017839464-5c339ebe3cb4?q=80&w=800&auto=format&fit=crop'
+        }
+      ];
+
+      const fanContainer = document.getElementById('cardFan');
+      const toggleBtn = document.getElementById('toggleBtn');
+      const btnIcon = document.getElementById('btnIcon');
+      const btnLabel = document.getElementById('btnLabel');
+
+      let isPlaying = true;
+      let globalProjectCursor = CARD_COUNT;
+      const cards = [];
+
+      // Template face renderer with Tailwind classes
+      function renderFaceContent(faceEl, project) {
+        faceEl.style.backgroundImage = `url("${project.img}")`;
+        faceEl.innerHTML = `
+          <div class="relative z-10 flex flex-col justify-between h-full p-4.5 pointer-events-none">
+            <div class="flex items-center justify-between">
+              <span class="inline-block px-2.5 py-1 rounded-full bg-black/50 backdrop-blur-md border border-white/20 text-[10px] font-semibold tracking-wider uppercase text-white/90">
+                ${project.tag}
+              </span>
+            </div>
+            <div class="transform translate-y-1 group-hover:translate-y-0 transition-transform duration-300">
+              <h3 class="font-display font-bold text-lg md:text-xl text-white tracking-tight leading-snug drop-shadow-md">
+                ${project.client}
+              </h3>
+              <p class="text-xs text-white/75 font-medium mt-0.5 drop-shadow">
+                ${project.desc}
+              </p>
+            </div>
+          </div>
+        `;
+      }
+
+      // Initialize 5 cards
+      for (let i = 0; i < CARD_COUNT; i++) {
+        const offset = i - CENTER_INDEX; // -2, -1, 0, 1, 2
+
+        // Card Wrapper (Handles positioning & dynamic swaying transform)
+        const wrapper = document.createElement('div');
+        wrapper.className = 'absolute w-[160px] sm:w-[185px] h-[300px] sm:h-[340px] origin-bottom will-change-transform';
+        wrapper.style.zIndex = (10 - Math.abs(offset)).toString();
+
+        // Inner Card (Handles hover scaling and shadows)
+        const innerCard = document.createElement('div');
+        innerCard.className = 'group relative w-full h-full rounded-2xl overflow-hidden bg-brand-surface border border-white/10 shadow-[0_20px_45px_rgba(0,0,0,0.7)] transition-all duration-300 hover:-translate-y-4 hover:scale-[1.04] hover:shadow-[0_30px_60px_rgba(0,0,0,0.9)] hover:border-white/30 cursor-pointer';
+
+        // Face A (Primary buffer)
+        const faceA = document.createElement('div');
+        faceA.className = 'absolute inset-0 bg-cover bg-center transition-opacity duration-1000 ease-in-out opacity-100 before:absolute before:inset-0 before:bg-gradient-to-t before:from-black/90 before:via-black/20 before:to-black/40';
+
+        // Face B (Crossfade buffer)
+        const faceB = document.createElement('div');
+        faceB.className = 'absolute inset-0 bg-cover bg-center transition-opacity duration-1000 ease-in-out opacity-0 before:absolute before:inset-0 before:bg-gradient-to-t before:from-black/90 before:via-black/20 before:to-black/40';
+
+        renderFaceContent(faceA, BRAND_PROJECTS[i % BRAND_PROJECTS.length]);
+
+        innerCard.appendChild(faceA);
+        innerCard.appendChild(faceB);
+        wrapper.appendChild(innerCard);
+        fanContainer.appendChild(wrapper);
+
+        cards.push({
+          wrapper,
+          offset,
+          faces: [faceA, faceB],
+          activeFaceIdx: 0,
+          timer: null
+        });
+      }
+
+      // Smooth side-to-side harmonic swaying animation loop
+      let animTime = 0;
+      function animate() {
+        if (isPlaying) {
+          animTime += 0.016;
+
+          cards.forEach((c, i) => {
+            // Wave physics
+            const swayFrequency = animTime * 1.25;
+            const horizontalWave = Math.sin(swayFrequency + i * 0.45);
+            const rotationWave = Math.sin(swayFrequency * 0.9 + i * 0.4);
+            const verticalWave = Math.cos(swayFrequency * 1.5 + i * 0.35);
+
+            // Dynamic offsets
+            const swayX = horizontalWave * 20; // Move side to side by ±20px
+            const swayRot = rotationWave * 3.5; // Tilt by ±3.5deg
+            const swayY = verticalWave * 6; // Gentle vertical breathing
+
+            // Base arched fan positions
+            const baseX = c.offset * 120;
+            const baseY = Math.pow(Math.abs(c.offset), 1.45) * 14;
+            const baseRot = c.offset * 9.5;
+            const baseScale = 1 - Math.abs(c.offset) * 0.035;
+
+            const finalX = baseX + swayX;
+            const finalY = baseY + swayY;
+            const finalRot = baseRot + swayRot;
+
+            c.wrapper.style.transform = `translate3d(${finalX}px, ${finalY}px, 0) rotate(${finalRot}deg) scale(${baseScale})`;
+          });
+        }
+        requestAnimationFrame(animate);
+      }
+
+      // Smooth Crossfade Image Cycling
+      function cycleCardImage(c) {
+        const nextFaceIdx = c.activeFaceIdx === 0 ? 1 : 0;
+        const nextProject = BRAND_PROJECTS[globalProjectCursor % BRAND_PROJECTS.length];
+        globalProjectCursor++;
+
+        renderFaceContent(c.faces[nextFaceIdx], nextProject);
+
+        // Perform crossfade
+        c.faces[nextFaceIdx].classList.remove('opacity-0');
+        c.faces[nextFaceIdx].classList.add('opacity-100');
+
+        c.faces[c.activeFaceIdx].classList.remove('opacity-100');
+        c.faces[c.activeFaceIdx].classList.add('opacity-0');
+
+        c.activeFaceIdx = nextFaceIdx;
+      }
+
+      // Schedule asynchronous image rotation per card
+      function scheduleNextCycle(c, index) {
+        const duration = 2800 + index * 700 + Math.random() * 500;
+        c.timer = setTimeout(() => {
+          if (isPlaying) {
+            cycleCardImage(c);
+          }
+          scheduleNextCycle(c, index);
+        }, duration);
+      }
+
+      function startAllTimers() {
+        cards.forEach((c, idx) => scheduleNextCycle(c, idx));
+      }
+
+      function stopAllTimers() {
+        cards.forEach((c) => {
+          if (c.timer) clearTimeout(c.timer);
+        });
+      }
+
+      // Toggle Play/Pause
+      toggleBtn.addEventListener('click', () => {
+        isPlaying = !isPlaying;
+
+        if (isPlaying) {
+          btnIcon.innerHTML = '<svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>';
+          btnLabel.textContent = 'Pause Motion';
+          startAllTimers();
+        } else {
+          btnIcon.innerHTML = '<svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M7 5v14l12-7L7 5z"/></svg>';
+          btnLabel.textContent = 'Play Motion';
+          stopAllTimers();
+        }
+      });
+
+      // Start animations
+      requestAnimationFrame(animate);
+      startAllTimers();
+    })();
+  </script>
+</body>
+</html>

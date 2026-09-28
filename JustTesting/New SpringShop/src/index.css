@@ -1,0 +1,66 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --color-brand-green: #4ce600;
+    --color-brand-emerald: #00e000;
+    --color-brand-aqua: #00e1ff;
+    --color-brand-blue: #009dff;
+    --color-brand-sky: #2eaeff;
+  }
+
+  html {
+    font-family: 'Lexend', system-ui, -apple-system, sans-serif;
+  }
+
+  :lang(km), .font-khmer {
+    font-family: 'Kantumruy Pro', sans-serif;
+  }
+}
+
+/* Custom Brand Utilities */
+.bg-brand-gradient {
+  background: linear-gradient(90deg, #00e1ff 0%, #009dff 100%);
+}
+
+.bg-brand-gradient-hover {
+  background: linear-gradient(90deg, #009dff 0%, #00e000 100%);
+}
+
+.bg-brand-hero-gradient {
+  background: linear-gradient(135deg, rgba(0, 225, 255, 0.08) 0%, rgba(0, 157, 255, 0.04) 50%, rgba(76, 230, 0, 0.05) 100%);
+}
+
+.text-brand-gradient {
+  background: linear-gradient(90deg, #009dff 0%, #00e000 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.btn-primary-gradient {
+  background: linear-gradient(90deg, #00e1ff 0%, #009dff 100%);
+  color: white;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-primary-gradient:hover {
+  background: linear-gradient(90deg, #009dff 0%, #00e000 100%);
+  box-shadow: 0 4px 14px rgba(0, 157, 255, 0.25);
+}
+
+/* Scrollbar polish */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(150, 150, 150, 0.3);
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(150, 150, 150, 0.5);
+}
+

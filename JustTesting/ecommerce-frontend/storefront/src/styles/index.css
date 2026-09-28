@@ -1,0 +1,10 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Global defaults */
+body {
+  @apply font-en antialiased;
+}
+
+/* Wrap any Khmer text block in className="font-kh" */

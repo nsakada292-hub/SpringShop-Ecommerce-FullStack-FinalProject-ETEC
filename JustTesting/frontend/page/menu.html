@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<link rel="stylesheet" href="background/background.css">
+
+<script>
+  tailwind.config = {
+    // darkMode: 'class',
+    theme: { extend: {
+      colors: {
+        ink:'#12211D', sidebar:'#0E1C18', paper:'#DCFCE7', paperdim:'#c6e7c7',
+        gold:'#B8862B', goldbright:'#D9A53C', clay:'#B33F3F', moss:'#3F5C50'
+      },
+      fontFamily: {
+        display:['Inter','sans-serif'], sans:['Inter','sans-serif'], mono:['"IBM Plex Mono"','monospace']
+      }
+    }}
+  }
+</script>
+<style>
+  html{scroll-behavior:smooth;}
+  dialog::backdrop{background:rgba(18,33,29,0.45);}
+  .thread-rule{
+    background-image: repeating-linear-gradient(115deg,#B8862B 0 3px,transparent 3px 9px),
+                       repeating-linear-gradient(65deg,#B33F3F 0 3px,transparent 3px 9px);
+    background-size:100% 3px,100% 3px; background-position:top,bottom; background-repeat:repeat-x;
+  }
+  @media (prefers-reduced-motion: reduce){ *{transition:none !important; scroll-behavior:auto !important;} }
+</style>
+<style>
+    /* body { font-family: 'DM Sans', sans-serif; }
+    .font-display { font-family: 'Playfair Display', serif; } */
+    @keyframes carouselSlide { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+    @keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+    @keyframes floatY { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
+    @keyframes spinSlow { to{transform:rotate(360deg)} }
+    @keyframes marqueePulse { 0%,100%{box-shadow:0 0 0 0 rgba(63,92,80,.25)} 50%{box-shadow:0 0 0 6px rgba(63,92,80,0)} }
+    .carousel-track { animation: carouselSlide 28s linear infinite; }
+    .carousel-track:hover { animation-play-state: paused; }
+    .fade-up { animation: fadeUp 0.5s ease both; }
+    .animate-float { animation: floatY 6s ease-in-out infinite; }
+    .animate-float-slow { animation: floatY 9s ease-in-out infinite; }
+    .animate-spin-slow { animation: spinSlow 18s linear infinite; }
+    .animate-marquee { animation: marqueePulse 2.4s ease-in-out infinite; }
+    .nav-link { position:relative; }
+    .nav-link::after { content:''; position:absolute; bottom:-4px; left:0; width:100%; height:2px; background:currentColor; transform:scaleX(0); transform-origin:right; transition:transform 0.3s ease; }
+    .nav-link:hover::after, .nav-link.active::after { transform:scaleX(1); transform-origin:left; }
+    .reveal { opacity:0; transform:translateY(28px); transition:opacity .65s ease, transform .65s ease; }
+    .reveal.in-view { opacity:1; transform:none; }
+    section[id] { scroll-margin-top: 96px; }
+    .menu-card { transition: transform 0.25s ease, box-shadow 0.25s ease; }
+    .menu-card:hover { transform: translateY(-6px); box-shadow: 0 24px 52px rgba(13,43,26,0.13); }
+    .c-slide { transition: transform 0.3s ease, box-shadow 0.3s ease; }
+    .c-slide:hover { transform: translateY(-5px) scale(1.04); box-shadow: 0 18px 40px rgba(13,43,26,.18); }
+</style>
+</head>
+<body>
+    <!-- Nav -->
+<header class="sticky top-0 z-40 bg-green-200/85 backdrop-blur-md border-b border-ink/10">
+  <div class="bg-green-800 text-green-100 text-[11px] tracking-wide text-center py-1.5 px-4 font-medium">
+    🌿 New Season Drop is live — <a class="underline underline-offset-2 hover:text-white" href="#shop">shop the Spring 2026 collection</a>
+  </div>
+  <nav class="max-w-[1180px] mx-auto flex items-center justify-between px-8 py-5" aria-label="Primary">
+    <a href="../index.html" class="font-display text-2xl font-bold flex items-center gap-2">
+      <img src="../../asset/Spring_Shop_logo-removebg.png" alt="Spring Shop Logo" class="w-9 h-9 object-contain">
+      <strong style="color: green;">Spring</strong> <strong style="color: rgb(57, 109, 222);">Shop</strong></span>
+    </a>
+    <ul class="hidden md:flex gap-9 text-sm font-medium">
+      <li><a class="nav-link opacity-85 hover:opacity-100" href="../index.html">Home</a></li>
+      <li><a class="nav-link opacity-85 hover:opacity-100" href="./menu.html">Collection</a></li>
+      <li><a class="nav-link opacity-85 hover:opacity-100" href="./aboutUs.html">About Us</a></li>
+      <!-- <li><a class="nav-link opacity-85 hover:opacity-100" href="#address">Visit Us</a></li> -->
+    </ul>
+    <div class="flex items-center gap-4">
+      <a id="authLink" class="hidden sm:inline text-xs opacity-65 border-b border-dashed border-ink hover:opacity-100" href="./login.html">Sign in →</a>
+      <a id="adminLink" class="hidden sm:inline text-xs opacity-65 border-b border-dashed border-ink hover:opacity-100" href="../admin.html">Admin dashboard →</a>
+      <button class="flex items-center gap-2 bg-ink text-paper px-4 py-2.5 rounded-full text-sm font-semibold hover:bg-green-900 transition-colors" onclick="document.getElementById('cartDrawer').showModal()" aria-haspopup="dialog">
+        Cart
+        <span class="bg-clay text-white text-[11px] font-bold w-[18px] h-[18px] rounded-full flex items-center justify-center" id="cartCount" aria-live="polite">0</span>
+      </button>
+    </div>
+  </nav>
+  <!-- <div class="thread-rule h-1"></div> -->
+</header>
+
+    <main>
+        <section class="px-8 pt-14 pb-20" aria-labelledby="shop-heading">
+          <div class="max-w-[1180px] mx-auto">
+            <div class="flex items-end justify-between flex-wrap gap-4 mb-9">
+              <div>
+                <span class="text-xs font-bold tracking-widest uppercase text-green-500">Full catalog</span>
+                <h1 id="shop-heading" class="text-4xl font-bold text-gray-900 mt-1" style="font-family:'DM Sans', sans-serif">The Collection</h1>
+                <p class="opacity-65 text-sm max-w-[360px] mt-1">Browse every piece in the Spring Shop collection.</p>
+              </div>
+            </div>
+            <ul id="filters" class="flex gap-2.5 flex-wrap mb-8" aria-label="Filter by category"></ul>
+            <ul id="productGrid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6" aria-label="Products"></ul>
+            <p id="emptyState" class="hidden text-center opacity-60 text-sm py-16">No products found for this filter yet.</p>
+          </div>
+        </section>
+    </main>
+
+    <footer class="bg-green-800 dark:bg-gray-900 border-t border-green-700 dark:border-gray-800 text-white transition-colors duration-300">
+        <div class="max-w-7xl mx-auto px-6 py-14">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 mb-10">
+
+                <!-- Logo -->
+                <div class="flex flex-col items-center sm:items-start text-center sm:text-left">
+                    <div class="w-20 h-20 rounded-2xl bg-white flex items-center justify-center mb-4 shadow-lg">
+                        <img src="../../asset/Spring Shop logo.png" alt="Spring Shop Logo" class="w-16 h-16 object-contain">
+                    </div>
+                    <p class="font-black text-lg text-white mb-1">Spring Shop</p>
+                    <p class="text-green-300 dark:text-gray-400 text-sm mb-4">Spring Shop brings you stylish and comfortable shirts designed for everyday life. <br> Explore our collection and find a look that’s truly yours.</p>
+                    <div class="flex gap-2 flex-wrap justify-center sm:justify-start">
+                        <a href="#" class="w-9 h-9 rounded-xl bg-blue-600 hover:bg-blue-500 flex items-center justify-center hover:scale-110 transition-all">
+                            <svg width="16" height="16" fill="white" viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+                        </a>
+                        <a href="#" class="w-9 h-9 rounded-xl bg-black hover:bg-gray-800 flex items-center justify-center hover:scale-110 transition-all">
+                            <svg width="16" height="16" fill="white" viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.17 8.17 0 0 0 4.78 1.52V6.75a4.85 4.85 0 0 1-1.01-.06z"/></svg>
+                        </a>
+                        <a href="#" class="w-9 h-9 rounded-xl bg-sky-500 hover:bg-sky-400 flex items-center justify-center hover:scale-110 transition-all">
+                            <i class="fa-brands fa-telegram text-white text-sm"></i>
+                        </a>
+                        <a href="#" class="w-9 h-9 rounded-xl flex items-center justify-center hover:scale-110 transition-all" style="background:linear-gradient(45deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888)">
+                            <i class="fa-brands fa-instagram text-white text-sm"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Explore -->
+                <div>
+                    <h3 class="font-bold text-xs tracking-widest uppercase mb-5 text-green-300 dark:text-gray-400">Explore</h3>
+                    <ul class="space-y-3 text-sm text-green-100 dark:text-gray-300">
+                        <li><a href="../index.html" class="hover:text-white hover:translate-x-1 inline-block transition-all duration-200">Home</a></li>
+                        <li><a href="../page/menu.html" class="hover:text-white hover:translate-x-1 inline-block transition-all duration-200">Collection</a></li>
+                        <li><a href="../page/aboutUs.html" class="hover:text-white hover:translate-x-1 inline-block transition-all duration-200">About Us</a></li>
+                        <!-- <li><a href="./page/services.html" class="hover:text-white hover:translate-x-1 inline-block transition-all duration-200">Services</a></li>
+                        <li><a href="./page/contactPage.html" class="hover:text-white hover:translate-x-1 inline-block transition-all duration-200">Contact</a></li> -->
+                    </ul>
+                </div>
+
+                <!-- Address -->
+                <div>
+                    <h3 class="font-bold text-xs tracking-widest uppercase mb-5 text-green-300 dark:text-gray-400">Address & Contacts</h3>
+                    <p class="text-sm leading-relaxed mb-5 text-green-100 dark:text-gray-300">
+                        No. 40, Street 273,<br>Sangkat Boeung Kak I,<br>Khan Toul Kork,<br>Phnom Penh, Cambodia
+                    </p>
+                    <ul class="space-y-2 text-sm text-green-100 dark:text-gray-300">
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-phone text-green-400 text-xs"></i> (+855) 17-928-998</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-phone text-green-400 text-xs"></i> (+855) 86-243-016</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-phone text-green-400 text-xs"></i> (+855) 96-673-3867</li>
+                        <!-- <li class="flex items-center gap-2"><i class="fa-solid fa-phone text-green-400 text-xs"></i> (+855) 97-297-7674</li> -->
+                        <!-- <li class="flex items-center gap-2"><i class="fa-solid fa-phone text-green-400 text-xs"></i> (+855) 69-298-825</li> -->
+                    </ul>
+                </div>
+
+                <!-- Follow -->
+                <div>
+                    <h3 class="font-bold text-xs tracking-widest uppercase mb-5 text-green-300 dark:text-gray-400">Follow Us</h3>
+                    <div class="bg-white/10 dark:bg-gray-800 backdrop-blur rounded-2xl p-4 flex items-center gap-3 border border-white/10 dark:border-gray-700">
+                        <img src="../../asset/Spring Shop logo.png" alt="MALUB" class="w-12 h-12 rounded-xl border-2 border-green-400 flex-shrink-0 bg-white p-1">
+                        <div>
+                            <p class="font-bold text-sm text-white">Spring Shop</p>
+                            <p class="text-xs text-green-300 dark:text-gray-400 mb-2">Follow us on Facebook</p>
+                            <button class="text-xs text-white bg-blue-600 hover:bg-blue-500 px-3 py-1 rounded-full flex items-center gap-1 transition-colors font-semibold">
+                                <i class="fa-brands fa-facebook text-xs"></i> Follow
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="border-t border-green-700 dark:border-gray-800 py-5 px-6 text-center text-sm text-green-300 dark:text-gray-500">
+            © 2026 MALUB Restaurant — All Rights Reserved
+        </div>
+    </footer>
+    <dialog id="cartDrawer" class="m-0 ml-auto h-full max-h-full w-full max-w-md p-0 bg-paper" aria-label="Shopping cart">
+  <div class="flex flex-col h-full">
+    <header class="flex items-center justify-between px-6 py-6 border-b border-ink/10">
+      <h2 class="font-display text-2xl">Your bag</h2>
+      <button class="text-xl opacity-60" onclick="document.getElementById('cartDrawer').close()" aria-label="Close cart">✕</button>
+    </header>
+    <div class="flex-1 overflow-y-auto px-6" id="drawerItems"></div>
+    <footer class="px-6 pt-5 pb-7 border-t border-ink/10">
+      <div class="flex justify-between mb-4 text-[15px]"><span>Subtotal</span><strong class="font-mono text-lg" id="cartTotal">$0.00</strong></div>
+      <button class="w-full bg-clay text-white py-4 rounded-full font-bold text-sm disabled:opacity-40" id="checkoutBtn" onclick="openCheckout()" disabled>Checkout</button>
+    </footer>
+  </div>
+</dialog>
+
+<dialog id="checkoutDialog" class="rounded-2xl p-0 w-[440px] max-w-[92vw] bg-paper">
+  <form id="checkoutForm" method="dialog" class="p-8" onsubmit="return false;"></form>
+</dialog>
+
+<script type="module">
+  // API calls now live in js/api/*.js (one file per backend controller) —
+  // see js/api/README or MAPPING.md for the full endpoint list. This page
+  // ("Collection") previously had an empty <main> — the product grid below
+  // is the same markup/behaviour as the homepage's #shop section, now the
+  // dedicated full-catalog page linked from the nav and from index.html's
+  // "explore more collection" button.
+  import * as categoryApi from '../js/api/categoryApi.js';
+  import * as productApi from '../js/api/productApi.js';
+  import * as cartApi from '../js/api/cartApi.js';
+  import * as orderApi from '../js/api/orderApi.js';
+  import { isLoggedIn } from '../js/api/apiClient.js';
+  import { logout, isAdmin } from '../js/api/authApi.js';
+
+  function updateAuthLink() {
+    const authLink = document.getElementById('authLink');
+    if (!authLink) return;
+    if (isLoggedIn()) {
+      authLink.textContent = 'Sign out';
+      authLink.href = '#';
+      authLink.onclick = (e) => { e.preventDefault(); logout(); location.reload(); };
+    } else {
+      authLink.textContent = 'Sign in →';
+      authLink.href = './login.html';
+      authLink.onclick = null;
+    }
+    const adminLink = document.getElementById('adminLink');
+    if (adminLink) {
+      adminLink.style.display = isAdmin() ? '' : 'none';
+    }
+  }
+
+  let PRODUCTS = [];
+  let CATS = ["All"];
+  let categoryMap = {};
+  let activeCat = "All";
+  const cart = {};
+
+  async function fetchCategories() {
+    try {
+      const data = await categoryApi.getAll();
+      CATS = ["All", ...data.map(c => c.name)];
+      data.forEach(c => { categoryMap[c.name] = c.id; });
+    } catch (e) {
+      console.warn("Categories API offline/using default", e);
+    }
+  }
+
+  async function fetchProducts() {
+    try {
+      const data = activeCat !== "All" && categoryMap[activeCat]
+        ? await productApi.getByCategory(categoryMap[activeCat])
+        : await productApi.getAll();
+      PRODUCTS = data.map(p => ({
+        id: p.id,
+        name: p.name || p.title,
+        cat: p.categoryName || p.category?.name || "Collection",
+        price: Number(p.price || 0),
+        desc: p.description || p.desc || "",
+        pattern: p.imageUrl ? `url('${p.imageUrl}') center/cover` : (p.pattern || "repeating-linear-gradient(45deg,#3F5C50 0 8px,#2E463C 8px 16px)")
+      }));
+    } catch (e) {
+      console.warn("Products API offline/using default", e);
+    }
+  }
+
+  async function fetchCart() {
+    if (!isLoggedIn()) return;
+    try {
+      const data = await cartApi.getMyCart();
+      for (const k in cart) delete cart[k];
+      if (data && data.items) {
+        data.items.forEach(item => {
+          const pId = item.productId || item.product?.id || item.id;
+          cart[pId] = item.quantity || 1;
+        });
+      }
+    } catch (e) {
+      console.warn("Could not load saved cart", e);
+    }
+  }
+
+  function renderFilters(){
+    document.getElementById('filters').innerHTML = CATS.map(c => `
+      <li>
+        <button class="px-4 py-2 rounded-full border text-sm font-semibold ${c===activeCat ? 'bg-ink text-paper border-ink' : 'border-ink/15 opacity-70'}"
+          aria-pressed="${c===activeCat}" onclick="setCat('${c}')">${c}</button>
+      </li>`).join('');
+  }
+
+  async function setCat(c){
+    activeCat = c;
+    renderFilters();
+    await fetchProducts();
+    renderGrid();
+  }
+
+  function renderGrid(){
+    const list = activeCat==="All" ? PRODUCTS : PRODUCTS.filter(p=>p.cat===activeCat);
+    document.getElementById('emptyState').classList.toggle('hidden', list.length !== 0);
+    document.getElementById('productGrid').innerHTML = list.map(p => `
+      <li>
+        <article class="group bg-white border border-ink/10 rounded-2xl overflow-hidden hover:-translate-y-1.5 hover:shadow-2xl hover:shadow-green-900/10 hover:border-green-300 transition-all duration-300">
+          <div class="h-52 relative" style="background:${p.pattern}">
+            <div class="absolute inset-0 bg-gradient-to-t from-ink/25 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            <span class="absolute top-3 left-3 bg-paper/90 backdrop-blur px-2.5 py-1 rounded-full text-[11px] font-bold uppercase tracking-wide">${p.cat}</span>
+          </div>
+          <div class="p-5">
+            <h3 class="font-display text-lg mb-1 group-hover:text-green-700 transition-colors">${p.name}</h3>
+            <p class="text-[13px] opacity-60 mb-3">${p.desc}</p>
+            <footer class="flex justify-between items-center">
+              <span class="font-mono text-base">$${p.price.toFixed(2)}</span>
+              <button class="bg-ink hover:bg-green-600 text-paper w-9 h-9 rounded-full text-xl flex items-center justify-center transition-colors" onclick="addToCart(${p.id})" aria-label="Add ${p.name} to cart">+</button>
+            </footer>
+          </div>
+        </article>
+      </li>`).join('');
+  }
+
+  async function addToCart(id){
+    cart[id] = (cart[id]||0) + 1;
+    renderCart();
+    document.getElementById('cartDrawer').showModal();
+    if (!isLoggedIn()) return;
+    try { await cartApi.addItem(id, 1); } catch (e) { console.warn("Could not sync cart item", e); }
+  }
+  async function changeQty(id, delta){
+    cart[id] = (cart[id]||0) + delta;
+    const cur = cart[id];
+    if(cart[id] <= 0) delete cart[id];
+    renderCart();
+    if (!isLoggedIn()) return;
+    try {
+      if (cur <= 0) await cartApi.removeItem(id);
+      else await cartApi.updateItemQuantity(id, cur);
+    } catch (e) { console.warn("Could not sync cart item", e); }
+  }
+  async function removeItem(id){
+    delete cart[id];
+    renderCart();
+    if (!isLoggedIn()) return;
+    try { await cartApi.removeItem(id); } catch (e) { console.warn("Could not sync cart item", e); }
+  }
+
+  function renderCart(){
+    const ids = Object.keys(cart);
+    const itemsEl = document.getElementById('drawerItems');
+    document.getElementById('cartCount').textContent = ids.reduce((s,id)=>s+cart[id],0);
+    const checkoutBtn = document.getElementById('checkoutBtn');
+
+    if(ids.length === 0){
+      itemsEl.innerHTML = `<p class="text-center opacity-55 text-sm py-16">Your bag is empty.<br>Browse the collection and add something you like.</p>`;
+      checkoutBtn.disabled = true;
+    } else {
+      checkoutBtn.disabled = false;
+      itemsEl.innerHTML = `<ul>` + ids.map(id=>{
+        const p = PRODUCTS.find(p=>p.id==id) || { name: `Item #${id}`, cat: 'Shop', price: 0, pattern: '' };
+        const qty = cart[id];
+        return `
+          <li class="flex gap-3.5 py-4 border-b border-ink/10">
+            <div class="w-16 h-16 rounded-lg flex-shrink-0 bg-paperdim" style="background:${p.pattern}" aria-hidden="true"></div>
+            <div class="flex-1">
+              <h3 class="text-sm font-medium">${p.name}</h3>
+              <p class="text-[11px] opacity-55 mb-2">${p.cat}</p>
+              <div class="flex items-center gap-2.5">
+                <button class="w-6 h-6 rounded-full border border-ink/15 text-sm" onclick="changeQty(${p.id},-1)" aria-label="Decrease quantity">−</button>
+                <span class="font-mono text-[13px] min-w-[16px] text-center">${qty}</span>
+                <button class="w-6 h-6 rounded-full border border-ink/15 text-sm" onclick="changeQty(${p.id},1)" aria-label="Increase quantity">+</button>
+                <button class="text-[11px] opacity-50 underline ml-auto" onclick="removeItem(${p.id})">Remove</button>
+              </div>
+            </div>
+            <div class="font-mono text-sm whitespace-nowrap">$${(p.price*qty).toFixed(2)}</div>
+          </li>`;
+      }).join('') + `</ul>`;
+    }
+    const total = ids.reduce((s,id)=>{
+      const p = PRODUCTS.find(p=>p.id==id);
+      return s + (p ? p.price * cart[id] : 0);
+    }, 0);
+    document.getElementById('cartTotal').textContent = `$${total.toFixed(2)}`;
+  }
+
+  function openCheckout(){
+    document.getElementById('cartDrawer').close();
+    const total = Object.keys(cart).reduce((s,id)=>{
+      const p = PRODUCTS.find(p=>p.id==id);
+      return s + (p ? p.price * cart[id] : 0);
+    }, 0);
+    document.getElementById('checkoutForm').innerHTML = `
+      <h2 class="font-display text-2xl mb-1">Checkout</h2>
+      <p class="text-[13px] opacity-60 mb-6">Subtotal: $${total.toFixed(2)} · Demo checkout, no payment is processed.</p>
+      <div class="mb-4"><label class="block text-[11px] font-bold uppercase tracking-wide opacity-70 mb-1.5" for="cf-name">Full name</label>
+        <input id="cf-name" class="w-full px-3.5 py-3 rounded-lg border border-ink/15 bg-paperdim text-sm" type="text" placeholder="Sokha Chan" required></div>
+      <div class="mb-4"><label class="block text-[11px] font-bold uppercase tracking-wide opacity-70 mb-1.5" for="cf-email">Email</label>
+        <input id="cf-email" class="w-full px-3.5 py-3 rounded-lg border border-ink/15 bg-paperdim text-sm" type="email" placeholder="you@example.com" required></div>
+      <div class="grid grid-cols-2 gap-3 mb-4">
+        <div><label class="block text-[11px] font-bold uppercase tracking-wide opacity-70 mb-1.5" for="cf-city">City</label>
+          <input id="cf-city" class="w-full px-3.5 py-3 rounded-lg border border-ink/15 bg-paperdim text-sm" type="text" placeholder="Siem Reap" required></div>
+        <div><label class="block text-[11px] font-bold uppercase tracking-wide opacity-70 mb-1.5" for="cf-zip">Postal code</label>
+          <input id="cf-zip" class="w-full px-3.5 py-3 rounded-lg border border-ink/15 bg-paperdim text-sm" type="text" placeholder="17000"></div>
+      </div>
+      <div class="mb-5"><label class="block text-[11px] font-bold uppercase tracking-wide opacity-70 mb-1.5" for="cf-addr">Shipping address</label>
+        <input id="cf-addr" class="w-full px-3.5 py-3 rounded-lg border border-ink/15 bg-paperdim text-sm" type="text" placeholder="Street, house number" required></div>
+      <button class="w-full bg-ink text-paper py-3.5 rounded-full font-bold text-sm" onclick="placeOrder()">Place order · $${total.toFixed(2)}</button>
+    `;
+    document.getElementById('checkoutDialog').showModal();
+  }
+
+  async function placeOrder(){
+    const name = document.getElementById('cf-name')?.value || 'Customer';
+    const email = document.getElementById('cf-email')?.value || '';
+    const city = document.getElementById('cf-city')?.value || '';
+    const addr = document.getElementById('cf-addr')?.value || '';
+
+    const orderPayload = {
+      receiverName: name,
+      receiverEmail: email,
+      shippingAddress: `${addr}, ${city}`,
+      items: Object.keys(cart).map(id => ({ productId: Number(id), quantity: cart[id] }))
+    };
+
+    if (!isLoggedIn()) {
+      document.getElementById('checkoutForm').innerHTML = `
+        <div class="text-center py-3">
+          <h2 class="font-display text-2xl mb-2">Please sign in</h2>
+          <p class="opacity-65 text-sm mb-6">You'll need an account to place an order — this keeps your order history in one place.</p>
+          <a href="./login.html" class="inline-block w-full bg-ink text-paper py-3.5 rounded-full font-bold text-sm">Sign in</a>
+        </div>`;
+      return;
+    }
+
+    try {
+      await orderApi.placeOrder(orderPayload);
+      await cartApi.clearMyCart();
+    } catch (e) {
+      console.warn("Order could not be placed", e);
+      document.getElementById('checkoutForm').innerHTML = `
+        <div class="text-center py-3">
+          <h2 class="font-display text-2xl mb-2">Something went wrong</h2>
+          <p class="opacity-65 text-sm mb-6">We couldn't place your order. Please try again in a moment.</p>
+          <button class="w-full bg-ink text-paper py-3.5 rounded-full font-bold text-sm" onclick="document.getElementById('checkoutDialog').close()">Close</button>
+        </div>`;
+      return;
+    }
+
+    document.getElementById('checkoutForm').innerHTML = `
+      <div class="text-center py-3">
+        <div class="w-[60px] h-[60px] rounded-full bg-moss text-white text-2xl flex items-center justify-center mx-auto mb-4">✓</div>
+        <h2 class="font-display text-2xl mb-2">Order placed</h2>
+        <p class="opacity-65 text-sm mb-6">Thanks — a confirmation would normally be sent to your email. This is a demo, so nothing was charged.</p>
+        <button class="w-full bg-ink text-paper py-3.5 rounded-full font-bold text-sm" onclick="document.getElementById('checkoutDialog').close()">Back to shop</button>
+      </div>`;
+    for(const id in cart) delete cart[id];
+    renderCart();
+  }
+
+  (async function init() {
+    updateAuthLink();
+    await fetchCategories();
+    await fetchProducts();
+    await fetchCart();
+    renderFilters();
+    renderGrid();
+    renderCart();
+  })();
+
+  Object.assign(window, { setCat, addToCart, changeQty, removeItem, openCheckout, placeOrder });
+</script>
+</body>
+</html>

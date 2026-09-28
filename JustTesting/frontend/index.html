@@ -1,0 +1,961 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Spring Shop</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<link rel="stylesheet" href="./components/home/background/background.css">
+
+<script>
+  tailwind.config = {
+    // darkMode: 'class',
+    theme: { extend: {
+      colors: {
+        ink:'#12211D', sidebar:'#0E1C18', paper:'#DCFCE7', paperdim:'#c6e7c7',
+        gold:'#B8862B', goldbright:'#D9A53C', clay:'#B33F3F', moss:'#3F5C50'
+      },
+      fontFamily: {
+        display:['Inter','sans-serif'], sans:['Inter','sans-serif'], mono:['"IBM Plex Mono"','monospace']
+      }
+    }}
+  }
+</script>
+<style>
+  html{scroll-behavior:smooth;}
+  dialog::backdrop{background:rgba(18,33,29,0.45);}
+  .thread-rule{
+    background-image: repeating-linear-gradient(115deg,#B8862B 0 3px,transparent 3px 9px),
+                       repeating-linear-gradient(65deg,#B33F3F 0 3px,transparent 3px 9px);
+    background-size:100% 3px,100% 3px; background-position:top,bottom; background-repeat:repeat-x;
+  }
+  @media (prefers-reduced-motion: reduce){ *{transition:none !important; scroll-behavior:auto !important;} }
+</style>
+<style>
+    /* body { font-family: 'DM Sans', sans-serif; }
+    .font-display { font-family: 'Playfair Display', serif; } */
+    @keyframes carouselSlide { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+    @keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+    @keyframes floatY { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
+    @keyframes spinSlow { to{transform:rotate(360deg)} }
+    @keyframes marqueePulse { 0%,100%{box-shadow:0 0 0 0 rgba(63,92,80,.25)} 50%{box-shadow:0 0 0 6px rgba(63,92,80,0)} }
+    .carousel-track { animation: carouselSlide 28s linear infinite; }
+    .carousel-track:hover { animation-play-state: paused; }
+    .fade-up { animation: fadeUp 0.5s ease both; }
+    .animate-float { animation: floatY 6s ease-in-out infinite; }
+    .animate-float-slow { animation: floatY 9s ease-in-out infinite; }
+    .animate-spin-slow { animation: spinSlow 18s linear infinite; }
+    .animate-marquee { animation: marqueePulse 2.4s ease-in-out infinite; }
+    .nav-link { position:relative; }
+    .nav-link::after { content:''; position:absolute; bottom:-4px; left:0; width:100%; height:2px; background:currentColor; transform:scaleX(0); transform-origin:right; transition:transform 0.3s ease; }
+    .nav-link:hover::after, .nav-link.active::after { transform:scaleX(1); transform-origin:left; }
+    .reveal { opacity:0; transform:translateY(28px); transition:opacity .65s ease, transform .65s ease; }
+    .reveal.in-view { opacity:1; transform:none; }
+    section[id] { scroll-margin-top: 96px; }
+    .menu-card { transition: transform 0.25s ease, box-shadow 0.25s ease; }
+    .menu-card:hover { transform: translateY(-6px); box-shadow: 0 24px 52px rgba(13,43,26,0.13); }
+    .c-slide { transition: transform 0.3s ease, box-shadow 0.3s ease; }
+    .c-slide:hover { transform: translateY(-5px) scale(1.04); box-shadow: 0 18px 40px rgba(13,43,26,.18); }
+</style>
+</head>
+<body class="bg-paper text-ink antialiased">
+  <!--Start Background Animation Body-->
+		<div class="area">
+			<ul class="circles">
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+			</ul>
+		</div> 
+        
+		<!--End Background Animation Body-->
+
+    <!-- Nav -->
+<header class="sticky top-0 z-40 bg-green-200/85 backdrop-blur-md border-b border-ink/10">
+  <div class="bg-green-800 text-green-100 text-[11px] tracking-wide text-center py-1.5 px-4 font-medium">
+    🌿 New Season Drop is live — <a class="underline underline-offset-2 hover:text-white" href="#shop">shop the Spring 2026 collection</a>
+  </div>
+  <nav class="max-w-[1180px] mx-auto flex items-center justify-between px-8 py-5" aria-label="Primary">
+    <a href="./index.html" class="font-display text-2xl font-bold flex items-center gap-2">
+      <img src="../../asset/Spring_Shop_logo-removebg.png" alt="Spring Shop Logo" class="w-9 h-9 object-contain">
+      <strong style="color: green;">Spring</strong> <strong style="color: rgb(57, 109, 222);">Shop</strong></span>
+    </a>
+    <ul class="hidden md:flex gap-9 text-sm font-medium">
+      <li><a class="nav-link opacity-85 hover:opacity-100" href="./page/home.html">Home</a></li>
+      <li><a class="nav-link opacity-85 hover:opacity-100" href="./page/menu.html">Collection</a></li>
+      <li><a class="nav-link opacity-85 hover:opacity-100" href="./page/aboutUs.html">About Us</a></li>
+      <!-- <li><a class="nav-link opacity-85 hover:opacity-100" href="#address">Visit Us</a></li> -->
+    </ul>
+    <div class="flex items-center gap-4">
+      <a id="authLink" class="hidden sm:inline text-xs opacity-65 border-b border-dashed border-ink hover:opacity-100" href="./page/login.html">Sign in →</a>
+      <a id="adminLink" class="hidden sm:inline text-xs opacity-65 border-b border-dashed border-ink hover:opacity-100" href="admin.html">Admin dashboard →</a>
+      <button class="flex items-center gap-2 bg-ink text-paper px-4 py-2.5 rounded-full text-sm font-semibold hover:bg-green-900 transition-colors" onclick="document.getElementById('cartDrawer').showModal()" aria-haspopup="dialog">
+        Cart
+        <span class="bg-clay text-white text-[11px] font-bold w-[18px] h-[18px] rounded-full flex items-center justify-center" id="cartCount" aria-live="polite">0</span>
+      </button>
+    </div>
+  </nav>
+  <!-- <div class="thread-rule h-1"></div> -->
+</header>
+
+<main>
+  
+<!-- Header -->
+  <section id="home" class="relative px-8 pt-14 pb-20 font-display overflow-hidden" aria-labelledby="hero-heading">
+    <div class="absolute inset-0 pointer-events-none" aria-hidden="true">
+      <span class="absolute text-gold/50 text-2xl animate-float" style="top:16%; left:5%;">✦</span>
+      <span class="absolute text-clay/40 text-xl animate-float-slow" style="top:62%; left:3%;">✧</span>
+      <span class="absolute text-moss/40 text-3xl animate-float" style="top:20%; right:9%;">✦</span>
+      <span class="absolute text-goldbright/60 text-lg animate-float-slow" style="bottom:16%; right:3%;">✧</span>
+      <span class="absolute text-green-500/20 text-5xl animate-float-slow" style="top:48%; right:38%;">✧</span>
+    </div>
+    <div class="max-w-[1180px] mx-auto grid md:grid-cols-[1.1fr_0.9fr] gap-14 items-center relative">
+      <div class="relative z-10">
+        <!-- <span class="font-mono text-xs tracking-[0.14em] uppercase text-moss mb-5 inline-flex items-center gap-2 bg-white/80 border border-moss/20 px-4 py-1.5 rounded-full shadow-sm">
+          <span class="w-2 h-2 rounded-full bg-moss animate-pulse"></span> New Season · Spring 2026
+        </span> -->
+        <h1 id="hero-heading" class="font-display text-4xl md:text-[56px] leading-[1.05] font-semibold mb-5">
+          Find your perfect <br> style and wear it with <em class="text-green-600 not-italic relative inline-block">confidence
+            <svg class="absolute -bottom-2 left-0 w-full" viewBox="0 0 220 12" fill="none" preserveAspectRatio="none" aria-hidden="true">
+              <path d="M3 9C60 3 160 3 217 8" stroke="#B8862B" stroke-width="3" stroke-linecap="round"/>
+            </svg>
+          </em>
+        </h1>
+        <p class="text-[17px] max-w-[440px] opacity-80 mb-7 fade-up" style="animation-delay:.08s">Upgrade your everyday style with our collection of quality shirts, thoughtfully designed for comfort, confidence, and a look that makes you stand out wherever you go.</p>
+        <div class="flex gap-3 mb-9 flex-wrap fade-up" style="animation-delay:.16s">
+          <a class="bg-green-500 text-paper px-6 py-3.5 rounded-full font-semibold text-sm hover:-translate-y-0.5 hover:bg-green-600 hover:shadow-lg hover:shadow-green-500/30 transition-all" href="#shop">Shop the collection</a>
+          <a class="bg-gray-500 text-paper px-6 py-3.5 rounded-full font-semibold text-sm hover:-translate-y-0.5 hover:bg-gray-600 transition-all" href="#about">Explore Us</a>
+        </div>
+        <dl class="flex gap-8 font-mono fade-up" style="animation-delay:.24s">
+          <div class="relative"><dt class="sr-only">Designs</dt><dd class="font-display text-xl font-semibold">120+</dd><dt class="text-[11px] opacity-60 uppercase tracking-wide">Designs</dt></div>
+          <div class="relative pl-8 border-l border-ink/10"><dt class="sr-only">Provinces</dt><dd class="font-display text-xl font-semibold">6</dd><dt class="text-[11px] opacity-60 uppercase tracking-wide">Provinces</dt></div>
+          <div class="relative pl-8 border-l border-ink/10"><dt class="sr-only">Handmade</dt><dd class="font-display text-xl font-semibold">100%</dd><dt class="text-[11px] opacity-60 uppercase tracking-wide">Cotton</dt></div>
+        </dl>
+      </div>
+      <div class="relative h-72 md:h-[420px] fade-up" style="animation-delay:.1s" aria-hidden="true">
+        <div class="absolute rounded-2xl shadow-xl border border-ink/10 w-[220px] h-[260px] md:w-[280px] md:h-[340px] top-0 right-4 rotate-2 hover:rotate-0 transition-transform duration-500"
+            style="background-image:url('../../asset/head.jpg');background-size:cover;background-position:center;"></div>
+
+        <div class="absolute rounded-2xl shadow-xl border border-ink/10 w-[170px] h-[170px] md:w-[220px] md:h-[220px] bottom-0 left-0 -rotate-2 hover:rotate-0 transition-transform duration-500"
+            style="background-image:url('../../asset/shirtMen.jpg');background-size:cover;background-position:center;"></div>
+
+        <div class="absolute rounded-2xl shadow-xl border border-ink/10 w-[120px] h-[120px] md:w-[150px] md:h-[150px] top-6 left-8 z-10"
+            style="background-image:url('../../asset/onHead.jpg');background-size:cover;background-position:center;"></div>
+
+        <div class="absolute -top-5 -right-1 z-20 animate-float">
+          <div class="bg-white/90 backdrop-blur rounded-2xl shadow-lg px-4 py-2.5 flex items-center gap-2.5 border border-green-100">
+            <span class="w-9 h-9 rounded-full bg-green-500 text-white flex items-center justify-center text-sm">✓</span>
+            <div>
+              <p class="text-[11px] font-bold leading-tight">100% Cotton</p>
+              <p class="text-[10px] opacity-60">Ethically sourced</p>
+            </div>
+          </div>
+        </div>
+        <div class="absolute bottom-28 -left-6 z-20 animate-float-slow">
+          <div class="bg-white/90 backdrop-blur rounded-2xl shadow-lg px-4 py-2.5 flex items-center gap-2.5 border border-green-100">
+            <span class="text-goldbright text-base leading-none">★</span>
+            <div>
+              <p class="text-[11px] font-bold leading-tight">4.9 / 5</p>
+              <p class="text-[10px] opacity-60">2,300+ reviews</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- <div class="thread-rule h-1.5"></div> -->
+
+<!-- Carusel -->
+  <section>
+    <div class="bg-green-100 dark:bg-black py-10 overflow-hidden">
+  <p class="text-center text-xs font-bold tracking-widest uppercase text-green-600 mb-7">✦ What We Serve ✦</p>
+  <div class="relative overflow-hidden">
+    <div class="absolute left-0 top-0 bottom-0 w-24 z-10 pointer-events-none bg-gradient-to-r from-green-100 to-transparent"></div>
+    <div class="absolute right-0 top-0 bottom-0 w-24 z-10 pointer-events-none bg-gradient-to-l from-green-100 to-transparent"></div>
+    <div class="carousel-track flex gap-5 w-max px-4">
+      <script>
+        const slides=[
+          {img:'https://i.pinimg.com/736x/d5/d3/34/d5d334219d673ce92d988dab4516958b.jpg',name:'Steak សាច់គោ'},
+          {img:'https://i.pinimg.com/736x/44/02/c5/4402c5eb72f04058f7d383244c99899c.jpg',name:'Pasta គ្រឿងសមុទ្រ'},
+          {img:'https://i.pinimg.com/1200x/7d/85/55/7d8555b48a078b81d8c220574be5d78e.jpg',name:'នំបញ្ចុកសម្លប្រហើរ'},
+          {img:'https://i.pinimg.com/1200x/cf/14/38/cf1438a6009939b9c2c87a4794a191c9.jpg',name:'អាម៉ុកសាច់ត្រី'},
+          {img:'https://i.pinimg.com/1200x/48/e4/3c/48e43c217280958dd86b94a04e82437e.jpg',name:'ការ៉េមដូង'},
+          {img:'https://i.pinimg.com/736x/37/83/93/3783930145a9d3a9c530542cb1d35548.jpg',name:'នំអាកោត្នោត'},
+          {img:'https://i.pinimg.com/1200x/7d/7d/ed/7d7dedd9a7d1d23e87984628518d6e5e.jpg',name:'នំផ្លៃអាយ'},
+          {img:'https://i.pinimg.com/1200x/63/71/92/63719242cc9ea621493a7a7f094c4678.jpg',name:'សង្យាបាយដំណើបស្វាយ'},
+          {img:'https://i.pinimg.com/736x/9e/3d/17/9e3d17c2834a10252be3e21dda6d7b21.jpg',name:'Passion fruit iced tea'},
+          {img:'https://i.pinimg.com/1200x/91/f6/21/91f6215417e9fd1c24703b8b8a4cc1d9.jpg',name:'Iced Matcha Latte'},
+          {img:'https://i.pinimg.com/736x/f5/16/01/f5160188df834c429c1f4520d7b8aac9.jpg',name:'Strawberries & Cream Frappuccino'},
+          {img:'https://i.pinimg.com/1200x/dc/5e/87/dc5e8715eef8a7ea7c6776a820c50082.jpg',name:'Blueberry yogurt'},
+        ];
+        document.write([...slides,...slides].map(s=>`
+          <div class="c-slide flex-shrink-0 w-44 h-44 rounded-2xl overflow-hidden relative border-2 border-white cursor-default shadow-md">
+            <img src="${s.img}" alt="${s.name}" class="w-full h-full object-cover"/>
+            <div class="absolute inset-0 bg-gradient-to-t from-black/65 to-transparent"></div>
+            <span class="absolute bottom-2 left-0 right-0 text-center text-xs font-semibold text-white px-2">${s.name}</span>
+          </div>`).join(''));
+      </script>
+    </div>
+  </div>
+</div>
+  </section>
+
+  <!-- Why choose us -->
+  <section class="px-8 py-16" aria-labelledby="features-heading">
+    <div class="max-w-[1180px] mx-auto">
+      <div class="text-center mb-12 reveal">
+        <span class="text-xs font-bold tracking-widest uppercase text-green-500">Why Spring Shop</span>
+        <h2 id="features-heading" class="text-4xl font-bold mt-1 text-gray-900 dark:text-white" style="font-family:'DM Sans', sans-serif">Designed to feel good,<br class="sm:hidden"> made to last</h2>
+      </div>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="menu-card bg-white border border-ink/10 rounded-2xl p-6 reveal">
+          <span class="w-12 h-12 rounded-xl bg-green-500/10 text-green-600 flex items-center justify-center text-xl mb-4">🧵</span>
+          <h3 class="font-semibold text-lg mb-1.5">Premium Fabrics</h3>
+          <p class="text-sm opacity-60 leading-6">Soft, breathable cotton that feels better the longer you wear it.</p>
+        </div>
+        <div class="menu-card bg-white border border-ink/10 rounded-2xl p-6 reveal" style="transition-delay:.06s">
+          <span class="w-12 h-12 rounded-xl bg-moss/10 text-moss flex items-center justify-center text-xl mb-4">🛍️</span>
+          <h3 class="font-semibold text-lg mb-1.5">Free Returns</h3>
+          <p class="text-sm opacity-60 leading-6">Changed your mind? Enjoy easy exchanges within 30 days, no questions asked.</p>
+        </div>
+        <div class="menu-card bg-white border border-ink/10 rounded-2xl p-6 reveal" style="transition-delay:.12s">
+          <span class="w-12 h-12 rounded-xl bg-goldbright/10 text-goldbright flex items-center justify-center text-xl mb-4">⚡</span>
+          <h3 class="font-semibold text-lg mb-1.5">Fast Delivery</h3>
+          <p class="text-sm opacity-60 leading-6">Same-day dispatch in Phnom Penh and nationwide shipping within 48 hours.</p>
+        </div>
+        <div class="menu-card bg-white border border-ink/10 rounded-2xl p-6 reveal" style="transition-delay:.18s">
+          <span class="w-12 h-12 rounded-xl bg-clay/10 text-clay flex items-center justify-center text-xl mb-4">♻️</span>
+          <h3 class="font-semibold text-lg mb-1.5">Eco-Friendly</h3>
+          <p class="text-sm opacity-60 leading-6">Responsibly sourced materials and plastic-free packaging on every order.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- <div class="thread-rule h-1.5"></div> -->
+
+  <!-- Collection -->
+  <section id="shop" class="px-8 py-16 bg-green-100/40 dark:bg-gray-900" aria-labelledby="shop-heading">
+    <div class="max-w-[1180px] mx-auto">
+      <div class="flex items-end justify-between flex-wrap gap-4 mb-9 reveal">
+        <div>
+          <span class="text-xs font-bold tracking-widest uppercase text-green-500">What we serve</span>
+          <h2 class="text-4xl font-bold text-gray-900 dark:text-white mt-1" style="font-family:'DM Sans', sans-serif">The Collection</h2>
+          <p class="opacity-65 text-sm max-w-[360px] mt-1">Explore our latest collection of stylish, comfortable shirts designed to fit your everyday style.</p>
+        </div>
+        <div class="hidden md:flex items-center gap-2.5">
+          <span class="animate-marquee w-2.5 h-2.5 rounded-full bg-green-500"></span>
+          <span class="text-xs font-semibold text-green-700 uppercase tracking-wide">New styles added weekly</span>
+        </div>
+      </div>
+      <ul id="filters" class="flex gap-2.5 flex-wrap mb-8" aria-label="Filter by category"></ul>
+      <ul id="productGrid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6" aria-label="Products"></ul>
+    </div>
+    <!-- <a class="bg-green-500 text-paper px-6 py-3.5 rounded-full font-semibold text-sm hover:-translate-y-0.5 transition-transform" href="#shop">Shop the collection</a> -->
+    <div class="flex justify-center mt-12 reveal">
+      <a class="bg-green-500 text-paper px-12 py-6 rounded-full font-semibold text-sm hover:-translate-y-0.5 hover:bg-green-600 hover:shadow-lg hover:shadow-green-500/30 transition-all" href="./page/menu.html">Click here to explore more collection</a>
+    </div>
+  </section>
+
+  <!-- <div class="thread-rule h-1.5"></div> -->
+
+
+  <!-- Our weavers  -->
+  <section id="about" class="bg-green-800 text-paper" aria-labelledby="about-heading">
+    <div class="max-w-[1180px] mx-auto px-8 py-16 grid md:grid-cols-2 gap-14 items-center">
+      <div class="reveal">
+        <span class="font-mono text-xs tracking-[0.14em] uppercase text-goldbright mb-4 inline-block">Our weavers</span>
+        <h2 id="about-heading" class="font-display text-3xl mb-4">Six families. One river. Zero shortcuts.</h2>
+        <p class="opacity-75 text-[15px] mb-3">Tonlé works directly with weaving and pottery households around the Tonlé Sap lake — no middlemen, no mass production. We pay upfront, not on consignment.</p>
+        <p class="opacity-75 text-[15px]">Every piece carries the maker's name on the tag, and a fair share of every sale goes straight back to their workshop.</p>
+      </div>
+      <dl class="grid grid-cols-2 gap-4">
+        <div class="border border-paper/20 rounded-2xl p-5 reveal hover:bg-paper/5 transition-colors"><dd class="font-display text-2xl text-goldbright">82%</dd><dt class="text-xs opacity-70 mt-1">of sale price paid directly to the maker</dt></div>
+        <div class="border border-paper/20 rounded-2xl p-5 reveal hover:bg-paper/5 transition-colors" style="transition-delay:.06s"><dd class="font-display text-2xl text-goldbright">3–5 wks</dd><dt class="text-xs opacity-70 mt-1">average time to hand-weave one krama</dt></div>
+        <div class="border border-paper/20 rounded-2xl p-5 reveal hover:bg-paper/5 transition-colors" style="transition-delay:.12s"><dd class="font-display text-2xl text-goldbright">0</dd><dt class="text-xs opacity-70 mt-1">synthetic dyes used in our textiles</dt></div>
+        <div class="border border-paper/20 rounded-2xl p-5 reveal hover:bg-paper/5 transition-colors" style="transition-delay:.18s"><dd class="font-display text-2xl text-goldbright">1,200+</dd><dt class="text-xs opacity-70 mt-1">pieces shipped worldwide this year</dt></div>
+      </dl>
+    </div>
+  </section>
+
+  <!-- <div class="thread-rule h-1.5"></div> -->
+
+  <!-- Address and Map -->
+  <section id="address" class="bg-green-100 dark:bg-gray-900 py-16 px-4">
+    <div class="max-w-6xl mx-auto">
+        <div class="reveal mb-10">
+            <span class="text-xs font-bold tracking-widest uppercase text-green-500">Where to find us</span>
+            <h2 class="text-4xl font-bold text-gray-900 dark:text-white mt-1" style="font-family:'DM Sans', sans-serif">Address &amp; Map</h2>
+            <p class="opacity-65 text-sm max-w-[360px] mt-1">Check the map below for our location, directions, and everything you need to plan your visit.</p>
+
+        </div>
+        <div class="grid lg:grid-cols-5 gap-8 items-start reveal" style="transition-delay:.1s">
+            <div class="lg:col-span-2">
+                <div class="info-card bg-green-50 dark:bg-gray-800 rounded-2xl p-7">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-11 h-11 rounded-xl bg-green-600 flex items-center justify-center text-white">
+                            <i class="fa-solid fa-location-dot text-lg"></i>
+                        </div>
+                        <h3 class="font-semibold text-gray-900 dark:text-white text-lg">Our Location</h3>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-300 text-sm leading-7">
+                        No. 40, Street 273,<br>
+                        Sangkat Boeung Kak I,<br>
+                        Khan Toul Kork,<br>
+                        <span class="font-semibold text-green-700 dark:text-green-400">Phnom Penh, Cambodia</span>
+                    </p>
+                    <a href="https://maps.app.goo.gl/tRfPPGr34Ec6JuPGA" target="_blank"
+                       class="inline-flex items-center gap-2 mt-5 bg-green-700 hover:bg-green-600 text-white text-xs font-semibold px-5 py-2.5 rounded-full transition-colors duration-200">
+                        <i class="fa-solid fa-diamond-turn-right"></i> Get Directions
+                    </a>
+                </div>
+            </div>
+            <div class="lg:col-span-3 w-full h-72 lg:h-80 rounded-2xl overflow-hidden shadow-md border border-green-100 dark:border-gray-700">
+                <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3908.853!2d104.9211!3d11.5693!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3109513dc76a6b31%3A0x9b5bc6e0b6b1c2e4!2sKhan%20Toul%20Kork%2C%20Phnom%20Penh!5e0!3m2!1sen!2skh!4v1"
+                    width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"
+                    referrerpolicy="no-referrer-when-downgrade" title="MALUB Location">
+                </iframe>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FAQ -->
+<section class="w-full bg-green-100 px-4 sm:px-6 md:px-8 lg:px-12">
+  <div class="py-4">
+    <div class="max-w-screen-md mx-auto px-4 sm:px-6 lg:px-8 flex flex-col justify-between">
+
+        <div class="text-center">
+            <!-- <p class="mt-4 text-sm leading-7 text-gray-500 font-regular">
+                F.A.Q
+            </p> -->
+            <span class="text-xs font-bold tracking-widest uppercase text-green-500">FAQ</span>
+            <h3 class="text-3xl sm:text-4xl leading-normal font-extrabold tracking-tight text-gray-900">
+                Frequently Asked <span class="text-green-600">Questions</span>
+            </h3>
+            <p class="opacity-65 text-sm max-w-[360px] mt-1 mx-auto text-center">Find answers to your questions quickly and easily.</p>
+
+
+        </div>
+
+        <div class="mt-20">
+            <ul class="">
+
+                <li class="text-left mb-10">
+                    <div class="flex flex-row items-start mb-5">
+                      <!-- Icon 1 -->
+                        <div
+                            class="hidden sm:flex items-center justify-center p-3 mr-3 rounded-full bg-green-500 text-white border-4 border-white text-xl font-semibold">
+                            <svg width="30px" fill="white" height="30px" viewBox="0 0 24 24"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <g data-name="Layer 2">
+                                    <g data-name="menu-arrow">
+                                        <rect width="24" height="24" transform="rotate(180 12 12)" opacity="0"></rect>
+                                        <path
+                                            d="M17 9A5 5 0 0 0 7 9a1 1 0 0 0 2 0 3 3 0 1 1 3 3 1 1 0 0 0-1 1v2a1 1 0 0 0 2 0v-1.1A5 5 0 0 0 17 9z">
+                                        </path>
+                                        <circle cx="12" cy="19" r="1"></circle>
+                                    </g>
+                                </g>
+                            </svg>
+                        </div>
+                        <div class="bg-white p-5 px-10 w-full flex items-center">
+                            <h4 class="text-md leading-6 font-medium text-gray-900">What could possibly be your first
+                                question?</h4>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-row items-start">
+                        <div class="bg-green-300 p-5 px-10 w-full flex items-center">
+                            <p class="text-gray-700 text-sm">Lorem ipsum, dolor sit amet consectetur adipisicing elit.
+                                Maiores impedit perferendis suscipit eaque, iste dolor cupiditate blanditiis ratione.
+                                Lorem ipsum, dolor sit amet consectetur adipisicing elit.
+                            </p>
+                        </div>
+                        <div
+                            class="hidden sm:flex items-center justify-center p-3 ml-3 rounded-full bg-green-400 text-white border-4 border-white text-xl font-semibold">
+                            <svg height="25px" fill="white" version="1.1" id="Layer_1"
+                                xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
+                                y="0px" viewBox="0 0 295.238 295.238" style="enable-background:new 0 0 295.238 295.238;"
+                                xml:space="preserve">
+                                <g>
+                                    <g>
+                                        <g>
+                                            <path d="M277.462,0.09l-27.681,20.72l-27.838,64.905h-22.386l-8.79-19.048h5.743c10.505,0,19.048-8.452,19.048-18.957V28.571
+				h9.524V0H196.51v28.571h9.524V47.71c0,5.248-4.271,9.433-9.524,9.433h-10.138L174.2,30.81l14.581-7.267L141.038,3.095
+				l-11.224,39.281c-0.305-23.371-19.386-42.29-42.829-42.29c-23.633,0-42.857,19.224-42.857,42.857
+				c0,14.281,7.233,27.676,19.048,35.595v7.176H51.643L50.9,89.619c-2.314,12.005-2.529,24.343-0.638,36.648l-32.486,57.905
+				l35.876,8.195v60.014h47.619v42.857h114.286v-66.357c33.333-23.581,52.371-61.495,52.343-101.943l0.01-17.371
+				c0-6.548-0.605-13.276-1.824-19.905l-0.705-3.948h-9.348l21.429-51.338V0.09z M206.033,19.138V9.614h9.524v9.524H206.033z
+				 M189.067,85.714h-18.062l-8.657-19.048h17.929L189.067,85.714z M147.219,16.119l18.929,8.11l-4.467,2.19l14.2,30.724h-17.862
+				l-11.605-25.471l-4.262,2.152L147.219,16.119z M160.543,85.715h-21.176v-9.433c0-5.252,4.271-9.614,9.524-9.614h2.995v-0.001
+				L160.543,85.715z M141.843,44.652l5.776,12.71c-9.905,0.667-17.776,8.848-17.776,18.919v9.433h-19.048v-7.176
+				c9.529-6.386,15.995-16.352,18.176-27.452L141.843,44.652z M53.653,42.948c0-18.376,14.957-33.333,33.333-33.333
+				c18.376,0,33.333,14.957,33.333,33.333c0,11.829-6.39,22.881-16.671,28.838l-2.376,1.371v12.557h-9.524V56.352
+				c5.529-1.971,9.524-7.21,9.524-13.41c0-7.876-6.41-14.286-14.286-14.286c-7.876,0-14.286,6.411-14.286,14.287
+				c0,6.2,3.995,11.438,9.524,13.41v29.362H72.7V73.157l-2.376-1.376C60.043,65.824,53.653,54.776,53.653,42.948z M86.986,47.71
+				c-2.629,0-4.762-2.139-4.762-4.762c0-2.629,2.133-4.762,4.762-4.762c2.629,0,4.762,2.133,4.762,4.762S89.615,47.71,86.986,47.71z
+				 M257.366,95.239c0.691,4.761,1.039,9.59,1.039,14.285l0.01,17.405c0.029,38.148-18.795,73.871-50.286,95.552l-2.095,1.429
+				v61.805h-95.238v-42.857h-47.62v-58.086l-30.862-7.043l27.876-49.7l-0.271-1.7c-1.771-10.419-1.871-21.567-0.333-31.09h3.59
+				h47.619H257.366z M245.714,85.714H232.3l23.738-55.343l10.557,5.257L245.714,85.714z M267.938,25.714l-5.267-2.633l5.267-3.943
+				V25.714z"></path>
+                                            <path d="M96.51,123.81c-7.876,0-14.286-4.762-14.286-14.286H72.7c0,14.286,10.681,23.81,23.81,23.81
+				c13.129,0,23.81-9.524,23.81-23.81h-9.524C110.795,119.048,104.386,123.81,96.51,123.81z"></path>
+                                        </g>
+                                    </g>
+                                </g>
+                            </svg>
+                        </div>
+                    </div>
+
+                </li>
+                <li class="text-left mb-10">
+                    <div class="flex flex-row items-start mb-5">
+                      <!-- Icon 3 -->
+                        <div
+                            class="hidden sm:flex items-center justify-center p-3 mr-3 rounded-full bg-green-500 text-white border-4 border-white text-xl font-semibold">
+                            <svg width="30px" fill="white" height="30px" viewBox="0 0 24 24"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <g data-name="Layer 2">
+                                    <g data-name="menu-arrow">
+                                        <rect width="24" height="24" transform="rotate(180 12 12)" opacity="0"></rect>
+                                        <path
+                                            d="M17 9A5 5 0 0 0 7 9a1 1 0 0 0 2 0 3 3 0 1 1 3 3 1 1 0 0 0-1 1v2a1 1 0 0 0 2 0v-1.1A5 5 0 0 0 17 9z">
+                                        </path>
+                                        <circle cx="12" cy="19" r="1"></circle>
+                                    </g>
+                                </g>
+                            </svg>
+                        </div>
+                        <div class="bg-white p-5 px-10 w-full flex items-center">
+                            <h4 class="text-md leading-6 font-medium text-gray-900">What could possibly be your first
+                                question?</h4>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-row items-start">
+                        <div class="bg-green-300 p-5 px-10 w-full flex items-center">
+                            <p class="text-gray-700 text-sm">Lorem ipsum, dolor sit amet consectetur adipisicing elit.
+                                Maiores impedit perferendis suscipit eaque, iste dolor cupiditate blanditiis ratione.
+                                Lorem ipsum, dolor sit amet consectetur adipisicing elit.
+                            </p>
+                        </div>
+                        <div
+                            class="hidden sm:flex items-center justify-center p-3 ml-3 rounded-full bg-green-500 text-white border-4 border-white text-xl font-semibold">
+                            <svg height="25px" fill="white" version="1.1" id="Layer_1"
+                                xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
+                                y="0px" viewBox="0 0 295.238 295.238" style="enable-background:new 0 0 295.238 295.238;"
+                                xml:space="preserve">
+                                <g>
+                                    <g>
+                                        <g>
+                                            <path d="M277.462,0.09l-27.681,20.72l-27.838,64.905h-22.386l-8.79-19.048h5.743c10.505,0,19.048-8.452,19.048-18.957V28.571
+				h9.524V0H196.51v28.571h9.524V47.71c0,5.248-4.271,9.433-9.524,9.433h-10.138L174.2,30.81l14.581-7.267L141.038,3.095
+				l-11.224,39.281c-0.305-23.371-19.386-42.29-42.829-42.29c-23.633,0-42.857,19.224-42.857,42.857
+				c0,14.281,7.233,27.676,19.048,35.595v7.176H51.643L50.9,89.619c-2.314,12.005-2.529,24.343-0.638,36.648l-32.486,57.905
+				l35.876,8.195v60.014h47.619v42.857h114.286v-66.357c33.333-23.581,52.371-61.495,52.343-101.943l0.01-17.371
+				c0-6.548-0.605-13.276-1.824-19.905l-0.705-3.948h-9.348l21.429-51.338V0.09z M206.033,19.138V9.614h9.524v9.524H206.033z
+				 M189.067,85.714h-18.062l-8.657-19.048h17.929L189.067,85.714z M147.219,16.119l18.929,8.11l-4.467,2.19l14.2,30.724h-17.862
+				l-11.605-25.471l-4.262,2.152L147.219,16.119z M160.543,85.715h-21.176v-9.433c0-5.252,4.271-9.614,9.524-9.614h2.995v-0.001
+				L160.543,85.715z M141.843,44.652l5.776,12.71c-9.905,0.667-17.776,8.848-17.776,18.919v9.433h-19.048v-7.176
+				c9.529-6.386,15.995-16.352,18.176-27.452L141.843,44.652z M53.653,42.948c0-18.376,14.957-33.333,33.333-33.333
+				c18.376,0,33.333,14.957,33.333,33.333c0,11.829-6.39,22.881-16.671,28.838l-2.376,1.371v12.557h-9.524V56.352
+				c5.529-1.971,9.524-7.21,9.524-13.41c0-7.876-6.41-14.286-14.286-14.286c-7.876,0-14.286,6.411-14.286,14.287
+				c0,6.2,3.995,11.438,9.524,13.41v29.362H72.7V73.157l-2.376-1.376C60.043,65.824,53.653,54.776,53.653,42.948z M86.986,47.71
+				c-2.629,0-4.762-2.139-4.762-4.762c0-2.629,2.133-4.762,4.762-4.762c2.629,0,4.762,2.133,4.762,4.762S89.615,47.71,86.986,47.71z
+				 M257.366,95.239c0.691,4.761,1.039,9.59,1.039,14.285l0.01,17.405c0.029,38.148-18.795,73.871-50.286,95.552l-2.095,1.429
+				v61.805h-95.238v-42.857h-47.62v-58.086l-30.862-7.043l27.876-49.7l-0.271-1.7c-1.771-10.419-1.871-21.567-0.333-31.09h3.59
+				h47.619H257.366z M245.714,85.714H232.3l23.738-55.343l10.557,5.257L245.714,85.714z M267.938,25.714l-5.267-2.633l5.267-3.943
+				V25.714z"></path>
+                                            <path d="M96.51,123.81c-7.876,0-14.286-4.762-14.286-14.286H72.7c0,14.286,10.681,23.81,23.81,23.81
+				c13.129,0,23.81-9.524,23.81-23.81h-9.524C110.795,119.048,104.386,123.81,96.51,123.81z"></path>
+                                        </g>
+                                    </g>
+                                </g>
+                            </svg>
+                        </div>
+                    </div>
+
+                </li>
+
+            </ul>
+        </div>
+
+    </div>
+</div>
+</section>
+
+<!-- Review -->
+<section class="bg-green-800 text-paper overflow-hidden" aria-label="Customer reviews">
+  <div class="max-w-[1180px] mx-auto px-8 py-14">
+    <div class="flex items-end justify-between flex-wrap gap-4 mb-9 reveal">
+      <div>
+        <span class="text-xs font-bold tracking-widest uppercase text-goldbright">Loved by our community</span>
+        <h2 class="text-3xl sm:text-4xl font-bold mt-1 text-white" style="font-family:'DM Sans', sans-serif">What customers say</h2>
+      </div>
+      <p class="text-green-100/70 text-sm flex items-center gap-2"><span class="text-goldbright">★★★★★</span> 4.9 average from 2,300+ reviews</p>
+    </div>
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <figure class="menu-card bg-white/5 border border-paper/15 rounded-2xl p-6 reveal">
+        <div class="text-goldbright mb-3 text-sm">★★★★★</div>
+        <blockquote class="text-[15px] leading-7 opacity-90">"The fabric is unbelievably soft — I've bought three shirts already and I get compliments every single time I wear them."</blockquote>
+        <figcaption class="mt-4 flex items-center gap-3">
+          <span class="w-9 h-9 rounded-full bg-green-500 flex items-center justify-center text-sm font-bold">S</span>
+          <div><p class="text-sm font-semibold text-white">Sokha Chan</p><p class="text-xs text-green-300/80">Phnom Penh</p></div>
+        </figcaption>
+      </figure>
+      <figure class="menu-card bg-white/5 border border-paper/15 rounded-2xl p-6 reveal" style="transition-delay:.06s">
+        <div class="text-goldbright mb-3 text-sm">★★★★★</div>
+        <blockquote class="text-[15px] leading-7 opacity-90">"Ordered online at noon, it arrived before dinner. Beautiful stitching and true-to-size fit — highly recommend."</blockquote>
+        <figcaption class="mt-4 flex items-center gap-3">
+          <span class="w-9 h-9 rounded-full bg-clay flex items-center justify-center text-sm font-bold">R</span>
+          <div><p class="text-sm font-semibold text-white">Rathana Meas</p><p class="text-xs text-green-300/80">Siem Reap</p></div>
+        </figcaption>
+      </figure>
+      <figure class="menu-card bg-white/5 border border-paper/15 rounded-2xl p-6 reveal" style="transition-delay:.12s">
+        <div class="text-goldbright mb-3 text-sm">★★★★★</div>
+        <blockquote class="text-[15px] leading-7 opacity-90">"Eco-friendly packaging, a handwritten thank-you note, and a shirt that washes beautifully. You won't find better."</blockquote>
+        <figcaption class="mt-4 flex items-center gap-3">
+          <span class="w-9 h-9 rounded-full bg-goldbright flex items-center justify-center text-sm font-bold">D</span>
+          <div><p class="text-sm font-semibold text-white">Dara Kim</p><p class="text-xs text-green-300/80">Battambang</p></div>
+        </figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="bg-green-800 dark:bg-gray-900 border-t border-green-700 dark:border-gray-800 text-white transition-colors duration-300">
+        <div class="max-w-7xl mx-auto px-6 py-14">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 mb-10">
+
+                <!-- Logo -->
+                <div class="flex flex-col items-center sm:items-start text-center sm:text-left">
+                    <div class="w-20 h-20 rounded-2xl bg-white flex items-center justify-center mb-4 shadow-lg">
+                        <img src="../../asset/Spring Shop logo.png" alt="Spring Shop Logo" class="w-16 h-16 object-contain">
+                    </div>
+                    <p class="font-black text-lg text-white mb-1">Spring Shop</p>
+                    <p class="text-green-300 dark:text-gray-400 text-sm mb-4">Spring Shop brings you stylish and comfortable shirts designed for everyday life. <br> Explore our collection and find a look that’s truly yours.</p>
+                    <div class="flex gap-2 flex-wrap justify-center sm:justify-start">
+                        <a href="#" class="w-9 h-9 rounded-xl bg-blue-600 hover:bg-blue-500 flex items-center justify-center hover:scale-110 transition-all">
+                            <svg width="16" height="16" fill="white" viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+                        </a>
+                        <a href="#" class="w-9 h-9 rounded-xl bg-black hover:bg-gray-800 flex items-center justify-center hover:scale-110 transition-all">
+                            <svg width="16" height="16" fill="white" viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.17 8.17 0 0 0 4.78 1.52V6.75a4.85 4.85 0 0 1-1.01-.06z"/></svg>
+                        </a>
+                        <a href="#" class="w-9 h-9 rounded-xl bg-sky-500 hover:bg-sky-400 flex items-center justify-center hover:scale-110 transition-all">
+                            <i class="fa-brands fa-telegram text-white text-sm"></i>
+                        </a>
+                        <a href="#" class="w-9 h-9 rounded-xl flex items-center justify-center hover:scale-110 transition-all" style="background:linear-gradient(45deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888)">
+                            <i class="fa-brands fa-instagram text-white text-sm"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Explore -->
+                <div>
+                    <h3 class="font-bold text-xs tracking-widest uppercase mb-5 text-green-300 dark:text-gray-400">Explore</h3>
+                    <ul class="space-y-3 text-sm text-green-100 dark:text-gray-300">
+                        <li><a href="./index.html" class="hover:text-white hover:translate-x-1 inline-block transition-all duration-200">Home</a></li>
+                        <li><a href="./page/menu.html" class="hover:text-white hover:translate-x-1 inline-block transition-all duration-200">Collection</a></li>
+                        <li><a href="./page/aboutUs.html" class="hover:text-white hover:translate-x-1 inline-block transition-all duration-200">About Us</a></li>
+                        <!-- <li><a href="./page/services.html" class="hover:text-white hover:translate-x-1 inline-block transition-all duration-200">Services</a></li>
+                        <li><a href="./page/contactPage.html" class="hover:text-white hover:translate-x-1 inline-block transition-all duration-200">Contact</a></li> -->
+                    </ul>
+                </div>
+
+                <!-- Address -->
+                <div>
+                    <h3 class="font-bold text-xs tracking-widest uppercase mb-5 text-green-300 dark:text-gray-400">Address & Contacts</h3>
+                    <p class="text-sm leading-relaxed mb-5 text-green-100 dark:text-gray-300">
+                        No. 40, Street 273,<br>Sangkat Boeung Kak I,<br>Khan Toul Kork,<br>Phnom Penh, Cambodia
+                    </p>
+                    <ul class="space-y-2 text-sm text-green-100 dark:text-gray-300">
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-phone text-green-400 text-xs"></i> (+855) 17-928-998</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-phone text-green-400 text-xs"></i> (+855) 86-243-016</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-phone text-green-400 text-xs"></i> (+855) 96-673-3867</li>
+                        <!-- <li class="flex items-center gap-2"><i class="fa-solid fa-phone text-green-400 text-xs"></i> (+855) 97-297-7674</li> -->
+                        <!-- <li class="flex items-center gap-2"><i class="fa-solid fa-phone text-green-400 text-xs"></i> (+855) 69-298-825</li> -->
+                    </ul>
+                </div>
+
+                <!-- Follow -->
+                <div>
+                    <h3 class="font-bold text-xs tracking-widest uppercase mb-5 text-green-300 dark:text-gray-400">Follow Us</h3>
+                    <div class="bg-white/10 dark:bg-gray-800 backdrop-blur rounded-2xl p-4 flex items-center gap-3 border border-white/10 dark:border-gray-700">
+                        <img src="../../asset/Spring Shop logo.png" alt="MALUB" class="w-12 h-12 rounded-xl border-2 border-green-400 flex-shrink-0 bg-white p-1">
+                        <div>
+                            <p class="font-bold text-sm text-white">Spring Shop</p>
+                            <p class="text-xs text-green-300 dark:text-gray-400 mb-2">Follow us on Facebook</p>
+                            <button class="text-xs text-white bg-blue-600 hover:bg-blue-500 px-3 py-1 rounded-full flex items-center gap-1 transition-colors font-semibold">
+                                <i class="fa-brands fa-facebook text-xs"></i> Follow
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="border-t border-green-700 dark:border-gray-800 py-5 px-6 text-center text-sm text-green-300 dark:text-gray-500">
+            © 2026 Spring Shop — All Rights Reserved
+        </div>
+    </footer>
+
+<dialog id="cartDrawer" class="m-0 ml-auto h-full max-h-full w-full max-w-md p-0 bg-paper" aria-label="Shopping cart">
+  <div class="flex flex-col h-full">
+    <header class="flex items-center justify-between px-6 py-6 border-b border-ink/10">
+      <h2 class="font-display text-2xl">Your bag</h2>
+      <button class="text-xl opacity-60" onclick="document.getElementById('cartDrawer').close()" aria-label="Close cart">✕</button>
+    </header>
+    <div class="flex-1 overflow-y-auto px-6" id="drawerItems"></div>
+    <footer class="px-6 pt-5 pb-7 border-t border-ink/10">
+      <div class="flex justify-between mb-4 text-[15px]"><span>Subtotal</span><strong class="font-mono text-lg" id="cartTotal">$0.00</strong></div>
+      <button class="w-full bg-clay text-white py-4 rounded-full font-bold text-sm disabled:opacity-40" id="checkoutBtn" onclick="openCheckout()" disabled>Checkout</button>
+    </footer>
+  </div>
+</dialog>
+
+<dialog id="checkoutDialog" class="rounded-2xl p-0 w-[440px] max-w-[92vw] bg-paper">
+  <form id="checkoutForm" method="dialog" class="p-8" onsubmit="return false;"></form>
+</dialog>
+
+<script type="module">
+  // API calls now live in js/api/*.js (one file per backend controller) —
+  // see js/api/README or MAPPING.md for the full endpoint list.
+  import * as categoryApi from './js/api/categoryApi.js';
+  import * as productApi from './js/api/productApi.js';
+  import * as cartApi from './js/api/cartApi.js';
+  import * as orderApi from './js/api/orderApi.js';
+  import { isLoggedIn } from './js/api/apiClient.js';
+  import { logout, isAdmin } from './js/api/authApi.js';
+
+  function updateAuthLink() {
+    const authLink = document.getElementById('authLink');
+    if (authLink) {
+      if (isLoggedIn()) {
+        authLink.textContent = 'Sign out';
+        authLink.href = '#';
+        authLink.onclick = (e) => { e.preventDefault(); logout(); location.reload(); };
+      } else {
+        authLink.textContent = 'Sign in →';
+        authLink.href = './page/login.html';
+        authLink.onclick = null;
+      }
+    }
+    // Only an ADMIN sees the "Admin dashboard" link.
+    const adminLink = document.getElementById('adminLink');
+    if (adminLink) {
+      adminLink.style.display = isAdmin() ? '' : 'none';
+    }
+  }
+
+  let PRODUCTS = [];
+  let CATS = ["All"];
+  let categoryMap = {}; 
+  let activeCat = "All";
+  const cart = {};
+
+  async function fetchCategories() {
+    try {
+      const data = await categoryApi.getAll();
+      CATS = ["All", ...data.map(c => c.name)];
+      data.forEach(c => { categoryMap[c.name] = c.id; });
+    } catch (e) {
+      console.warn("Categories API offline/using default", e);
+    }
+  }
+
+  async function fetchProducts() {
+    try {
+      const data = activeCat !== "All" && categoryMap[activeCat]
+        ? await productApi.getByCategory(categoryMap[activeCat])
+        : await productApi.getAll();
+      PRODUCTS = data.map(p => ({
+        id: p.id,
+        name: p.name || p.title,
+        cat: p.categoryName || p.category?.name || "Collection",
+        price: Number(p.price || 0),
+        desc: p.description || p.desc || "",
+        pattern: p.imageUrl ? `url('${p.imageUrl}') center/cover` : (p.pattern || "repeating-linear-gradient(45deg,#3F5C50 0 8px,#2E463C 8px 16px)")
+      }));
+    } catch (e) {
+      console.warn("Products API offline/using default", e);
+    }
+  }
+
+  async function fetchCart() {
+    // Cart is per-account, so skip the call entirely when signed out instead
+    // of letting it fail with a 401.
+    if (!isLoggedIn()) return;
+    try {
+      const data = await cartApi.getMyCart();
+      for (const k in cart) delete cart[k];
+      if (data && data.items) {
+        data.items.forEach(item => {
+          const pId = item.productId || item.product?.id || item.id;
+          cart[pId] = item.quantity || 1;
+        });
+      }
+    } catch (e) {
+      console.warn("Could not load saved cart", e);
+    }
+  }
+
+  function renderFilters(){
+    document.getElementById('filters').innerHTML = CATS.map(c => `
+      <li>
+        <button class="px-4 py-2 rounded-full border text-sm font-semibold ${c===activeCat ? 'bg-ink text-paper border-ink' : 'border-ink/15 opacity-70'}"
+          aria-pressed="${c===activeCat}" onclick="setCat('${c}')">${c}</button>
+      </li>`).join('');
+  }
+
+  async function setCat(c){ 
+    activeCat = c; 
+    renderFilters(); 
+    await fetchProducts();
+    renderGrid(); 
+  }
+
+  function renderGrid(){
+    const list = activeCat==="All" ? PRODUCTS : PRODUCTS.filter(p=>p.cat===activeCat);
+    document.getElementById('productGrid').innerHTML = list.map(p => `
+      <li class="reveal in-view">
+        <article class="group bg-white border border-ink/10 rounded-2xl overflow-hidden hover:-translate-y-1.5 hover:shadow-2xl hover:shadow-green-900/10 hover:border-green-300 transition-all duration-300">
+          <div class="h-52 relative" style="background:${p.pattern}">
+            <div class="absolute inset-0 bg-gradient-to-t from-ink/25 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            <span class="absolute top-3 left-3 bg-paper/90 backdrop-blur px-2.5 py-1 rounded-full text-[11px] font-bold uppercase tracking-wide">${p.cat}</span>
+            <button class="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/85 backdrop-blur text-clay text-sm opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300" onclick="event.stopPropagation()" aria-label="Add ${p.name} to wishlist">♥</button>
+          </div>
+          <div class="p-5">
+            <h3 class="font-display text-lg mb-1 group-hover:text-green-700 transition-colors">${p.name}</h3>
+            <p class="text-[13px] opacity-60 mb-3">${p.desc}</p>
+            <footer class="flex justify-between items-center">
+              <span class="font-mono text-base">$${p.price.toFixed(2)}</span>
+              <button class="bg-ink hover:bg-green-600 text-paper w-9 h-9 rounded-full text-xl flex items-center justify-center transition-colors" onclick="addToCart(${p.id})" aria-label="Add ${p.name} to cart">+</button>
+            </footer>
+          </div>
+        </article>
+      </li>`).join('');
+  }
+
+  async function addToCart(id){ 
+    cart[id] = (cart[id]||0) + 1; 
+    renderCart(); 
+    document.getElementById('cartDrawer').showModal(); 
+
+    if (!isLoggedIn()) return; // local-only cart until the shopper signs in
+    try {
+      await cartApi.addItem(id, 1);
+    } catch (e) {
+      console.warn("Could not sync cart item", e);
+    }
+  }
+
+  async function changeQty(id, delta){ 
+    cart[id] = (cart[id]||0) + delta; 
+    const cur = cart[id];
+    if(cart[id] <= 0) delete cart[id]; 
+    renderCart(); 
+
+    if (!isLoggedIn()) return;
+    try {
+      if (cur <= 0) {
+        await cartApi.removeItem(id);
+      } else {
+        await cartApi.updateItemQuantity(id, cur);
+      }
+    } catch (e) {
+      console.warn("Could not sync cart item", e);
+    }
+  }
+
+  async function removeItem(id){ 
+    delete cart[id]; 
+    renderCart(); 
+    if (!isLoggedIn()) return;
+    try {
+      await cartApi.removeItem(id);
+    } catch (e) {
+      console.warn("Could not sync cart item", e);
+    }
+  }
+
+  function renderCart(){
+    const ids = Object.keys(cart);
+    const itemsEl = document.getElementById('drawerItems');
+    document.getElementById('cartCount').textContent = ids.reduce((s,id)=>s+cart[id],0);
+    const checkoutBtn = document.getElementById('checkoutBtn');
+
+    if(ids.length === 0){
+      itemsEl.innerHTML = `<p class="text-center opacity-55 text-sm py-16">Your bag is empty.<br>Browse the collection and add something you like.</p>`;
+      checkoutBtn.disabled = true;
+    } else {
+      checkoutBtn.disabled = false;
+      itemsEl.innerHTML = `<ul>` + ids.map(id=>{
+        const p = PRODUCTS.find(p=>p.id==id) || { name: `Item #${id}`, cat: 'Shop', price: 0, pattern: '' };
+        const qty = cart[id];
+        return `
+          <li class="flex gap-3.5 py-4 border-b border-ink/10">
+            <div class="w-16 h-16 rounded-lg flex-shrink-0 bg-paperdim" style="background:${p.pattern}" aria-hidden="true"></div>
+            <div class="flex-1">
+              <h3 class="text-sm font-medium">${p.name}</h3>
+              <p class="text-[11px] opacity-55 mb-2">${p.cat}</p>
+              <div class="flex items-center gap-2.5">
+                <button class="w-6 h-6 rounded-full border border-ink/15 text-sm" onclick="changeQty(${p.id},-1)" aria-label="Decrease quantity">−</button>
+                <span class="font-mono text-[13px] min-w-[16px] text-center">${qty}</span>
+                <button class="w-6 h-6 rounded-full border border-ink/15 text-sm" onclick="changeQty(${p.id},1)" aria-label="Increase quantity">+</button>
+                <button class="text-[11px] opacity-50 underline ml-auto" onclick="removeItem(${p.id})">Remove</button>
+              </div>
+            </div>
+            <div class="font-mono text-sm whitespace-nowrap">$${(p.price*qty).toFixed(2)}</div>
+          </li>`;
+      }).join('') + `</ul>`;
+    }
+    const total = ids.reduce((s,id)=>{
+      const p = PRODUCTS.find(p=>p.id==id);
+      return s + (p ? p.price * cart[id] : 0);
+    }, 0);
+    document.getElementById('cartTotal').textContent = `$${total.toFixed(2)}`;
+  }
+
+  function openCheckout(){
+    document.getElementById('cartDrawer').close();
+    const total = Object.keys(cart).reduce((s,id)=>{
+      const p = PRODUCTS.find(p=>p.id==id);
+      return s + (p ? p.price * cart[id] : 0);
+    }, 0);
+
+    document.getElementById('checkoutForm').innerHTML = `
+      <h2 class="font-display text-2xl mb-1">Checkout</h2>
+      <p class="text-[13px] opacity-60 mb-6">Subtotal: $${total.toFixed(2)} · Demo checkout, no payment is processed.</p>
+      <div class="mb-4"><label class="block text-[11px] font-bold uppercase tracking-wide opacity-70 mb-1.5" for="cf-name">Full name</label>
+        <input id="cf-name" class="w-full px-3.5 py-3 rounded-lg border border-ink/15 bg-paperdim text-sm" type="text" placeholder="Sokha Chan" required></div>
+      <div class="mb-4"><label class="block text-[11px] font-bold uppercase tracking-wide opacity-70 mb-1.5" for="cf-email">Email</label>
+        <input id="cf-email" class="w-full px-3.5 py-3 rounded-lg border border-ink/15 bg-paperdim text-sm" type="email" placeholder="you@example.com" required></div>
+      <div class="grid grid-cols-2 gap-3 mb-4">
+        <div><label class="block text-[11px] font-bold uppercase tracking-wide opacity-70 mb-1.5" for="cf-city">City</label>
+          <input id="cf-city" class="w-full px-3.5 py-3 rounded-lg border border-ink/15 bg-paperdim text-sm" type="text" placeholder="Siem Reap" required></div>
+        <div><label class="block text-[11px] font-bold uppercase tracking-wide opacity-70 mb-1.5" for="cf-zip">Postal code</label>
+          <input id="cf-zip" class="w-full px-3.5 py-3 rounded-lg border border-ink/15 bg-paperdim text-sm" type="text" placeholder="17000"></div>
+      </div>
+      <div class="mb-5"><label class="block text-[11px] font-bold uppercase tracking-wide opacity-70 mb-1.5" for="cf-addr">Shipping address</label>
+        <input id="cf-addr" class="w-full px-3.5 py-3 rounded-lg border border-ink/15 bg-paperdim text-sm" type="text" placeholder="Street, house number" required></div>
+      <button class="w-full bg-ink text-paper py-3.5 rounded-full font-bold text-sm" onclick="placeOrder()">Place order · $${total.toFixed(2)}</button>
+    `;
+    document.getElementById('checkoutDialog').showModal();
+  }
+
+  async function placeOrder(){
+    const name = document.getElementById('cf-name')?.value || 'Customer';
+    const email = document.getElementById('cf-email')?.value || '';
+    const city = document.getElementById('cf-city')?.value || '';
+    const addr = document.getElementById('cf-addr')?.value || '';
+
+    const orderPayload = {
+      receiverName: name,
+      receiverEmail: email,
+      shippingAddress: `${addr}, ${city}`,
+      items: Object.keys(cart).map(id => ({ productId: Number(id), quantity: cart[id] }))
+    };
+
+    if (!isLoggedIn()) {
+      document.getElementById('checkoutForm').innerHTML = `
+        <div class="text-center py-3">
+          <h2 class="font-display text-2xl mb-2">Please sign in</h2>
+          <p class="opacity-65 text-sm mb-6">You'll need an account to place an order — this keeps your order history in one place.</p>
+          <a href="./page/login.html" class="inline-block w-full bg-ink text-paper py-3.5 rounded-full font-bold text-sm">Sign in</a>
+        </div>`;
+      return;
+    }
+
+    try {
+      await orderApi.placeOrder(orderPayload);
+      await cartApi.clearMyCart();
+    } catch (e) {
+      console.warn("Order could not be placed", e);
+      document.getElementById('checkoutForm').innerHTML = `
+        <div class="text-center py-3">
+          <h2 class="font-display text-2xl mb-2">Something went wrong</h2>
+          <p class="opacity-65 text-sm mb-6">We couldn't place your order. Please try again in a moment.</p>
+          <button class="w-full bg-ink text-paper py-3.5 rounded-full font-bold text-sm" onclick="document.getElementById('checkoutDialog').close()">Close</button>
+        </div>`;
+      return;
+    }
+
+    document.getElementById('checkoutForm').innerHTML = `
+      <div class="text-center py-3">
+        <div class="w-[60px] h-[60px] rounded-full bg-moss text-white text-2xl flex items-center justify-center mx-auto mb-4">✓</div>
+        <h2 class="font-display text-2xl mb-2">Order placed</h2>
+        <p class="opacity-65 text-sm mb-6">Thanks — a confirmation would normally be sent to your email. This is a demo, so nothing was charged.</p>
+        <button class="w-full bg-ink text-paper py-3.5 rounded-full font-bold text-sm" onclick="document.getElementById('checkoutDialog').close()">Back to shop</button>
+      </div>`;
+    for(const id in cart) delete cart[id];
+    renderCart();
+  }
+
+  (async function init() {
+    updateAuthLink();
+    await fetchCategories();
+    await fetchProducts();
+    await fetchCart();
+    renderFilters();
+    renderGrid();
+    renderCart();
+  })();
+
+  // These are called from inline onclick="" attributes in the markup above,
+  // so they need to be reachable on window (module scripts are not global).
+  Object.assign(window, { setCat, addToCart, changeQty, removeItem, openCheckout, placeOrder });
+</script>
+
+<script>
+  (function(){
+    const revealEls = document.querySelectorAll('.reveal');
+    if ('IntersectionObserver' in window) {
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in-view'); io.unobserve(e.target); } });
+      }, { threshold: 0.12 });
+      revealEls.forEach(el => io.observe(el));
+    } else {
+      revealEls.forEach(el => el.classList.add('in-view'));
+    }
+
+    const links = document.querySelectorAll('.nav-link');
+    const sections = [...links].map(l => document.querySelector(l.getAttribute('href'))).filter(Boolean);
+    const io2 = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          links.forEach(l => l.classList.toggle('active', l.getAttribute('href') === '#' + e.target.id));
+        }
+      });
+    }, { rootMargin: '-40% 0px -55% 0px' });
+    sections.forEach(s => io2.observe(s));
+  })();
+</script>
+</body>
+</html>

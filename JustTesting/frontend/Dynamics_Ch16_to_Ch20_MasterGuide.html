@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Dynamics Master Study Guide: Chapters 16 to 20</title>
+<style>
+  @page {
+    size: letter;
+    margin: 12mm 15mm 12mm 15mm;
+  }
+  body {
+    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
+    color: #1a202c;
+    line-height: 1.42;
+    font-size: 9.3pt;
+    margin: 0;
+    padding: 0;
+  }
+  .page-break {
+    page-break-before: always;
+  }
+  .page-num {
+    float: right;
+    font-size: 8pt;
+    color: #718096;
+    font-weight: normal;
+  }
+  h1.doc-title {
+    font-size: 17pt;
+    color: #1a365d;
+    text-align: center;
+    margin: 0 0 2px 0;
+    border-bottom: 2px solid #2b6cb0;
+    padding-bottom: 4px;
+  }
+  .subtitle {
+    text-align: center;
+    font-size: 9.5pt;
+    color: #4a5568;
+    margin-bottom: 10px;
+  }
+  h2.chapter-header {
+    background-color: #2b6cb0;
+    color: white;
+    padding: 4px 8px;
+    font-size: 11pt;
+    border-radius: 3px;
+    margin-top: 8px;
+    margin-bottom: 6px;
+  }
+  h3.section-header {
+    font-size: 10pt;
+    color: #2c5282;
+    border-bottom: 1px solid #e2e8f0;
+    padding-bottom: 2px;
+    margin-top: 8px;
+    margin-bottom: 4px;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 6px 0;
+    font-size: 8.5pt;
+  }
+  th, td {
+    border: 1px solid #cbd5e0;
+    padding: 4px 6px;
+    text-align: left;
+  }
+  th {
+    background-color: #ebf8ff;
+    color: #2b6cb0;
+  }
+  .box {
+    background-color: #f7fafc;
+    border-left: 4px solid #3182ce;
+    padding: 5px 8px;
+    margin: 6px 0;
+    border-radius: 2px;
+    font-size: 8.9pt;
+  }
+  .exercise-box {
+    background-color: #fffaf0;
+    border-left: 4px solid #dd6b20;
+    padding: 6px 10px;
+    margin: 6px 0;
+    border-radius: 2px;
+    font-size: 8.8pt;
+  }
+  .exercise-title {
+    font-weight: bold;
+    color: #c05621;
+    margin-bottom: 3px;
+    font-size: 9.3pt;
+  }
+  .formula {
+    font-family: "Cambria Math", "Times New Roman", serif;
+    font-size: 9.5pt;
+  }
+  ul, ol {
+    margin-top: 3px;
+    margin-bottom: 5px;
+    padding-left: 20px;
+  }
+  li {
+    margin-bottom: 2px;
+  }
+</style>
+</head>
+<body>
+
+<!-- ========================================================================= -->
+<!-- ================================ PAGE 1 ================================= -->
+<!-- ========================================================================= -->
+<span class="page-num">Page 1 of 15</span>
+<h1 class="doc-title">Engineering Mechanics: Dynamics</h1>
+<div class="subtitle">Master Study Guide & Exercise Manual: Chapters 16 – 20 (Hibbeler 14th Edition)</div>
+
+<h2 class="chapter-header">CHAPTER 16 — Planar Kinematics of a Rigid Body (Part 1)</h2>
+
+<h3 class="section-header">1. Classification of Rigid Body Planar Motion (Section 16.1)</h3>
+<p>A rigid body is an idealized system of particles where all inter-particle distances remain strictly invariant. Planar motion occurs when all particles move along paths equidistant from a fixed reference plane.</p>
+<table>
+  <tr>
+    <th style="width: 25%;">Motion Category</th>
+    <th style="width: 40%;">Kinematic Definition</th>
+    <th style="width: 35%;">Governing Mathematical Constraint</th>
+  </tr>
+  <tr>
+    <td><b>1. Translation</b></td>
+    <td>Every straight line in the body remains parallel to its original orientation at all times.
+      <ul>
+        <li><i>Rectilinear:</i> Paths of all points are parallel straight lines.</li>
+        <li><i>Curvilinear:</i> Paths are congruent curved lines.</li>
+      </ul>
+    </td>
+    <td>
+      <span class="formula"><b>r</b><sub>B</sub> = <b>r</b><sub>A</sub> + <b>r</b><sub>B/A</sub></span><br>
+      <span class="formula"><b>v</b><sub>B</sub> = <b>v</b><sub>A</sub></span> (since <i>d</i><b>r</b><sub>B/A</sub>/<i>dt</i> = 0)<br>
+      <span class="formula"><b>a</b><sub>B</sub> = <b>a</b><sub>A</sub></span>, &nbsp; <span class="formula">&omega; = 0, &alpha; = 0</span>
+    </td>
+  </tr>
+  <tr>
+    <td><b>2. Rotation About a Fixed Axis</b></td>
+    <td>All particles move along concentric circular paths centered along a stationary axis of rotation.</td>
+    <td>
+      <span class="formula"><i>&omega; = &theta;̇ = d&theta;/dt</i></span><br>
+      <span class="formula"><i>&alpha; = &omega;̇ = d&omega;/dt = &omega; (d&omega;/d&theta;)</i></span>
+    </td>
+  </tr>
+  <tr>
+    <td><b>3. General Plane Motion</b></td>
+    <td>Simultaneous combination of translation of a reference base point and rotation about that point.</td>
+    <td>
+      <span class="formula"><b>v</b><sub>B</sub> = <b>v</b><sub>A</sub> + <b>v</b><sub>B/A</sub></span><br>
+      <span class="formula"><b>a</b><sub>B</sub> = <b>a</b><sub>A</sub> + <b>a</b><sub>B/A</sub></span>
+    </td>
+  </tr>
+</table>
+
+<h3 class="section-header">2. Rotation About a Fixed Axis: Analytical & Vector Formulas (Sections 16.2 – 16.3)</h3>
+<p>For any point <i>P</i> on a rigid body located at distance <i>r</i> from the fixed rotation axis:</p>
+<div class="box">
+  <b>Scalar Path Relations:</b><br>
+  &bull; Velocity (purely tangent): <span class="formula"><i>v = &omega; r</i></span><br>
+  &bull; Tangential acceleration: <span class="formula"><i>a<sub>t</sub> = &alpha; r = (dv/dt)</i></span> (measures rate of change of speed)<br>
+  &bull; Normal acceleration: <span class="formula"><i>a<sub>n</sub> = &omega;<sup>2</sup> r = v<sup>2</sup> / r</i></span> (centripetal, points toward rotation axis)<br>
+  &bull; Total acceleration magnitude: <span class="formula"><i>a = &radic;(a<sub>t</sub><sup>2</sup> + a<sub>n</sub><sup>2</sup>) = r &radic;(&alpha;<sup>2</sup> + &omega;<sup>4</sup>)</i></span>
+</div>
+
+<div class="box">
+  <b>Vector Formulation (3D Vector Cross-Products in 2D Plane):</b><br>
+  Let <b>&omega;</b> = <i>&omega;</i> <b>k</b> and <b>&alpha;</b> = <i>&alpha;</i> <b>k</b>:
+  $$\mathbf{v} = \boldsymbol{\omega} \times \mathbf{r}$$
+  $$\mathbf{a} = \mathbf{a}_t + \mathbf{a}_n = \boldsymbol{\alpha} \times \mathbf{r} + \boldsymbol{\omega} \times (\boldsymbol{\omega} \times \mathbf{r}) = \boldsymbol{\alpha} \times \mathbf{r} - \omega^2 \mathbf{r}$$
+</div>
+
+<p><b>Constant Angular Acceleration (<i>&alpha; = &alpha;<sub>c</sub></i>):</b></p>
+<ol>
+  <li><span class="formula"><i>&omega;(t) = &omega;<sub>0</sub> + &alpha;<sub>c</sub> t</i></span></li>
+  <li><span class="formula"><i>&theta;(t) = &theta;<sub>0</sub> + &omega;<sub>0</sub> t + &frac12; &alpha;<sub>c</sub> t<sup>2</sup></i></span></li>
+  <li><span class="formula"><i>&omega;<sup>2</sup> = &omega;<sub>0</sub><sup>2</sup> + 2&alpha;<sub>c</sub> (&theta; &minus; &theta;<sub>0</sub>)</i></span></li>
+</ol>
+
+<!-- ========================================================================= -->
+<!-- ================================ PAGE 2 ================================= -->
+<!-- ========================================================================= -->
+<div class="page-break"></div>
+<span class="page-num">Page 2 of 15</span>
+
+<h2 class="chapter-header">CHAPTER 16 — Planar Kinematics of a Rigid Body (Part 2)</h2>
+
+<h3 class="section-header">3. Relative Motion Analysis: Velocity (Section 16.5)</h3>
+<p>The velocity of any point <i>B</i> on a rigid body is expressed relative to a reference base point <i>A</i>:</p>
+<div class="box">
+  <center><span class="formula"><b>v</b><sub>B</sub> = <b>v</b><sub>A</sub> + <b>v</b><sub>B/A</sub> = <b>v</b><sub>A</sub> + (<b>&omega;</b> &times; <b>r</b><sub>B/A</sub>)</span></center>
+  <p style="margin: 3px 0 0 0;">
+    where <b>v</b><sub>A</sub> is the absolute translation velocity of point <i>A</i>, and <b>v</b><sub>B/A</sub> is the velocity of <i>B</i> observed from <i>A</i> (due strictly to rotation about <i>A</i> with angular velocity <b>&omega;</b>).
+  </p>
+</div>
+
+<h3 class="section-header">4. Instantaneous Center of Zero Velocity (IC / ICZV) (Section 16.6)</h3>
+<p>At any given instant, the planar motion of a rigid body can be modeled as pure rotation about an axis perpendicular to the plane of motion, passing through a point having zero velocity, known as the <b>Instantaneous Center (IC)</b>.</p>
+
+<div class="box">
+  <b>Three Geometric Rules to Locate the IC:</b>
+  <ol>
+    <li><b>Given velocity direction of two points (non-parallel):</b> Draw lines perpendicular to <b>v</b><sub>A</sub> and <b>v</b><sub>B</sub>. The intersection point is the IC.
+      <br><span class="formula"><i>v<sub>A</sub> = &omega; &middot; r<sub>A/IC</sub> &implies; &omega; = v<sub>A</sub> / r<sub>A/IC</sub> = v<sub>B</sub> / r<sub>B/IC</sub></i></span></li>
+    <li><b>Given two parallel velocities with unequal magnitudes:</b> Draw perpendiculars across their origins and connect the tips of the velocity vectors. The intersection of these lines is the IC.</li>
+    <li><b>Pure rolling without slipping:</b> The physical point of contact with the stationary ground is instantaneously at rest; hence the <b>contact point is the IC</b>.
+      <br><span class="formula"><i>v<sub>center</sub> = &omega; R</i></span>, &nbsp; <span class="formula"><i>v<sub>top</sub> = &omega; (2R) = 2 v<sub>center</sub></i></span>.</li>
+  </ol>
+</div>
+
+<h3 class="section-header">5. Relative Motion Analysis: Acceleration (Section 16.7)</h3>
+<p>Differentiating the relative velocity equation gives the acceleration of point <i>B</i> relative to point <i>A</i>:</p>
+<div class="box">
+  <center><span class="formula"><b>a</b><sub>B</sub> = <b>a</b><sub>A</sub> + <b>a</b><sub>B/A</sub> = <b>a</b><sub>A</sub> + (<b>a</b><sub>B/A</sub>)<sub>t</sub> + (<b>a</b><sub>B/A</sub>)<sub>n</sub></span></center>
+  $$\mathbf{a}_B = \mathbf{a}_A + \boldsymbol{\alpha} \times \mathbf{r}_{B/A} - \omega^2 \mathbf{r}_{B/A}$$
+  <ul>
+    <li><b>a</b><sub>A</sub>: Absolute acceleration of reference base point <i>A</i>.</li>
+    <li>(<b>a</b><sub>B/A</sub>)<sub>t</sub> = <b>&alpha;</b> &times; <b>r</b><sub>B/A</sub> (magnitude: <span class="formula"><i>&alpha; &middot; r<sub>B/A</sub></i></span>, perpendicular to line <i>AB</i>).</li>
+    <li>(<b>a</b><sub>B/A</sub>)<sub>n</sub> = &minus;<i>&omega;<sup>2</sup></i> <b>r</b><sub>B/A</sub> (magnitude: <span class="formula"><i>&omega;<sup>2</sup> &middot; r<sub>B/A</sub></i></span>, points directly from <i>B</i> toward <i>A</i>).</li>
+  </ul>
+</div>
+
+<p><b>Rolling Wheel Acceleration Kinematics (Radius <i>R</i>, No Slip):</b></p>
+<ul>
+  <li>Center of mass: <span class="formula"><i>a<sub>G</sub> = &alpha; R</i></span> (purely horizontal).</li>
+  <li>Contact point <i>C</i>: <span class="formula"><i>(a<sub>C</sub>)<sub>t</sub> = 0</i></span>, but <span class="formula"><i>(a<sub>C</sub>)<sub>n</sub> = &omega;<sup>2</sup> R</i></span> (directed upward toward wheel center). <i>Note: The IC has non-zero acceleration!</i></li>
+</ul>
+
+<h3 class="section-header">6. Rotating Reference Frames & Coriolis Acceleration (Section 16.8)</h3>
+<p>When analyzing a slider moving along a rotating guide arm (frame <i>x-y-z</i> rotating with angular velocity <b>&Omega;</b> and angular acceleration <b>&Omega;̇</b>):</p>
+<div class="box">
+  $$\mathbf{v}_B = \mathbf{v}_A + \boldsymbol{\Omega} \times \mathbf{r}_{B/A} + (\mathbf{v}_{B/A})_{xyz}$$
+  $$\mathbf{a}_B = \mathbf{a}_A + \dot{\boldsymbol{\Omega}} \times \mathbf{r}_{B/A} + \boldsymbol{\Omega} \times (\boldsymbol{\Omega} \times \mathbf{r}_{B/A}) + 2\boldsymbol{\Omega} \times (\mathbf{v}_{B/A})_{xyz} + (\mathbf{a}_{B/A})_{xyz}$$
+  <p style="margin: 2px 0 0 0;">
+    where <span class="formula"><b>a</b><sub>cor</sub> = 2<b>&Omega;</b> &times; (<b>v</b><sub>B/A</sub>)<sub>xyz</sub></span> is the <b>Coriolis Acceleration</b>.
+  </p>
+</div>
+
+<!-- ========================================================================= -->
+<!-- ================================ PAGE 3 ================================= -->
+<!-- ========================================================================= -->
+<div class="page-break"></div>
+<span class="page-num">Page 3 of 15</span>
+
+<h3 class="section-header">Chapter 16 Worked Exercises</h3>
+
+<div class="exercise-box">
+  <div class="exercise-title">Exercise 16.1: Slider-Crank Kinematic Velocity & Acceleration Analysis</div>
+  <p><b>Problem:</b> In a slider-crank mechanism, crank <i>AB</i> (length <i>r</i> = 0.2 m) rotates counterclockwise at constant &omega;<sub>AB</sub> = 10 rad/s (&alpha;<sub>AB</sub> = 0). Connecting rod <i>BC</i> has length <i>L</i> = 0.5 m. At the instant &theta; = 90&deg;, crank <i>AB</i> is vertical, and slider <i>C</i> is on the horizontal centerline. Determine (a) the angular velocity &omega;<sub>BC</sub>, (b) the velocity of slider <i>C</i>, and (c) the angular acceleration &alpha;<sub>BC</sub>.</p>
+  <p><b>Solution:</b></p>
+  <ol>
+    <li><b>Geometry at &theta; = 90&deg;:</b><br>
+      Point <i>A</i> is at (0,0), Point <i>B</i> is at (0, 0.2 m). Slider <i>C</i> is at (<i>x<sub>C</sub></i>, 0).<br>
+      <i>x<sub>C</sub> = &radic;(L<sup>2</sup> &minus; r<sup>2</sup>) = &radic;(0.5<sup>2</sup> &minus; 0.2<sup>2</sup>) = &radic;(0.25 &minus; 0.04) = &radic;0.21 = 0.4583 m</i>.<br>
+      Position vector: <b>r</b><sub>C/B</sub> = 0.4583 <b>i</b> &minus; 0.2 <b>j</b>.
+    </li>
+    <li><b>Velocity of crank pin B:</b><br>
+      <b>v</b><sub>B</sub> = <b>&omega;</b><sub>AB</sub> &times; <b>r</b><sub>B/A</sub> = (10 <b>k</b>) &times; (0.2 <b>j</b>) = <b>&minus;2.0 i m/s</b>.
+    </li>
+    <li><b>Velocity analysis of rod BC:</b><br>
+      <b>v</b><sub>C</sub> = <b>v</b><sub>B</sub> + <b>&omega;</b><sub>BC</sub> &times; <b>r</b><sub>C/B</sub><br>
+      Slider <i>C</i> moves horizontally &implies; <b>v</b><sub>C</sub> = <i>v<sub>C</sub></i> <b>i</b>.<br>
+      <i>v<sub>C</sub></i> <b>i</b> = &minus;2.0 <b>i</b> + (&omega;<sub>BC</sub> <b>k</b>) &times; (0.4583 <b>i</b> &minus; 0.2 <b>j</b>)<br>
+      <i>v<sub>C</sub></i> <b>i</b> = &minus;2.0 <b>i</b> + 0.4583 &omega;<sub>BC</sub> <b>j</b> + 0.2 &omega;<sub>BC</sub> <b>i</b> = (&minus;2.0 + 0.2 &omega;<sub>BC</sub>) <b>i</b> + (0.4583 &omega;<sub>BC</sub>) <b>j</b><br>
+      Equate <b>j</b>-components: 0.4583 &omega;<sub>BC</sub> = 0 &implies; <b>&omega;<sub>BC</sub> = 0 rad/s</b>.<br>
+      Equate <b>i</b>-components: <i>v<sub>C</sub> = &minus;2.0 + 0.2(0)</i> &implies; <b>v<sub>C</sub> = &minus;2.00 m/s = 2.00 m/s (&larr;)</b>.
+    </li>
+    <li><b>Acceleration analysis of rod BC:</b><br>
+      <b>a</b><sub>B</sub> = <b>&alpha;</b><sub>AB</sub> &times; <b>r</b><sub>B/A</sub> &minus; &omega;<sub>AB</sub><sup>2</sup> <b>r</b><sub>B/A</sub> = 0 &minus; (10<sup>2</sup>)(0.2 <b>j</b>) = <b>&minus;20.0 j m/s<sup>2</sup></b>.<br>
+      <b>a</b><sub>C</sub> = <b>a</b><sub>B</sub> + <b>&alpha;</b><sub>BC</sub> &times; <b>r</b><sub>C/B</sub> &minus; &omega;<sub>BC</sub><sup>2</sup> <b>r</b><sub>C/B</sub> (with &omega;<sub>BC</sub> = 0):<br>
+      <i>a<sub>C</sub></i> <b>i</b> = &minus;20.0 <b>j</b> + (&alpha;<sub>BC</sub> <b>k</b>) &times; (0.4583 <b>i</b> &minus; 0.2 <b>j</b>) &minus; 0<br>
+      <i>a<sub>C</sub></i> <b>i</b> = &minus;20.0 <b>j</b> + 0.4583 &alpha;<sub>BC</sub> <b>j</b> + 0.2 &alpha;<sub>BC</sub> <b>i</b> = (0.2 &alpha;<sub>BC</sub>) <b>i</b> + (&minus;20.0 + 0.4583 &alpha;<sub>BC</sub>) <b>j</b><br>
+      Equate <b>j</b>-components: &minus;20.0 + 0.4583 &alpha;<sub>BC</sub> = 0 &implies; <b>&alpha;<sub>BC</sub> = 20.0 / 0.4583 = +43.64 rad/s<sup>2</sup> (CCW)</b>.<br>
+      Equate <b>i</b>-components: <i>a<sub>C</sub></i> = 0.2(43.64) = <b>+8.73 m/s<sup>2</sup> (&rarr;)</b>.
+    </li>
+  </ol>
+</div>
+
+<div class="exercise-box">
+  <div class="exercise-title">Exercise 16.2: Rolling Wheel Acceleration Kinematics</div>
+  <p><b>Problem:</b> A cylinder of radius <i>R</i> = 0.3 m rolls without slipping along a horizontal floor. At the instant shown, its center <i>G</i> has velocity <i>v<sub>G</sub></i> = 3 m/s (&rarr;) and acceleration <i>a<sub>G</sub></i> = 1.5 m/s<sup>2</sup> (&rarr;). Find the absolute acceleration vectors of (a) the top point <i>A</i>, and (b) the ground contact point <i>C</i>.</p>
+  <p><b>Solution:</b></p>
+  <ol>
+    <li>Angular velocity & acceleration: &omega; = <i>v<sub>G</sub> / R</i> = 3 / 0.3 = <b>10 rad/s (CW &implies; &minus;10 k)</b>; &nbsp; &alpha; = <i>a<sub>G</sub> / R</i> = 1.5 / 0.3 = <b>5 rad/s<sup>2</sup> (CW &implies; &minus;5 k)</b>.</li>
+    <li><b>Acceleration of Top Point A:</b> <b>r</b><sub>A/G</sub> = +0.3 <b>j</b>.<br>
+      <b>a</b><sub>A</sub> = <b>a</b><sub>G</sub> + <b>&alpha;</b> &times; <b>r</b><sub>A/G</sub> &minus; &omega;<sup>2</sup> <b>r</b><sub>A/G</sub> = 1.5 <b>i</b> + (&minus;5 <b>k</b>) &times; (0.3 <b>j</b>) &minus; (10<sup>2</sup>)(0.3 <b>j</b>)<br>
+      <b>a</b><sub>A</sub> = 1.5 <b>i</b> + 1.5 <b>i</b> &minus; 30.0 <b>j</b> = <b>(3.0 i &minus; 30.0 j) m/s<sup>2</sup></b>, &nbsp; |<b>a</b><sub>A</sub>| = &radic;(3<sup>2</sup> + 30<sup>2</sup>) = <b>30.15 m/s<sup>2</sup></b>.</li>
+    <li><b>Acceleration of Contact Point C:</b> <b>r</b><sub>C/G</sub> = &minus;0.3 <b>j</b>.<br>
+      <b>a</b><sub>C</sub> = 1.5 <b>i</b> + (&minus;5 <b>k</b>) &times; (&minus;0.3 <b>j</b>) &minus; (10<sup>2</sup>)(&minus;0.3 <b>j</b>) = 1.5 <b>i</b> &minus; 1.5 <b>i</b> + 30.0 <b>j</b> = <b>+30.0 j m/s<sup>2</sup> (&uarr;)</b>.</li>
+  </ol>
+</div>
+
+<!-- ========================================================================= -->
+<!-- ================================ PAGE 4 ================================= -->
+<!-- ========================================================================= -->
+<div class="page-break"></div>
+<span class="page-num">Page 4 of 15</span>
+
+<h2 class="chapter-header">CHAPTER 17 — Planar Kinetics of a Rigid Body: Force & Acceleration (Part 1)</h2>
+
+<h3 class="section-header">1. Mass Moment of Inertia (Section 17.1)</h3>
+<p>The mass moment of inertia <i>I</i> is a measure of a body's resistance to rotational acceleration, defined as:
+<span class="formula"><b><i>I = &int; r<sup>2</sup> dm = &int; r<sup>2</sup> &rho; dV</i></b></span></p>
+
+<div class="box">
+  <b>The Parallel-Axis Theorem:</b><br>
+  Allows shifting the moment of inertia from the center of mass <i>G</i> to any parallel axis passing through point <i>P</i> at a distance <i>d</i>:
+  <center><span class="formula"><b><i>I<sub>P</sub> = I<sub>G</sub> + m d<sup>2</sup></i></b></span></center>
+  <p style="margin: 3px 0 0 0;">
+    &bull; <b>Radius of Gyration (<i>k</i>):</b> A geometric parameter defined by <span class="formula"><b><i>I = m k<sup>2</sup> &implies; k = &radic;(I / m)</i></b></span>.<br>
+    &bull; Parallel-axis theorem using radius of gyration: <span class="formula"><i>k<sub>P</sub><sup>2</sup> = k<sub>G</sub><sup>2</sup> + d<sup>2</sup></i></span>.
+  </p>
+</div>
+
+<p><b>Standard Mass Moments of Inertia for Common Homogeneous Bodies:</b></p>
+<table>
+  <tr>
+    <th>Geometric Shape</th>
+    <th>Mass Moment of Inertia about Center of Mass (\(I_G\))</th>
+    <th>Parallel Axis Formula</th>
+  </tr>
+  <tr>
+    <td><b>Thin Slender Rod</b> (Length <i>L</i>)</td>
+    <td><span class="formula"><i>I<sub>G</sub> = (1/12) m L<sup>2</sup></i></span></td>
+    <td>About end pin: <span class="formula"><i>I<sub>end</sub> = (1/3) m L<sup>2</sup></i></span></td>
+  </tr>
+  <tr>
+    <td><b>Thin Circular Disk / Solid Cylinder</b> (Radius <i>R</i>)</td>
+    <td><span class="formula"><i>I<sub>G</sub> = &frac12; m R<sup>2</sup></i></span></td>
+    <td>About rim: <span class="formula"><i>I<sub>rim</sub> = (3/2) m R<sup>2</sup></i></span></td>
+  </tr>
+  <tr>
+    <td><b>Circular Ring / Thin Hoop</b> (Radius <i>R</i>)</td>
+    <td><span class="formula"><i>I<sub>G</sub> = m R<sup>2</sup></i></span></td>
+    <td>About outer rim: <span class="formula"><i>I<sub>rim</sub> = 2 m R<sup>2</sup></i></span></td>
+  </tr>
+  <tr>
+    <td><b>Thin Rectangular Plate</b> (Sides <i>a, b</i>)</td>
+    <td><span class="formula"><i>I<sub>G</sub> = (1/12) m (a<sup>2</sup> + b<sup>2</sup>)</i></span></td>
+    <td>About edge <i>a</i>: <span class="formula"><i>I = (1/12) m a<sup>2</sup> + (1/3) m b<sup>2</sup></i></span></td>
+  </tr>
+  <tr>
+    <td><b>Solid Sphere</b> (Radius <i>R</i>)</td>
+    <td><span class="formula"><i>I<sub>G</sub> = (2/5) m R<sup>2</sup></i></span></td>
+    <td>About tangent surface: <span class="formula"><i>I = (7/5) m R<sup>2</sup></i></span></td>
+  </tr>
+</table>
+
+<h3 class="section-header">2. Planar Equations of Motion: FBD = KD (Sections 17.2 – 17.3)</h3>
+<p>For any rigid body undergoing general plane motion in the <i>x-y</i> plane:</p>
+
+<div class="box">
+  <center>
+    $$\sum F_x = m (a_G)_x$$
+    $$\sum F_y = m (a_G)_y$$
+    $$\sum M_G = I_G \alpha$$
+  </center>
+  <p style="margin: 3px 0 0 0;">
+    <b>Alternative Moment Equations about Arbitrary Point P:</b><br>
+    Summing moments about any point <i>P</i> other than the mass center <i>G</i> introduces an inertia moment:
+    <center><span class="formula"><b>&sum; <i>M<sub>P</sub> = I<sub>G</sub> &alpha; + m (a<sub>G</sub>)<sub>x</sub> d<sub>y</sub> &plusmn; m (a<sub>G</sub>)<sub>y</sub> d<sub>x</sub> = I<sub>G</sub> &alpha; + [ <b>r</b><sub>G/P</sub> &times; m <b>a</b><sub>G</sub> ]<sub>k</sub></i></b></span></center>
+  </p>
+</div>
+
+<!-- ========================================================================= -->
+<!-- ================================ PAGE 5 ================================= -->
+<!-- ========================================================================= -->
+<div class="page-break"></div>
+<span class="page-num">Page 5 of 15</span>
+
+<h2 class="chapter-header">CHAPTER 17 — Planar Kinetics of a Rigid Body: Force & Acceleration (Part 2)</h2>
+
+<h3 class="section-header">3. Specific Types of Rigid Body Kinetics (Sections 17.3 – 17.5)</h3>
+
+<table>
+  <tr>
+    <th style="width: 25%;">Motion Type</th>
+    <th style="width: 38%;">Equations of Motion</th>
+    <th style="width: 37%;">Problem-Solving Rules</th>
+  </tr>
+  <tr>
+    <td><b>1. Translation</b><br>(Rectilinear or Curvilinear)</td>
+    <td>
+      <span class="formula">&sum; <i>F<sub>x</sub> = m (a<sub>G</sub>)<sub>x</sub></i></span><br>
+      <span class="formula">&sum; <i>F<sub>y</sub> = m (a<sub>G</sub>)<sub>y</sub></i></span><br>
+      <span class="formula">&sum; <i>M<sub>G</sub> = 0</i></span>
+    </td>
+    <td>No angular acceleration (<span class="formula"><i>&alpha; = 0</i></span>). If moments are summed about point <i>P</i>: <span class="formula">&sum; <i>M<sub>P</sub> = (m a<sub>G</sub>) d</i></span>.</td>
+  </tr>
+  <tr>
+    <td><b>2. Rotation About a Fixed Pin (Point O)</b></td>
+    <td>
+      <span class="formula">&sum; <i>F<sub>n</sub> = m (a<sub>G</sub>)<sub>n</sub> = m &omega;<sup>2</sup> r<sub>G</sub></i></span><br>
+      <span class="formula">&sum; <i>F<sub>t</sub> = m (a<sub>G</sub>)<sub>t</sub> = m &alpha; r<sub>G</sub></i></span><br>
+      <span class="formula"><b>&sum; <i>M<sub>O</sub> = I<sub>O</sub> &alpha;</i></b></span>
+    </td>
+    <td>Using <span class="formula"><i>I<sub>O</sub> = I<sub>G</sub> + m r<sub>G</sub><sup>2</sup></i></span> directly eliminates the unknown reaction forces at pin <i>O</i> from the moment equation.</td>
+  </tr>
+  <tr>
+    <td><b>3. General Plane Motion: Rolling Bodies</b></td>
+    <td>
+      <span class="formula">&sum; <i>F<sub>x</sub> = m (a<sub>G</sub>)<sub>x</sub></i></span><br>
+      <span class="formula">&sum; <i>F<sub>y</sub> = m (a<sub>G</sub>)<sub>y</sub></i></span><br>
+      <span class="formula">&sum; <i>M<sub>G</sub> = I<sub>G</sub> &alpha;</i></span>
+    </td>
+    <td>
+      <b>Case A (No Slip):</b> <span class="formula"><i>(a<sub>G</sub>)<sub>x</sub> = &alpha; R</i></span>, &nbsp; <span class="formula"><i>F<sub>f</sub> &le; &mu;<sub>s</sub> N</i></span>.<br>
+      <b>Case B (Slipping):</b> <span class="formula"><i>(a<sub>G</sub>)<sub>x</sub> &ne; &alpha; R</i></span>, &nbsp; <span class="formula"><i>F<sub>f</sub> = &mu;<sub>k</sub> N</i></span>.
+    </td>
+  </tr>
+</table>
+
+<h3 class="section-header">Chapter 17 Worked Exercises</h3>
+
+<div class="exercise-box">
+  <div class="exercise-title">Exercise 17.1: Physical Pendulum / Slender Rod Released from Rest</div>
+  <p><b>Problem:</b> A uniform slender rod <i>AB</i> of mass <i>m</i> = 6 kg and length <i>L</i> = 1.2 m is pinned at end <i>A</i>. It is released from rest in the horizontal position (&theta; = 0&deg;). At the instant of release, determine (a) the angular acceleration &alpha; of the rod, and (b) the horizontal and vertical reaction forces at pin <i>A</i>.</p>
+  <p><b>Solution:</b></p>
+  <ol>
+    <li><b>Calculate Moment of Inertia about Pin A:</b>
+      <span class="formula"><i>I<sub>A</sub> = (1/3) m L<sup>2</sup> = (1/3)(6 kg)(1.2 m)<sup>2</sup> = (1/3)(6)(1.44) = <b>2.88 kg&middot;m<sup>2</sup></b></i></span>.
+    </li>
+    <li><b>Equation of Rotational Motion about Pin A:</b>
+      At release (&theta; = 0&deg;), weight <i>W = mg = (6)(9.81) = 58.86 N</i> acts downward at <i>L/2 = 0.6 m</i> from <i>A</i>.<br>
+      <span class="formula">&sum; <i>M<sub>A</sub> = I<sub>A</sub> &alpha; &implies; W (L/2) = I<sub>A</sub> &alpha;</i></span><br>
+      (58.86 N)(0.6 m) = 2.88 &alpha; &implies; 35.316 = 2.88 &alpha; &implies; <b>&alpha; = 12.26 rad/s<sup>2</sup> (Clockwise)</b>.
+    </li>
+    <li><b>Acceleration of Mass Center G:</b>
+      Distance <i>r<sub>G</sub> = L/2 = 0.6 m</i>. Since released from rest, &omega; = 0.<br>
+      <span class="formula"><i>(a<sub>G</sub>)<sub>t</sub> = &alpha; r<sub>G</sub> = (12.26)(0.6) = 7.358 m/s<sup>2</sup> (&darr;)</i></span>; &nbsp; <span class="formula"><i>(a<sub>G</sub>)<sub>n</sub> = &omega;<sup>2</sup> r<sub>G</sub> = 0</i></span>.
+    </li>
+    <li><b>Reactions at Pin A:</b>
+      &sum; <i>F<sub>x</sub> = m (a<sub>G</sub>)<sub>n</sub> = 0 &implies; <b>A<sub>x</sub> = 0 N</b></i>.<br>
+      &sum; <i>F<sub>y</sub> = m (a<sub>G</sub>)<sub>t</sub> &implies; W &minus; A<sub>y</sub> = m (a<sub>G</sub>)<sub>t</sub> &implies; 58.86 &minus; A<sub>y</sub> = (6)(7.358) = 44.15 N</i><br>
+      <b>A<sub>y</sub> = 58.86 &minus; 44.15 = 14.71 N (&uarr;)</b> (Notice <i>A<sub>y</sub> = W/4</i>).
+    </li>
+  </ol>
+</div>
+
+<!-- ========================================================================= -->
+<!-- ================================ PAGE 6 ================================= -->
+<!-- ========================================================================= -->
+<div class="page-break"></div>
+<span class="page-num">Page 6 of 15</span>
+
+<div class="exercise-box">
+  <div class="exercise-title">Exercise 17.2: Unbalanced Pipe Rolling Down Incline with Slip Verification</div>
+  <p><b>Problem:</b> A uniform solid cylinder of mass <i>m</i> = 20 kg and radius <i>R</i> = 0.2 m is released from rest on an incline of &theta; = 30&deg;. The coefficients of friction are &mu;<sub>s</sub> = 0.25 and &mu;<sub>k</sub> = 0.20. (a) Assuming no slip, find the acceleration <i>a<sub>G</sub></i> and the required friction force <i>F<sub>f</sub></i>. (b) Verify whether the cylinder slips.</p>
+  <p><b>Solution:</b></p>
+  <ol>
+    <li><b>Free-Body and Kinetic Diagrams:</b>
+      Axes: <i>x</i> down incline, <i>y</i> perpendicular to incline.<br>
+      Moment of inertia: <span class="formula"><i>I<sub>G</sub> = &frac12; m R<sup>2</sup> = &frac12;(20)(0.2<sup>2</sup>) = 0.40 kg&middot;m<sup>2</sup></i></span>.
+    </li>
+    <li><b>Equations of Motion:</b><br>
+      &sum; <i>F<sub>y</sub> = 0 &implies; N &minus; mg cos 30&deg; = 0 &implies; N = (20)(9.81)(0.8660) = <b>169.91 N</b></i>.<br>
+      &sum; <i>F<sub>x</sub> = m a<sub>G</sub> &implies; mg sin 30&deg; &minus; F<sub>f</sub> = m a<sub>G</sub> &implies; (20)(9.81)(0.5) &minus; F<sub>f</sub> = 20 a<sub>G</sub> &implies; 98.1 &minus; F<sub>f</sub> = 20 a<sub>G</sub></i> &nbsp;(Eq. 1)<br>
+      &sum; <i>M<sub>G</sub> = I<sub>G</sub> &alpha; &implies; F<sub>f</sub> R = (&frac12; m R<sup>2</sup>) &alpha; &implies; F<sub>f</sub> = &frac12; m (R &alpha;)</i> &nbsp;(Eq. 2)
+    </li>
+    <li><b>Kinematic No-Slip Condition:</b><br>
+      Substitute <i>a<sub>G</sub> = R &alpha;</i> into Eq. 2: <span class="formula"><i>F<sub>f</sub> = &frac12; m a<sub>G</sub> = &frac12;(20) a<sub>G</sub> = 10 a<sub>G</sub></i></span>.<br>
+      Substitute into Eq. 1: 98.1 &minus; 10 <i>a<sub>G</sub></i> = 20 <i>a<sub>G</sub></i> &implies; 30 <i>a<sub>G</sub></i> = 98.1 &implies; <b>a<sub>G</sub> = 3.27 m/s<sup>2</sup></b>.<br>
+      Angular acceleration: <span class="formula">&alpha; = a<sub>G</sub> / R = 3.27 / 0.2 = <b>16.35 rad/s<sup>2</sup></b></span>.<br>
+      Friction required: <span class="formula"><i>F<sub>f</sub> = 10(3.27) = <b>32.70 N</b></i></span>.
+    </li>
+    <li><b>Friction Slip Check:</b><br>
+      Maximum available static friction: <span class="formula"><i>(F<sub>f</sub>)<sub>max</sub> = &mu;<sub>s</sub> N = (0.25)(169.91 N) = <b>42.48 N</b></i></span>.<br>
+      Since <span class="formula"><i>F<sub>f</sub> (32.70 N) &le; (F<sub>f</sub>)<sub>max</sub> (42.48 N)</i></span>, <b>the cylinder rolls WITHOUT slipping</b>.
+    </li>
+  </ol>
+</div>
+
+<div class="exercise-box">
+  <div class="exercise-title">Exercise 17.3: Slender Bar Supported by Smooth Floor and Wall</div>
+  <p><b>Problem:</b> A uniform 15 kg bar <i>AB</i> of length <i>L</i> = 2 m rests against a frictionless vertical wall and floor at &theta; = 45&deg;. If released from rest, find the initial angular acceleration &alpha;.</p>
+  <p><b>Solution:</b></p>
+  <ol>
+    <li>Kinematics: <b>r</b><sub>G</sub> = (<i>L</i>/2 cos&theta;) <b>i</b> + (<i>L</i>/2 sin&theta;) <b>j</b>. Differentiating twice at rest (&omega; = 0):
+      <span class="formula"><i>(a<sub>G</sub>)<sub>x</sub> = &minus;(L/2 sin&theta;) &alpha;</i></span>, &nbsp; <span class="formula"><i>(a<sub>G</sub>)<sub>y</sub> = &minus;(L/2 cos&theta;) &alpha;</i></span>.
+    </li>
+    <li>Equations: &sum; <i>F<sub>x</sub> = N<sub>wall</sub> = m [&minus;(L/2 sin 45&deg;) &alpha;]</i>; &nbsp; &sum; <i>F<sub>y</sub> = N<sub>floor</sub> &minus; mg = m [&minus;(L/2 cos 45&deg;) &alpha;]</i>.</li>
+    <li>Summing moments about <i>G</i>: <span class="formula">&sum; M<sub>G</sub> = I<sub>G</sub> &alpha; &implies; N<sub>floor</sub> (L/2 cos 45&deg;) &minus; N<sub>wall</sub> (L/2 sin 45&deg;) = (1/12 m L<sup>2</sup>) &alpha;</span>.</li>
+    <li>Substituting normal forces yields: <span class="formula"><i>mg (L/2 cos 45&deg;) = [ 1/12 m L<sup>2</sup> + m (L/2)<sup>2</sup> ] &alpha; = (1/3 m L<sup>2</sup>) &alpha;</i></span>.<br>
+      &alpha; = [ <i>mg (L/2) cos 45&deg;</i> ] / [ <i>(1/3) m L<sup>2</sup></i> ] = <i>(3 g cos 45&deg;) / (2 L)</i> = [ 3(9.81)(0.7071) ] / [ 2(2.0) ] = <b>5.20 rad/s<sup>2</sup></b>.
+    </li>
+  </ol>
+</div>
+
+<!-- ========================================================================= -->
+<!-- ================================ PAGE 7 ================================= -->
+<!-- ========================================================================= -->
+<div class="page-break"></div>
+<span class="page-num">Page 7 of 15</span>
+
+<h2 class="chapter-header">CHAPTER 18 — Planar Kinetics of a Rigid Body: Work & Energy (Part 1)</h2>
+
+<h3 class="section-header">1. Kinetic Energy of a Rigid Body (Section 18.1)</h3>
+<p>The total kinetic energy of a rigid body is the sum of translational kinetic energy of its mass center <i>G</i> and rotational kinetic energy about <i>G</i>:</p>
+
+<div class="box">
+  <center><span class="formula"><b><i>T = &frac12; m v<sub>G</sub><sup>2</sup> + &frac12; I<sub>G</sub> &omega;<sup>2</sup></i></b></span></center>
+  <p style="margin: 4px 0 0 0;">
+    <b>Specific Motion Formulations:</b>
+  </p>
+  <ul>
+    <li><b>1. Pure Translation:</b> <span class="formula"><i>&omega; = 0 &implies; <b>T = &frac12; m v<sub>G</sub><sup>2</sup></b></i></span></li>
+    <li><b>2. Fixed-Axis Rotation (Pin at O):</b> Using parallel-axis theorem <span class="formula"><i>I<sub>O</sub> = I<sub>G</sub> + m r<sub>G</sub><sup>2</sup></i></span> and <span class="formula"><i>v<sub>G</sub> = &omega; r<sub>G</sub></i></span>:
+      <center><span class="formula"><i>T = &frac12; m (&omega; r<sub>G</sub>)<sup>2</sup> + &frac12; I<sub>G</sub> &omega;<sup>2</sup> = &frac12; (I<sub>G</sub> + m r<sub>G</sub><sup>2</sup>) &omega;<sup>2</sup> &implies; <b>T = &frac12; I<sub>O</sub> &omega;<sup>2</sup></b></i></span></center></li>
+    <li><b>3. Pure Rolling without Slipping (IC at contact point C):</b>
+      <center><span class="formula"><b><i>T = &frac12; I<sub>IC</sub> &omega;<sup>2</sup> = &frac12; (I<sub>G</sub> + m R<sup>2</sup>) &omega;<sup>2</sup></i></b></span></center></li>
+  </ul>
+</div>
+
+<h3 class="section-header">2. Work of Forces and Couple Moments (Sections 18.2 – 18.3)</h3>
+<table>
+  <tr>
+    <th style="width: 25%;">Action Type</th>
+    <th style="width: 45%;">Work Formula</th>
+    <th style="width: 30%;">Conditions</th>
+  </tr>
+  <tr>
+    <td><b>Force F</b></td>
+    <td><span class="formula"><i>U<sub>F</sub> = &int; (F cos&theta;) ds = &int; <b>F</b> &middot; d<b>r</b></i></span></td>
+    <td>Displacement of point of application.</td>
+  </tr>
+  <tr>
+    <td><b>Couple Moment M</b></td>
+    <td><span class="formula"><i>U<sub>M</sub> = &int; M d&theta;</i></span> (For constant <i>M</i>: <span class="formula"><i>U<sub>M</sub> = M &Delta;&theta;</i></span>)</td>
+    <td>Positive if <i>M</i> and &Delta;&theta; are in same angular sense.</td>
+  </tr>
+  <tr>
+    <td><b>Weight W</b></td>
+    <td><span class="formula"><i>U<sub>W</sub> = &minus;W &Delta;y<sub>G</sub> = &minus;mg (y<sub>G2</sub> &minus; y<sub>G1</sub>)</i></span></td>
+    <td>Depends only on vertical shift of <i>G</i>.</td>
+  </tr>
+  <tr>
+    <td><b>Linear Spring</b></td>
+    <td><span class="formula"><i>U<sub>s</sub> = &minus;&frac12; k (s<sub>2</sub><sup>2</sup> &minus; s<sub>1</sub><sup>2</sup>)</i></span></td>
+    <td><i>s</i> = elongation/compression from unextended length.</td>
+  </tr>
+  <tr>
+    <td><b>Rolling Friction (No Slip)</b></td>
+    <td><span class="formula"><i>U<sub>f</sub> = 0</i></span></td>
+    <td>Contact point <i>C</i> has zero instantaneous velocity.</td>
+  </tr>
+</table>
+
+<h3 class="section-header">3. Principle of Work and Energy for a Rigid Body (Section 18.4)</h3>
+<div class="box">
+  <center><span class="formula"><b><i>T<sub>1</sub> + &sum; U<sub>1&rarr;2</sub> = T<sub>2</sub></i></b></span></center>
+  <p style="margin: 3px 0 0 0;">
+    where <span class="formula"><i>T<sub>1</sub></i></span> and <span class="formula"><i>T<sub>2</sub></i></span> are initial and final kinetic energies, and <span class="formula"><i>&sum; U<sub>1&rarr;2</sub></i></span> includes work of all external forces and couple moments.
+  </p>
+</div>
+
+<!-- ========================================================================= -->
+<!-- ================================ PAGE 8 ================================= -->
+<!-- ========================================================================= -->
+<div class="page-break"></div>
+<span class="page-num">Page 8 of 15</span>
+
+<h2 class="chapter-header">CHAPTER 18 — Planar Kinetics of a Rigid Body: Work & Energy (Part 2)</h2>
+
+<h3 class="section-header">4. Conservation of Mechanical Energy (Section 18.5)</h3>
+<p>When all work is performed exclusively by conservative forces (gravity and elastic springs):</p>
+<div class="box">
+  <center><span class="formula"><b><i>T<sub>1</sub> + V<sub>1</sub> = T<sub>2</sub> + V<sub>2</sub></i></b></span></center>
+  <p style="margin: 3px 0 0 0;">
+    &bull; <b>Gravitational Potential Energy:</b> <span class="formula"><b><i>V<sub>g</sub> = &plusmn; m g y<sub>G</sub></i></b></span> (referenced to datum at center of gravity <i>G</i>).<br>
+    &bull; <b>Elastic Potential Energy:</b> <span class="formula"><b><i>V<sub>e</sub> = + &frac12; k s<sup>2</sup></i></b></span> (always positive).
+  </p>
+</div>
+
+<h3 class="section-header">Chapter 18 Worked Exercises</h3>
+
+<div class="exercise-box">
+  <div class="exercise-title">Exercise 18.1: Stepped Spool Released on Incline with Hanging Weight</div>
+  <p><b>Problem:</b> A stepped spool has total mass <i>m</i> = 12 kg, outer radius <i>R</i> = 0.4 m, hub radius <i>r</i> = 0.2 m, and radius of gyration <i>k<sub>G</sub></i> = 0.25 m. It rolls without slipping down a 30&deg; incline. A cord wrapped around the inner hub is connected over a frictionless pulley to a hanging mass <i>m<sub>B</sub></i> = 5 kg. If the spool is released from rest, find its angular velocity after center <i>G</i> moves <i>s</i> = 2 m down the incline.</p>
+  <p><b>Solution:</b></p>
+  <ol>
+    <li><b>Calculate Moments of Inertia & Kinematic Relations:</b><br>
+      <span class="formula"><i>I<sub>G</sub> = m k<sub>G</sub><sup>2</sup> = (12 kg)(0.25 m)<sup>2</sup> = <b>0.75 kg&middot;m<sup>2</sup></b></i></span>.<br>
+      Since rolling without slip on outer radius <i>R</i> = 0.4 m: <span class="formula"><i>v<sub>G</sub> = &omega; R = 0.4 &omega;</i></span>, and spool rotation angle <span class="formula"><i>&theta; = s / R = 2 / 0.4 = 5 rad</i></span>.<br>
+      Hanging mass <i>B</i> displacement: The cord pays out as spool moves down &implies; <span class="formula"><i>s<sub>B</sub> = s &minus; r &theta; = 2 &minus; (0.2)(5) = 2 &minus; 1 = 1.0 m (&uarr;)</i></span>.<br>
+      Velocity of mass <i>B</i>: <span class="formula"><i>v<sub>B</sub> = v<sub>G</sub> &minus; &omega; r = 0.4 &omega; &minus; 0.2 &omega; = 0.2 &omega;</i></span>.
+    </li>
+    <li><b>Formulate Initial and Final Kinetic Energies:</b><br>
+      Initial: <i>T<sub>1</sub></i> = 0 (released from rest).<br>
+      Final: <span class="formula"><i>T<sub>2</sub> = &frac12; m (v<sub>G</sub>)<sup>2</sup> + &frac12; I<sub>G</sub> &omega;<sup>2</sup> + &frac12; m<sub>B</sub> (v<sub>B</sub>)<sup>2</sup></i></span><br>
+      <i>T<sub>2</sub> = &frac12;(12)(0.4 &omega;)<sup>2</sup> + &frac12;(0.75)&omega;<sup>2</sup> + &frac12;(5)(0.2 &omega;)<sup>2</sup> = &frac12;(12)(0.16)&omega;<sup>2</sup> + 0.375 &omega;<sup>2</sup> + &frac12;(5)(0.04)&omega;<sup>2</sup></i><br>
+      <i>T<sub>2</sub> = 0.96 &omega;<sup>2</sup> + 0.375 &omega;<sup>2</sup> + 0.10 &omega;<sup>2</sup> = <b>1.435 &omega;<sup>2</sup></b></i>.
+    </li>
+    <li><b>Formulate Work of External Forces (&sum; U<sub>1&rarr;2</sub>):</b><br>
+      Work of spool weight (moving down incline by &Delta;<i>y<sub>G</sub> = s sin 30&deg; = 2(0.5) = 1.0 m</i>):<br>
+      <span class="formula"><i>U<sub>spool</sub> = +m g &Delta;y<sub>G</sub> = (12 kg)(9.81 m/s<sup>2</sup>)(1.0 m) = +117.72 J</i></span>.<br>
+      Work of hanging block <i>B</i> weight (lifted by <i>s<sub>B</sub> = 1.0 m</i>):<br>
+      <span class="formula"><i>U<sub>block</sub> = &minus;m<sub>B</sub> g s<sub>B</sub> = &minus;(5 kg)(9.81 m/s<sup>2</sup>)(1.0 m) = &minus;49.05 J</i></span>.<br>
+      Normal force and rolling static friction do zero work &implies; <span class="formula"><i>&sum; U<sub>1&rarr;2</sub> = 117.72 &minus; 49.05 = <b>+68.67 J</b></i></span>.
+    </li>
+    <li><b>Apply Principle of Work and Energy:</b><br>
+      <span class="formula"><i>T<sub>1</sub> + &sum; U<sub>1&rarr;2</sub> = T<sub>2</sub> &implies; 0 + 68.67 = 1.435 &omega;<sup>2</sup></i></span><br>
+      &omega;<sup>2</sup> = 68.67 / 1.435 = 47.85 &implies; <b>&omega; = 6.92 rad/s</b>.
+    </li>
+  </ol>
+</div>
+
+<!-- ========================================================================= -->
+<!-- ================================ PAGE 9 ================================= -->
+<!-- ========================================================================= -->
+<div class="page-break"></div>
+<span class="page-num">Page 9 of 15</span>
+
+<div class="exercise-box">
+  <div class="exercise-title">Exercise 18.2: Inverted Slender Rod with Torsional Spring</div>
+  <p><b>Problem:</b> A uniform slender bar <i>AB</i> of mass <i>m</i> = 8 kg and length <i>L</i> = 1.5 m is pinned at <i>A</i>. A torsional spring at pin <i>A</i> has stiffness <i>k<sub>t</sub></i> = 30 N&middot;m/rad and is un-deformed when the bar is vertical (&theta; = 0&deg;). If the bar is given a slight nudge and rotates downward, find its angular velocity when &theta; = 90&deg; (horizontal).</p>
+  <p><b>Solution:</b></p>
+  <ol>
+    <li><b>Energy Formulation:</b><br>
+      Moment of inertia: <span class="formula"><i>I<sub>A</sub> = (1/3) m L<sup>2</sup> = (1/3)(8)(1.5<sup>2</sup>) = 6.0 kg&middot;m<sup>2</sup></i></span>.<br>
+      State 1 (at &theta;<sub>1</sub> = 0): <i>T<sub>1</sub></i> = 0, <i>V<sub>e1</sub></i> = 0. Datum at pin <i>A</i> &implies; <i>V<sub>g1</sub> = +mg (L/2) = (8)(9.81)(0.75) = +58.86 J</i>.<br>
+      State 2 (at &theta;<sub>2</sub> = &pi;/2 rad): <span class="formula"><i>T<sub>2</sub> = &frac12; I<sub>A</sub> &omega;<sup>2</sup> = &frac12;(6.0)&omega;<sup>2</sup> = 3.0 &omega;<sup>2</sup></i></span>.<br>
+      <i>V<sub>g2</sub></i> = 0 (bar is horizontal through datum).<br>
+      Torsional spring potential energy: <span class="formula"><i>V<sub>e2</sub> = &frac12; k<sub>t</sub> &theta;<sub>2</sub><sup>2</sup> = &frac12;(30)(&pi;/2)<sup>2</sup> = 15(2.4674) = 37.01 J</i></span>.
+    </li>
+    <li><b>Apply Conservation of Energy:</b><br>
+      <span class="formula"><i>T<sub>1</sub> + V<sub>g1</sub> + V<sub>e1</sub> = T<sub>2</sub> + V<sub>g2</sub> + V<sub>e2</sub></i></span><br>
+      0 + 58.86 + 0 = 3.0 &omega;<sup>2</sup> + 0 + 37.01 &implies; 3.0 &omega;<sup>2</sup> = 21.85 &implies; &omega;<sup>2</sup> = 7.283<br>
+      <b>&omega; = 2.70 rad/s</b>.
+    </li>
+  </ol>
+</div>
+
+<div class="exercise-box">
+  <div class="exercise-title">Exercise 18.3: General Plane Motion with Linear Spring</div>
+  <p><b>Problem:</b> A 10 kg uniform disk of radius <i>R</i> = 0.3 m rolls without slipping. A horizontal spring (<i>k</i> = 100 N/m) is attached to its center <i>G</i>. The disk is pulled until the spring is stretched <i>s</i> = 0.5 m and released from rest. Find the velocity <i>v<sub>G</sub></i> when the spring returns to its unstretched length.</p>
+  <p><b>Solution:</b></p>
+  <ol>
+    <li>Kinetic energy (pure rolling &implies; <i>I<sub>IC</sub> = (3/2) m R<sup>2</sup></i>):<br>
+      <span class="formula"><i>T = &frac12; I<sub>IC</sub> &omega;<sup>2</sup> = &frac12; [ (3/2) m R<sup>2</sup> ] (v<sub>G</sub>/R)<sup>2</sup> = (3/4) m v<sub>G</sub><sup>2</sup> = (3/4)(10) v<sub>G</sub><sup>2</sup> = 7.5 v<sub>G</sub><sup>2</sup></i></span>.
+    </li>
+    <li>Potential energy: State 1: <span class="formula"><i>V<sub>e1</sub> = &frac12; k s<sup>2</sup> = &frac12;(100)(0.5<sup>2</sup>) = 12.5 J</i></span>; State 2: <i>V<sub>e2</sub></i> = 0.</li>
+    <li>Conservation of energy: <i>0 + 12.5 = 7.5 v<sub>G</sub><sup>2</sup> + 0 &implies; v<sub>G</sub><sup>2</sup> = 1.667 &implies; <b>v<sub>G</sub> = 1.29 m/s</b></i>.</li>
+  </ol>
+</div>
+
+<!-- ========================================================================= -->
+<!-- ================================ PAGE 10 ================================ -->
+<!-- ========================================================================= -->
+<div class="page-break"></div>
+<span class="page-num">Page 10 of 15</span>
+
+<h2 class="chapter-header">CHAPTER 19 — Planar Kinetics of a Rigid Body: Impulse & Momentum (Part 1)</h2>
+
+<h3 class="section-header">1. Linear and Angular Momentum of a Rigid Body (Section 19.1)</h3>
+<div class="box">
+  <b>Linear Momentum Vector:</b><br>
+  <center><span class="formula"><b>L</b> = <i>m</i> <b>v</b><sub>G</sub></span></center>
+  <p style="margin: 3px 0 0 0;">
+    <b>Angular Momentum:</b>
+  </p>
+  <ul>
+    <li><b>About Center of Mass G:</b> <span class="formula"><b>H</b><sub>G</sub> = <i>I<sub>G</sub> &omega;</i> <b>k</b></span></li>
+    <li><b>About Fixed Rotation Axis (Pin O):</b> <span class="formula"><b>H</b><sub>O</sub> = <i>I<sub>O</sub> &omega;</i> <b>k</b> = (<i>I<sub>G</sub> &omega; + m v<sub>G</sub> r<sub>G</sub></i>) <b>k</b></span></li>
+    <li><b>About Arbitrary Point P (General Plane Motion):</b>
+      <center><span class="formula"><b>H</b><sub>P</sub> = <i>I<sub>G</sub> &omega;</i> <b>k</b> + [ <b>r</b><sub>G/P</sub> &times; <i>m</i> <b>v</b><sub>G</sub> ]</span></center></li>
+  </ul>
+</div>
+
+<h3 class="section-header">2. Principle of Impulse and Momentum (Sections 19.2 – 19.3)</h3>
+<p>Integrating the equations of motion over time interval <i>t<sub>1</sub> &rarr; t<sub>2</sub></i>:</p>
+
+<div class="box">
+  <center>
+    <b>Linear Impulse-Momentum:</b><br>
+    <span class="formula"><b><i>m (<b>v</b><sub>G</sub>)<sub>1</sub> + &sum; &int;<sub>t<sub>1</sub></sub><sup>t<sub>2</sub></sup> <b>F</b> dt = m (<b>v</b><sub>G</sub>)<sub>2</sub></i></b></span>
+    <br><br>
+    <b>Angular Impulse-Momentum about G:</b><br>
+    <span class="formula"><b><i>I<sub>G</sub> &omega;<sub>1</sub> + &sum; &int;<sub>t<sub>1</sub></sub><sup>t<sub>2</sub></sup> M<sub>G</sub> dt = I<sub>G</sub> &omega;<sub>2</sub></i></b></span>
+    <br><br>
+    <b>Angular Impulse-Momentum about Fixed Pin O:</b><br>
+    <span class="formula"><b><i>I<sub>O</sub> &omega;<sub>1</sub> + &sum; &int;<sub>t<sub>1</sub></sub><sup>t<sub>2</sub></sup> M<sub>O</sub> dt = I<sub>O</sub> &omega;<sub>2</sub></i></b></span>
+  </center>
+</div>
+
+<h3 class="section-header">3. Conservation of Angular and Linear Momentum (Section 19.3)</h3>
+<ul>
+  <li>If external impulse <span class="formula">&sum; &int; <b>F</b> <i>dt</i> = 0 &implies; <b>m(v<sub>G</sub>)<sub>1</sub> = m(v<sub>G</sub>)<sub>2</sub></b></span>.</li>
+  <li>If external moment impulse about a fixed point <i>O</i> is zero:
+    <center><span class="formula"><b>&sum; &int; <i>M<sub>O</sub> dt = 0 &implies; <b>(H<sub>O</sub>)<sub>1</sub> = (H<sub>O</sub>)<sub>2</sub></b></i></b></span></center></li>
+</ul>
+
+<!-- ========================================================================= -->
+<!-- ================================ PAGE 11 ================================ -->
+<!-- ========================================================================= -->
+<div class="page-break"></div>
+<span class="page-num">Page 11 of 15</span>
+
+<h2 class="chapter-header">CHAPTER 19 — Planar Kinetics of a Rigid Body: Impulse & Momentum (Part 2)</h2>
+
+<h3 class="section-header">4. Eccentric Impact of Rigid Bodies (Section 19.4)</h3>
+<p>An impact is <b>eccentric</b> when the line of collision impact does not pass through the mass centers of the colliding bodies. This induces sudden changes in both linear velocity and angular velocity.</p>
+
+<div class="box">
+  <b>Coefficient of Restitution (e) along Line of Impact (n-axis):</b>
+  <center><span class="formula"><b><i>e = [ (v<sub>B</sub>)<sub>n2</sub> &minus; (v<sub>A</sub>)<sub>n2</sub> ] / [ (v<sub>A</sub>)<sub>n1</sub> &minus; (v<sub>B</sub>)<sub>n1</sub> ]</i></b></span></center>
+  <p style="margin: 3px 0 0 0;">
+    where <span class="formula"><i>(v<sub>A</sub>)<sub>n</sub></i></span> and <span class="formula"><i>(v<sub>B</sub>)<sub>n</sub></i></span> are the normal velocities of the <b>exact contact points</b> immediately before and after the collision.
+  </p>
+</div>
+
+<h3 class="section-header">Chapter 19 Worked Exercises</h3>
+
+<div class="exercise-box">
+  <div class="exercise-title">Exercise 19.1: Ballistic Impact on a Suspended Slender Rod</div>
+  <p><b>Problem:</b> A uniform slender bar <i>OA</i> of mass <i>M</i> = 4 kg and length <i>L</i> = 0.9 m hangs vertically from smooth pin <i>O</i>. A bullet of mass <i>m</i> = 0.02 kg is fired horizontally with speed <i>v<sub>0</sub></i> = 400 m/s and embeds itself into the lower tip <i>A</i>. Find (a) the angular velocity &omega; of the bar immediately after impact, and (b) the impulsive reaction at pin <i>O</i>.</p>
+  <p><b>Solution:</b></p>
+  <ol>
+    <li><b>Conservation of Angular Momentum about Pin O:</b><br>
+      During the microsecond collision, external pin reactions exert zero moment about pin <i>O</i> &implies; <span class="formula"><i>(H<sub>O</sub>)<sub>1</sub> = (H<sub>O</sub>)<sub>2</sub></i></span>.<br>
+      Initial angular momentum: <span class="formula"><i>(H<sub>O</sub>)<sub>1</sub> = m v<sub>0</sub> L = (0.02 kg)(400 m/s)(0.9 m) = <b>7.20 kg&middot;m<sup>2</sup>/s</b></i></span>.<br>
+      Final moment of inertia about <i>O</i>:
+      <span class="formula"><i>I<sub>O</sub> = (1/3) M L<sup>2</sup> + m L<sup>2</sup> = (1/3)(4)(0.9<sup>2</sup>) + (0.02)(0.9<sup>2</sup>) = 1.08 + 0.0162 = <b>1.0962 kg&middot;m<sup>2</sup></b></i></span>.<br>
+      Final angular momentum: <span class="formula"><i>(H<sub>O</sub>)<sub>2</sub> = I<sub>O</sub> &omega;</i></span>.<br>
+      7.20 = 1.0962 &omega; &implies; <b>&omega; = 6.57 rad/s</b>.
+    </li>
+    <li><b>Impulsive Reaction at Pin O (&int; R<sub>x</sub> dt):</b><br>
+      Linear impulse-momentum in horizontal <i>x</i>-direction:<br>
+      <span class="formula"><i>m v<sub>0</sub> + &int; R<sub>x</sub> dt = M (v<sub>G</sub>)<sub>2</sub> + m (v<sub>A</sub>)<sub>2</sub></i></span><br>
+      where <span class="formula"><i>(v<sub>G</sub>)<sub>2</sub> = &omega; (L/2) = (6.57)(0.45) = 2.956 m/s</i></span>, and <span class="formula"><i>(v<sub>A</sub>)<sub>2</sub> = &omega; L = (6.57)(0.9) = 5.913 m/s</i></span>.<br>
+      (0.02)(400) + &int; <i>R<sub>x</sub> dt</i> = (4)(2.956) + (0.02)(5.913) &implies; 8.0 + &int; <i>R<sub>x</sub> dt</i> = 11.824 + 0.118 = 11.942<br>
+      <b>&int; R<sub>x</sub> dt = 11.942 &minus; 8.00 = +3.94 N&middot;s (&rarr;)</b>.
+    </li>
+  </ol>
+</div>
+
+<!-- ========================================================================= -->
+<!-- ================================ PAGE 12 ================================ -->
+<!-- ========================================================================= -->
+<div class="page-break"></div>
+<span class="page-num">Page 12 of 15</span>
+
+<div class="exercise-box">
+  <div class="exercise-title">Exercise 19.2: Bowling Ball Transition from Slipping to Pure Rolling</div>
+  <p><b>Problem:</b> A bowling ball (solid sphere, <i>m</i> = 7 kg, <i>R</i> = 0.11 m, <i>I<sub>G</sub> = (2/5)m R<sup>2</sup></i>) is thrown onto a lane with horizontal velocity <i>v<sub>0</sub></i> = 8 m/s and zero initial spin (&omega;<sub>0</sub> = 0). Kinetic friction coefficient is &mu;<sub>k</sub> = 0.15. Determine (a) the time <i>t<sub>1</sub></i> required for the ball to stop slipping and begin pure rolling, and (b) its final velocity <i>v<sub>1</sub></i>.</p>
+  <p><b>Solution:</b></p>
+  <ol>
+    <li><b>Normal Force and Kinetic Friction:</b><br>
+      &sum; <i>F<sub>y</sub> = 0 &implies; N = mg = (7)(9.81) = 68.67 N</i>.<br>
+      Friction force opposing slipping: <span class="formula"><i>F<sub>k</sub> = &mu;<sub>k</sub> N = (0.15)(68.67) = <b>10.30 N (&larr;)</b></i></span>.
+    </li>
+    <li><b>Linear and Angular Impulse Equations:</b><br>
+      Linear momentum: <span class="formula"><i>m v<sub>0</sub> &minus; F<sub>k</sub> t = m v(t) &implies; 8 &minus; (10.30/7) t = v(t) &implies; <b>v(t) = 8 &minus; 1.471 t</b></i></span>.<br>
+      Angular momentum about <i>G</i>: <span class="formula"><i>0 + (F<sub>k</sub> R) t = I<sub>G</sub> &omega;(t) &implies; (10.30 &times; 0.11) t = [ (2/5)(7)(0.11<sup>2</sup>) ] &omega;(t)</i></span><br>
+      1.133 t = 0.03388 &omega;(t) &implies; <b>&omega;(t) = 33.44 t</b>.
+    </li>
+    <li><b>Kinematic Pure Rolling Condition at t<sub>1</sub> (v<sub>1</sub> = &omega;<sub>1</sub> R):</b><br>
+      8 &minus; 1.471 <i>t<sub>1</sub></i> = (33.44 <i>t<sub>1</sub></i>)(0.11) = 3.678 <i>t<sub>1</sub></i><br>
+      8 = (1.471 + 3.678) <i>t<sub>1</sub></i> = 5.149 <i>t<sub>1</sub></i> &implies; <b>t<sub>1</sub> = 1.55 s</b>.
+    </li>
+    <li><b>Final Rolling Velocity:</b><br>
+      <span class="formula"><i>v<sub>1</sub> = 8 &minus; 1.471(1.55) = <b>5.72 m/s</b></i></span>.
+    </li>
+  </ol>
+</div>
+
+<div class="exercise-box">
+  <div class="exercise-title">Exercise 19.3: Conservation of Angular Momentum (Reeling Cable)</div>
+  <p><b>Problem:</b> A 10 kg disk with radius <i>R</i> = 0.5 m is spinning at &omega;<sub>1</sub> = 20 rad/s about a central shaft. An identical stationary disk is dropped onto it. Friction causes them to reach a common angular speed &omega;<sub>2</sub> without external torque. Find &omega;<sub>2</sub> and the percentage energy lost.</p>
+  <p><b>Solution:</b></p>
+  <ol>
+    <li>Conservation of Angular Momentum: <i>I &omega;<sub>1</sub> + 0 = (I + I) &omega;<sub>2</sub> &implies; &omega;<sub>2</sub> = &omega;<sub>1</sub> / 2 = <b>10.0 rad/s</b></i>.</li>
+    <li>Energy before: <i>T<sub>1</sub> = &frac12; I &omega;<sub>1</sub><sup>2</sup></i>. Energy after: <i>T<sub>2</sub> = &frac12; (2I) (&omega;<sub>1</sub>/2)<sup>2</sup> = (1/4) I &omega;<sub>1</sub><sup>2</sup> = &frac12; T<sub>1</sub></i>. <b>50% energy lost</b> to friction heat.</li>
+  </ol>
+</div>
+
+<!-- ========================================================================= -->
+<!-- ================================ PAGE 13 ================================ -->
+<!-- ========================================================================= -->
+<div class="page-break"></div>
+<span class="page-num">Page 13 of 15</span>
+
+<h2 class="chapter-header">CHAPTER 20 — Three-Dimensional Kinematics of a Rigid Body (Part 1)</h2>
+
+<h3 class="section-header">1. Rotation About a Fixed Point (Section 20.1)</h3>
+<p>When a rigid body is constrained to rotate about a single stationary fixed point <i>O</i>, its instantaneous angular velocity is a 3D vector <b>&omega;</b> = &omega;<sub>x</sub> <b>i</b> + &omega;<sub>y</sub> <b>j</b> + &omega;<sub>z</sub> <b>k</b>.</p>
+
+<div class="box">
+  <b>Velocity and Acceleration Vectors of Point P:</b>
+  $$\mathbf{v} = \boldsymbol{\omega} \times \mathbf{r}$$
+  $$\mathbf{a} = \dot{\boldsymbol{\omega}} \times \mathbf{r} + \boldsymbol{\omega} \times (\boldsymbol{\omega} \times \mathbf{r}) = \boldsymbol{\alpha} \times \mathbf{r} + \boldsymbol{\omega} \times \mathbf{v}$$
+  <p style="margin: 3px 0 0 0;">
+    where <b>&alpha;</b> = <b>&omega;̇</b> is the 3D angular acceleration vector.
+  </p>
+</div>
+
+<h3 class="section-header">2. Time Derivative of a Vector Measured from Fixed vs. Rotating Frames (Section 20.2)</h3>
+<p>Let <i>XYZ</i> be a fixed inertial reference frame, and <i>xyz</i> be a reference frame rotating with angular velocity <b>&Omega;</b>:</p>
+<div class="box">
+  <center><span class="formula"><b><i>(d<b>A</b>/dt)<sub>XYZ</sub> = (d<b>A</b>/dt)<sub>xyz</sub> + <b>&Omega;</b> &times; <b>A</b></i></b></span></center>
+  <p style="margin: 3px 0 0 0;">
+    <b>Angular Acceleration Derivative:</b> If frame <i>xyz</i> is attached to the body so <b>&Omega;</b> = <b>&omega;</b><sub>body</sub>:
+    <center><span class="formula"><b>&alpha;</b> = (<i>d</i><b>&omega;</b>/<i>dt</i>)<sub>XYZ</sub> = (<i>d</i><b>&omega;</b>/<i>dt</i>)<sub>xyz</sub> + <b>&omega;</b> &times; <b>&omega;</b> = (<b>&omega;̇</b>)<sub>xyz</sub> + <b>0</b> = (<b>&omega;̇</b>)<sub>xyz</sub></span></center>
+  </p>
+</div>
+
+<h3 class="section-header">3. General 3D Motion (Section 20.3)</h3>
+<p>Combines 3D translation of base point <i>A</i> and 3D rotation about <i>A</i>:</p>
+<div class="box">
+  $$\mathbf{v}_B = \mathbf{v}_A + \boldsymbol{\omega} \times \mathbf{r}_{B/A}$$
+  $$\mathbf{a}_B = \mathbf{a}_A + \boldsymbol{\alpha} \times \mathbf{r}_{B/A} + \boldsymbol{\omega} \times (\boldsymbol{\omega} \times \mathbf{r}_{B/A})$$
+</div>
+
+<h3 class="section-header">4. 3D Rotating & Translating Reference Frames (Section 20.4)</h3>
+<div class="box">
+  $$\mathbf{v}_B = \mathbf{v}_A + \boldsymbol{\Omega} \times \mathbf{r}_{B/A} + (\mathbf{v}_{B/A})_{xyz}$$
+  $$\mathbf{a}_B = \mathbf{a}_A + \dot{\boldsymbol{\Omega}} \times \mathbf{r}_{B/A} + \boldsymbol{\Omega} \times (\boldsymbol{\Omega} \times \mathbf{r}_{B/A}) + 2\boldsymbol{\Omega} \times (\mathbf{v}_{B/A})_{xyz} + (\mathbf{a}_{B/A})_{xyz}$$
+</div>
+
+<!-- ========================================================================= -->
+<!-- ================================ PAGE 14 ================================ -->
+<!-- ========================================================================= -->
+<div class="page-break"></div>
+<span class="page-num">Page 14 of 15</span>
+
+<h2 class="chapter-header">CHAPTER 20 — Three-Dimensional Kinematics of a Rigid Body (Part 2)</h2>
+
+<h3 class="section-header">Chapter 20 Worked Exercises</h3>
+
+<div class="exercise-box">
+  <div class="exercise-title">Exercise 20.1: Gyroscopic Precession & 3D Acceleration of a Spinning Disk</div>
+  <p><b>Problem:</b> A horizontal shaft <i>OA</i> of length <i>L</i> = 0.8 m precesses about the vertical <i>Z</i>-axis at constant &omega;<sub>1</sub> = 2 rad/s. Mounted at <i>A</i> is a disk of radius <i>R</i> = 0.3 m spinning about shaft <i>OA</i> at constant relative spin &omega;<sub>2</sub> = 25 rad/s. Determine (a) the total angular velocity <b>&omega;</b>, (b) total angular acceleration <b>&alpha;</b>, and (c) the velocity and acceleration of the highest point <i>P</i> on the disk at this instant.</p>
+  <p><b>Solution:</b></p>
+  <ol>
+    <li><b>Coordinate Systems:</b><br>
+      Let rotating frame <i>xyz</i> have origin at <i>O</i>, with <i>x</i> along shaft <i>OA</i>, <i>z</i> vertical, and <i>y</i> completing right-hand rule.<br>
+      Precession vector: <b>&Omega;</b> = <b>&omega;</b><sub>1</sub> = 2 <b>k</b> rad/s. Relative spin: <b>&omega;</b><sub>rel</sub> = 25 <b>i</b> rad/s.
+    </li>
+    <li><b>Total Angular Velocity and Angular Acceleration:</b><br>
+      <span class="formula"><b>&omega;</b> = <b>&omega;</b><sub>rel</sub> + <b>&Omega;</b> = <b>(25 i + 2 k) rad/s</b></span>.<br>
+      <span class="formula"><b>&alpha;</b> = <i>d</i><b>&omega;</b>/<i>dt</i> = (<b>&omega;̇</b>)<sub>xyz</sub> + <b>&Omega;</b> &times; <b>&omega;</b> = <b>0</b> + (2 <b>k</b>) &times; (25 <b>i</b> + 2 <b>k</b>) = <b>+50 j rad/s<sup>2</sup></b></span>.
+    </li>
+    <li><b>Position Vector of Highest Point P:</b><br>
+      <b>r</b><sub>P</sub> = <i>L</i> <b>i</b> + <i>R</i> <b>z</b> = <b>(0.8 i + 0.3 k) m</b>.
+    </li>
+    <li><b>Velocity of Point P:</b><br>
+      <b>v</b><sub>P</sub> = <b>&omega;</b> &times; <b>r</b><sub>P</sub> = (25 <b>i</b> + 2 <b>k</b>) &times; (0.8 <b>i</b> + 0.3 <b>k</b>)<br>
+      <b>v</b><sub>P</sub> = (25)(0.3)(<b>i</b> &times; <b>k</b>) + (2)(0.8)(<b>k</b> &times; <b>i</b>) = &minus;7.5 <b>j</b> + 1.6 <b>j</b> = <b>&minus;5.90 j m/s</b>.
+    </li>
+    <li><b>Acceleration of Point P:</b><br>
+      <b>a</b><sub>P</sub> = <b>&alpha;</b> &times; <b>r</b><sub>P</sub> + <b>&omega;</b> &times; <b>v</b><sub>P</sub><br>
+      <b>&alpha;</b> &times; <b>r</b><sub>P</sub> = (50 <b>j</b>) &times; (0.8 <b>i</b> + 0.3 <b>k</b>) = &minus;40 <b>k</b> + 15 <b>i</b> = 15 <b>i</b> &minus; 40 <b>k</b>.<br>
+      <b>&omega;</b> &times; <b>v</b><sub>P</sub> = (25 <b>i</b> + 2 <b>k</b>) &times; (&minus;5.9 <b>j</b>) = &minus;147.5 <b>k</b> + 11.8 <b>i</b> = 11.8 <b>i</b> &minus; 147.5 <b>k</b>.<br>
+      <b>a</b><sub>P</sub> = (15 + 11.8) <b>i</b> + (&minus;40 &minus; 147.5) <b>k</b> = <b>(26.8 i &minus; 187.5 k) m/s<sup>2</sup></b>, &nbsp; |<b>a</b><sub>P</sub>| = <b>189.4 m/s<sup>2</sup></b>.
+    </li>
+  </ol>
+</div>
+
+<div class="exercise-box">
+  <div class="exercise-title">Exercise 20.2: Rolling Cone on a Flat Plane</div>
+  <p><b>Problem:</b> A cone (base radius <i>R</i> = 0.2 m, height <i>H</i> = 0.6 m) rolls without slipping on a horizontal floor such that its apex remains fixed at <i>O</i>. The center of the base precesses at &omega;<sub>1</sub> = 3 rad/s. Find the total angular velocity <b>&omega;</b>.</p>
+  <p><b>Solution:</b></p>
+  <ol>
+    <li>Semi-vertex angle: <span class="formula"><i>tan &gamma; = R / H = 0.2 / 0.6 = 1/3 &implies; &gamma; = 18.43&deg;</i></span>.</li>
+    <li>No slip on contact line: The instantaneous axis of zero velocity is the contact generator line.<br>
+      <span class="formula"><b>&omega;</b> = &omega;<sub>1</sub> / sin &gamma; = 3 / sin(18.43&deg;) = 3 / 0.3162 = <b>9.49 rad/s</b></span>.
+    </li>
+  </ol>
+</div>
+
+<!-- ========================================================================= -->
+<!-- ================================ PAGE 15 ================================ -->
+<!-- ========================================================================= -->
+<div class="page-break"></div>
+<span class="page-num">Page 15 of 15</span>
+
+<h2 class="chapter-header">GRAND SYNTHESIS: Master Decision Matrix (Chapters 16 – 20)</h2>
+
+<h3 class="section-header">1. Comprehensive Comparative Method Matrix</h3>
+<table>
+  <tr>
+    <th style="width: 14%;">Chapter & Domain</th>
+    <th style="width: 28%;">Primary Governing Equations</th>
+    <th style="width: 28%;">Key Kinematic / Kinetic Quantities</th>
+    <th style="width: 30%;">Ideal Application Context</th>
+  </tr>
+  <tr>
+    <td><b>Ch. 16</b><br>Planar Kinematics</td>
+    <td>
+      <span class="formula"><b>v</b><sub>B</sub> = <b>v</b><sub>A</sub> + <b>&omega;</b> &times; <b>r</b><sub>B/A</sub></span><br>
+      <span class="formula"><b>a</b><sub>B</sub> = <b>a</b><sub>A</sub> + <b>&alpha;</b> &times; <b>r</b> &minus; &omega;<sup>2</sup><b>r</b></span><br>
+      <span class="formula"><i>v = &omega; r<sub>IC</sub></i></span>
+    </td>
+    <td>Velocities, angular velocities (&omega;), instantaneous centers (IC), accelerations (&alpha;).</td>
+    <td>Linkages, slider-crank mechanisms, gear trains, and rolling wheels.</td>
+  </tr>
+  <tr>
+    <td><b>Ch. 17</b><br>Planar Kinetics (Force-Acc.)</td>
+    <td>
+      <span class="formula">&sum; <i>F<sub>x</sub> = m(a<sub>G</sub>)<sub>x</sub></i></span><br>
+      <span class="formula">&sum; <i>F<sub>y</sub> = m(a<sub>G</sub>)<sub>y</sub></i></span><br>
+      <span class="formula">&sum; <i>M<sub>G</sub> = I<sub>G</sub> &alpha;</i></span> (or <span class="formula">&sum; <i>M<sub>O</sub> = I<sub>O</sub> &alpha;</i></span>)
+    </td>
+    <td>External forces, pin reaction forces, mass moments of inertia (<i>I = I<sub>G</sub> + md<sup>2</sup></i>).</td>
+    <td>Problems requiring instantaneous linear/angular acceleration or hinge reaction forces.</td>
+  </tr>
+  <tr>
+    <td><b>Ch. 18</b><br>Planar Work & Energy</td>
+    <td>
+      <span class="formula"><i>T<sub>1</sub> + &sum; U<sub>1&rarr;2</sub> = T<sub>2</sub></i></span><br>
+      <span class="formula"><i>T = &frac12; m v<sub>G</sub><sup>2</sup> + &frac12; I<sub>G</sub> &omega;<sup>2</sup></i></span><br>
+      <span class="formula"><i>T<sub>1</sub> + V<sub>1</sub> = T<sub>2</sub> + V<sub>2</sub></i></span>
+    </td>
+    <td>Work of couples (<span class="formula"><i>M &Delta;&theta;</i></span>), springs (<span class="formula"><i>&frac12; k s<sup>2</sup></i></span>), potential gravity (<span class="formula"><i>m g y<sub>G</sub></i></span>).</td>
+    <td>System speeds at specific positions or displacements; eliminates internal constraint forces.</td>
+  </tr>
+  <tr>
+    <td><b>Ch. 19</b><br>Planar Impulse & Momentum</td>
+    <td>
+      <span class="formula"><i>m(<b>v</b><sub>G</sub>)<sub>1</sub> + &sum; &int; <b>F</b> dt = m(<b>v</b><sub>G</sub>)<sub>2</sub></i></span><br>
+      <span class="formula"><i>I<sub>G</sub>&omega;<sub>1</sub> + &sum; &int; M<sub>G</sub> dt = I<sub>G</sub>&omega;<sub>2</sub></i></span><br>
+      <span class="formula"><i>e = &Delta;v<sub>separation</sub> / &Delta;v<sub>approach</sub></i></span>
+    </td>
+    <td>Linear momentum (<i>m</i><b>v</b><sub>G</sub>), angular momentum (<i>I<sub>G</sub>&omega;</i>), eccentric impact restitution (<i>e</i>).</td>
+    <td>Collisions, sudden impulsive blows, hammer strikes, and transitions from slipping to rolling.</td>
+  </tr>
+  <tr>
+    <td><b>Ch. 20</b><br>3D Kinematics</td>
+    <td>
+      <span class="formula"><b>v</b> = <b>&omega;</b> &times; <b>r</b></span><br>
+      <span class="formula"><b>a</b> = <b>&alpha;</b> &times; <b>r</b> + <b>&omega;</b> &times; (<b>&omega;</b> &times; <b>r</b>)</span><br>
+      <span class="formula"><b>&alpha;</b> = (<b>&omega;̇</b>)<sub>xyz</sub> + <b>&Omega;</b> &times; <b>&omega;</b></span>
+    </td>
+    <td>Precession, spin, 3D cross products, Coriolis acceleration in 3D rotating frames.</td>
+    <td>Gyroscopes, spacecraft attitude motion, robotic spatial arms, universal joints.</td>
+  </tr>
+</table>
+
+<h3 class="section-header">2. Standard Mass Moments of Inertia Formula Sheet</h3>
+<div class="box">
+  <table style="margin: 2px 0;">
+    <tr>
+      <td><b>Slender Rod (Center G):</b> <span class="formula"><i>I<sub>G</sub> = (1/12) m L<sup>2</sup></i></span></td>
+      <td><b>Slender Rod (End Pin):</b> <span class="formula"><i>I<sub>O</sub> = (1/3) m L<sup>2</sup></i></span></td>
+    </tr>
+    <tr>
+      <td><b>Solid Cylinder / Disk:</b> <span class="formula"><i>I<sub>G</sub> = &frac12; m R<sup>2</sup></i></span></td>
+      <td><b>Thin Circular Hoop:</b> <span class="formula"><i>I<sub>G</sub> = m R<sup>2</sup></i></span></td>
+    </tr>
+    <tr>
+      <td><b>Solid Sphere:</b> <span class="formula"><i>I<sub>G</sub> = (2/5) m R<sup>2</sup></i></span></td>
+      <td><b>Rectangular Plate:</b> <span class="formula"><i>I<sub>G</sub> = (1/12) m (a<sup>2</sup> + b<sup>2</sup>)</i></span></td>
+    </tr>
+  </table>
+</div>
+
+</body>
+</html>

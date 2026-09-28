@@ -1,0 +1,52 @@
+# SpringShop - E-Commerce Storefront & Admin Dashboard
+
+Pure HTML5, CSS (TailwindCSS), and Vanilla JavaScript application built for integration with Spring Boot REST APIs.
+
+## Project Structure
+
+```
+├── asset/
+│   └── index.css
+├── js/
+│   ├── api/
+│   │   ├── auth.js
+│   │   ├── cart.js
+│   │   ├── categories.js
+│   │   ├── client.js
+│   │   ├── orders.js
+│   │   ├── products.js
+│   │   ├── reviews.js
+│   │   └── users.js
+│   ├── components/
+│   │   ├── confirmation.js
+│   │   ├── drawer.js
+│   │   ├── empty-state.js
+│   │   ├── footer.js
+│   │   ├── loader.js
+│   │   ├── modal.js
+│   │   ├── navbar.js
+│   │   ├── pagination.js
+│   │   ├── product-card.js
+│   │   └── toast.js
+│   ├── utils/
+│   │   ├── auth-guard.js
+│   │   ├── debounce.js
+│   │   ├── error-handler.js
+│   │   ├── formatter.js
+│   │   ├── storage.js
+│   │   └── validator.js
+│   ├── admin.js
+│   ├── config.js
+│   └── store.js
+├── src/
+│   ├── input.css
+│   └── output.css
+├── admin.html
+├── index.html
+├── package.json
+└── readMe
+```
+
+## Features
+- **Storefront (`index.html`)**: Product catalog, category filtering, search, cart, wishlist, customer reviews, checkout, and auth.
+- **Admin Dashboard (`admin.html`)**: Product management (CRUD + image upload), category hierarchy, order processing, customer records, and live metrics.

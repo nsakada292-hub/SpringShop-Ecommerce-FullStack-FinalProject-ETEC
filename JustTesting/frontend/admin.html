@@ -1,0 +1,1217 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ApexCommerce — Enterprise Admin Suite</title>
+  
+  <!-- Tailwind CSS & Lucide Icons CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#eef2ff',
+              100: '#e0e7ff',
+              500: '#6366f1',
+              600: '#4f46e5',
+              700: '#4338ca',
+              900: '#312e81',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+    body { font-family: 'Inter', sans-serif; }
+    .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
+    .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+    .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(156, 163, 175, 0.4); border-radius: 4px; }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 antialiased h-full flex overflow-hidden">
+
+  <!-- ==================== 1. SIDEBAR NAVIGATION ==================== -->
+  <aside id="sidebar" class="w-64 bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 flex flex-col z-30 transition-all duration-300">
+    <!-- Brand Header -->
+    <div class="h-16 flex items-center justify-between px-6 border-b border-slate-200 dark:border-slate-800">
+      <div class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-xl bg-brand-600 flex items-center justify-center text-white font-bold shadow-lg shadow-brand-500/30">
+          <i data-lucide="shopping-bag" class="w-5 h-5"></i>
+        </div>
+        <div>
+          <span class="font-bold text-base tracking-tight block leading-tight text-slate-900 dark:text-white">Apex<span class="text-brand-600">Admin</span></span>
+          <span class="text-[10px] text-slate-600 dark:text-slate-400 font-medium tracking-wider uppercase">Enterprise v4.2</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Navigation Links -->
+    <div class="flex-1 overflow-y-auto custom-scrollbar py-4 px-3 space-y-1" id="nav-container">
+      <div class="px-3 pb-2 text-[11px] font-semibold tracking-wider text-slate-600 dark:text-slate-400 uppercase">Core Operations</div>
+      
+      <button onclick="switchView('dashboard')" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition text-brand-600 bg-brand-50 dark:bg-brand-900/20 dark:text-brand-400" data-page="dashboard">
+        <i data-lucide="layout-dashboard" class="w-4 h-4"></i> Dashboard
+      </button>
+
+      <button onclick="switchView('products')" class="nav-btn w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800/60 transition" data-page="products">
+        <div class="flex items-center gap-3">
+          <i data-lucide="package" class="w-4 h-4"></i> Products
+        </div>
+        <span class="text-xs bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 px-2 py-0.5 rounded-full font-mono font-semibold" id="nav-product-count">0</span>
+      </button>
+
+      <button onclick="switchView('orders')" class="nav-btn w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800/60 transition" data-page="orders">
+        <div class="flex items-center gap-3">
+          <i data-lucide="shopping-cart" class="w-4 h-4"></i> Orders
+        </div>
+        <span class="text-xs bg-amber-100 dark:bg-amber-900/40 text-amber-600 dark:text-amber-400 px-2 py-0.5 rounded-full font-semibold" id="nav-pending-orders-count">0 Pending</span>
+      </button>
+
+      <button onclick="switchView('customers')" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800/60 transition" data-page="customers">
+        <i data-lucide="users" class="w-4 h-4"></i> Customers
+      </button>
+
+      <button onclick="switchView('reviews')" class="nav-btn w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800/60 transition" data-page="reviews">
+        <div class="flex items-center gap-3">
+          <i data-lucide="star" class="w-4 h-4"></i> Reviews & Ratings
+        </div>
+        <span class="w-2 h-2 rounded-full bg-rose-500"></span>
+      </button>
+
+      <div class="pt-4 px-3 pb-2 text-[11px] font-semibold tracking-wider text-slate-600 dark:text-slate-400 uppercase">System & Governance</div>
+
+      <button onclick="switchView('rbac')" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800/60 transition" data-page="rbac">
+        <i data-lucide="shield-check" class="w-4 h-4"></i> User & RBAC Matrix
+      </button>
+
+      <button onclick="switchView('settings')" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800/60 transition" data-page="settings">
+        <i data-lucide="settings" class="w-4 h-4"></i> Store Settings
+      </button>
+    </div>
+
+    <!-- Active User Footer with RBAC Simulator -->
+    <div class="p-3 border-t border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/50">
+      <div class="flex items-center gap-3 p-2 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
+        <img id="current-user-avatar" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=80&h=80&fit=crop&crop=face" class="w-9 h-9 rounded-full object-cover ring-2 ring-brand-500" alt="Avatar" />
+        <div class="flex-1 min-w-0">
+          <p id="current-user-name" class="text-xs font-semibold truncate text-slate-800 dark:text-slate-100">Admin</p>
+          <div class="flex items-center gap-1">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+            <select id="role-simulator-select" onchange="simulateRoleChange(this.value)" class="text-[11px] font-medium bg-transparent border-none p-0 text-slate-600 dark:text-slate-400 focus:ring-0 cursor-pointer">
+              <option value="Super Admin" selected>Super Admin</option>
+              <option value="Admin">Admin</option>
+              <option value="Manager">Store Manager</option>
+              <option value="Staff">Support Staff</option>
+            </select>
+          </div>
+        </div>
+        <button onclick="adminSignOut()" title="Sign out" class="text-slate-400 hover:text-rose-600 transition p-1">
+          <i data-lucide="log-out" class="w-4 h-4"></i>
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ==================== 2. MAIN CONTENT WRAPPER ==================== -->
+  <div class="flex-1 flex flex-col min-w-0 overflow-hidden">
+
+    <!-- Header Navigation -->
+    <header class="h-16 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 px-6 flex items-center justify-between gap-4 z-20">
+      <div class="flex items-center gap-4 flex-1 max-w-xl">
+        <button onclick="toggleSidebar()" class="lg:hidden text-slate-500 hover:text-slate-700 dark:text-slate-400">
+          <i data-lucide="menu" class="w-6 h-6"></i>
+        </button>
+        <div class="relative w-full">
+          <button onclick="openGlobalSearch()" class="w-full flex items-center justify-between bg-slate-100 dark:bg-slate-800 hover:bg-slate-200/70 text-slate-600 dark:text-slate-400 px-3.5 py-2 rounded-xl text-sm transition border border-transparent focus:border-brand-500">
+            <div class="flex items-center gap-2">
+              <i data-lucide="search" class="w-4 h-4 text-slate-600 dark:text-slate-400"></i>
+              <span class="text-xs">Search SKU, Orders (#ORD-), Customers, Users...</span>
+            </div>
+            <kbd class="hidden md:inline-block text-[10px] font-semibold bg-white dark:bg-slate-700 px-1.5 py-0.5 rounded shadow-sm text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-600">⌘K</kbd>
+          </button>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <div class="hidden sm:flex items-center gap-2 px-2.5 py-1 rounded-full bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/50 text-[11px] font-medium text-emerald-700 dark:text-emerald-400">
+          <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+          Store Live • 99.98%
+        </div>
+
+        <button onclick="toggleTheme()" class="w-9 h-9 flex items-center justify-center rounded-xl text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 dark:text-slate-400 transition" title="Toggle Theme">
+          <i data-lucide="moon" id="theme-icon-moon" class="w-4 h-4 hidden dark:block"></i>
+          <i data-lucide="sun" id="theme-icon-sun" class="w-4 h-4 block dark:hidden"></i>
+        </button>
+
+        <div class="h-6 w-px bg-slate-200 dark:border-slate-800"></div>
+        <button onclick="switchView('settings')" class="flex items-center gap-2 text-xs font-semibold text-slate-700 dark:text-slate-200 hover:text-brand-600 transition">
+          <i data-lucide="settings-2" class="w-4 h-4"></i>
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Dynamic Views -->
+    <main class="flex-1 overflow-y-auto custom-scrollbar p-6 bg-slate-50 dark:bg-slate-950" id="main-view-container">
+
+      <!-- ==================== VIEW 1: DASHBOARD ==================== -->
+      <section id="view-dashboard" class="space-y-6">
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 bg-gradient-to-r from-brand-900 via-brand-700 to-indigo-800 rounded-2xl p-6 text-white shadow-xl">
+          <div>
+            <span class="text-xs font-semibold tracking-wider uppercase text-brand-200">Store Executive Summary</span>
+            <h1 class="text-2xl font-bold mt-1">Apex OmniCommerce Performance Hub</h1>
+            <p class="text-xs text-brand-100 mt-1">Real-time telemetry across checkout funnels, inventory velocity, and fulfillment SLA.</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <button onclick="openProductModal()" class="px-3.5 py-2 rounded-xl bg-white text-brand-900 text-xs font-bold shadow hover:bg-brand-50 transition flex items-center gap-2 cursor-pointer">
+              <i data-lucide="plus-circle" class="w-3.5 h-3.5"></i> Add Product
+            </button>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div class="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-medium text-slate-600 dark:text-slate-400">Gross Revenue</span>
+              <span class="p-2 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400"><i data-lucide="dollar-sign" class="w-4 h-4"></i></span>
+            </div>
+            <div class="mt-3 flex items-baseline gap-2">
+              <h3 class="text-2xl font-bold text-slate-900 dark:text-white" id="dash-gross-rev">$0.00</h3>
+              <span class="text-xs font-semibold text-emerald-600 flex items-center gap-0.5"><i data-lucide="trending-up" class="w-3 h-3"></i> +14.2%</span>
+            </div>
+          </div>
+
+          <div class="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-medium text-slate-600 dark:text-slate-400">Total Orders</span>
+              <span class="p-2 rounded-xl bg-brand-50 dark:bg-brand-950/40 text-brand-600 dark:text-brand-400"><i data-lucide="shopping-bag" class="w-4 h-4"></i></span>
+            </div>
+            <div class="mt-3 flex items-baseline gap-2">
+              <h3 class="text-2xl font-bold text-slate-900 dark:text-white" id="dash-total-orders">0</h3>
+              <span class="text-xs font-semibold text-emerald-600 flex items-center gap-0.5"><i data-lucide="trending-up" class="w-3 h-3"></i> Live</span>
+            </div>
+          </div>
+
+          <div class="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-medium text-slate-600 dark:text-slate-400">Active Customers</span>
+              <span class="p-2 rounded-xl bg-purple-50 dark:bg-purple-950/40 text-purple-600 dark:text-purple-400"><i data-lucide="user-check" class="w-4 h-4"></i></span>
+            </div>
+            <div class="mt-3 flex items-baseline gap-2">
+              <h3 class="text-2xl font-bold text-slate-900 dark:text-white" id="dash-total-users">0</h3>
+              <span class="text-xs font-semibold text-emerald-600 flex items-center gap-0.5"><i data-lucide="trending-up" class="w-3 h-3"></i> Sync</span>
+            </div>
+          </div>
+
+          <div class="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-medium text-slate-600 dark:text-slate-400">Low Stock Warnings</span>
+              <span class="p-2 rounded-xl bg-amber-50 dark:bg-amber-950/40 text-amber-600 dark:text-amber-400"><i data-lucide="alert-triangle" class="w-4 h-4"></i></span>
+            </div>
+            <div class="mt-3 flex items-baseline gap-2">
+              <h3 class="text-2xl font-bold text-amber-600 dark:text-amber-400" id="dash-low-stock-count">0 Items</h3>
+              <span class="text-xs font-semibold text-rose-500">Action Req.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div class="lg:col-span-2 bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm">
+            <h4 class="font-bold text-sm text-slate-900 dark:text-white mb-4">Revenue & Order Volume Analytics</h4>
+            <div class="h-72 w-full">
+              <canvas id="revenueChart"></canvas>
+            </div>
+          </div>
+          <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm p-5 flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between mb-4">
+                <h4 class="font-bold text-sm text-slate-900 dark:text-white">Stock Depletion Alerts</h4>
+                <span class="text-[10px] uppercase font-bold bg-rose-100 text-rose-700 dark:bg-rose-950 dark:text-rose-400 px-2 py-0.5 rounded-full">Urgent</span>
+              </div>
+              <div class="space-y-3" id="dash-low-stock-list"></div>
+            </div>
+            <button onclick="switchView('products')" class="mt-4 w-full py-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 rounded-xl text-xs font-semibold text-slate-700 dark:text-slate-300 transition">
+              Manage Warehouse Stock
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== VIEW 2: PRODUCTS ==================== -->
+      <section id="view-products" class="hidden space-y-5">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div>
+            <h2 class="text-xl font-bold text-slate-900 dark:text-white">Products Catalog</h2>
+            <p class="text-xs text-slate-600 dark:text-slate-400">Control SKUs, inventory thresholds, multi-variants, and price indexing.</p>
+          </div>
+          <!-- ADD NEW PRODUCT BUTTON -->
+          <button onclick="openProductModal()" class="px-4 py-2.5 bg-brand-600 hover:bg-brand-700 active:scale-95 text-white rounded-xl text-xs font-bold shadow-md shadow-brand-500/20 flex items-center gap-2 transition cursor-pointer">
+            <i data-lucide="plus" class="w-4 h-4"></i> Add New Product
+          </button>
+        </div>
+
+        <div class="bg-white dark:bg-slate-900 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col md:flex-row gap-3 items-center justify-between">
+          <div class="flex flex-1 items-center gap-3 w-full">
+            <div class="relative flex-1">
+              <i data-lucide="search" class="w-4 h-4 absolute left-3 top-2.5 text-slate-600 dark:text-slate-400"></i>
+              <input type="text" id="product-search-input" onkeyup="filterProductsTable()" placeholder="Search by name, SKU..." class="w-full bg-slate-50 dark:bg-slate-800 pl-9 pr-4 py-2 rounded-xl text-xs border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-brand-500 focus:outline-hidden" />
+            </div>
+            <select id="product-category-filter" onchange="filterProductsTable()" class="bg-slate-50 dark:bg-slate-800 py-2 px-3 rounded-xl text-xs border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+              <option value="All">All Categories</option>
+            </select>
+          </div>
+          <div class="text-xs text-slate-600 dark:text-slate-400 whitespace-nowrap font-medium">
+            Showing <span id="product-filtered-count" class="font-bold text-slate-900 dark:text-white">0</span> items
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
+          <table class="w-full text-left text-xs">
+            <thead class="bg-slate-50 dark:bg-slate-800/70 text-slate-600 dark:text-slate-400 uppercase tracking-wider font-semibold">
+              <tr>
+                <th class="py-3.5 px-4">PRODUCT</th>
+                <th class="py-3.5 px-4">SKU</th>
+                <th class="py-3.5 px-4">CATEGORY</th>
+                <th class="py-3.5 px-4">PRICE</th>
+                <th class="py-3.5 px-4">STOCK</th>
+                <th class="py-3.5 px-4">STATUS</th>
+                <th class="py-3.5 px-4 text-right">ACTIONS</th>
+              </tr>
+            </thead>
+            <tbody id="products-table-body" class="divide-y divide-slate-100 dark:divide-slate-800"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ==================== VIEW 3: ORDERS ==================== -->
+      <section id="view-orders" class="hidden space-y-5">
+        <div>
+          <h2 class="text-xl font-bold text-slate-900 dark:text-white">Orders & Fulfillment Pipeline</h2>
+          <p class="text-xs text-slate-600 dark:text-slate-400">Track shipments, verify payment gateways, and process customer refunds.</p>
+        </div>
+        <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
+          <table class="w-full text-left text-xs">
+            <thead class="bg-slate-50 dark:bg-slate-800/70 text-slate-600 dark:text-slate-400 uppercase tracking-wider font-semibold">
+              <tr>
+                <th class="py-3.5 px-4">ORDER ID</th>
+                <th class="py-3.5 px-4">CUSTOMER</th>
+                <th class="py-3.5 px-4">ITEMS</th>
+                <th class="py-3.5 px-4">PAYMENT</th>
+                <th class="py-3.5 px-4">STATUS</th>
+                <th class="py-3.5 px-4">TOTAL</th>
+                <th class="py-3.5 px-4 text-right">ACTIONS</th>
+              </tr>
+            </thead>
+            <tbody id="orders-table-body" class="divide-y divide-slate-100 dark:divide-slate-800"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ==================== VIEW 4: CUSTOMERS ==================== -->
+      <section id="view-customers" class="hidden space-y-5">
+        <div>
+          <h2 class="text-xl font-bold text-slate-900 dark:text-white">Customer Database</h2>
+          <p class="text-xs text-slate-600 dark:text-slate-400">Inspect buyer order frequencies, total spend, and account states.</p>
+        </div>
+        <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
+          <table class="w-full text-left text-xs">
+            <thead class="bg-slate-50 dark:bg-slate-800/70 text-slate-600 dark:text-slate-400 uppercase tracking-wider font-semibold">
+              <tr>
+                <th class="py-3.5 px-4">CUSTOMER</th>
+                <th class="py-3.5 px-4">LOCATION</th>
+                <th class="py-3.5 px-4">ORDERS</th>
+                <th class="py-3.5 px-4">SPEND</th>
+                <th class="py-3.5 px-4">STATUS</th>
+                <th class="py-3.5 px-4 text-right">INSPECT</th>
+              </tr>
+            </thead>
+            <tbody id="customers-table-body" class="divide-y divide-slate-100 dark:divide-slate-800"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ==================== VIEW 5: REVIEWS ==================== -->
+      <section id="view-reviews" class="hidden space-y-5">
+        <div>
+          <h2 class="text-xl font-bold text-slate-900 dark:text-white">Product Reviews & Feedback</h2>
+          <p class="text-xs text-slate-600 dark:text-slate-400">Moderate customer feedback and testimonials.</p>
+        </div>
+        <div class="grid grid-cols-1 gap-4" id="reviews-container"></div>
+      </section>
+
+      <!-- ==================== VIEW 6: USERS & RBAC ==================== -->
+      <section id="view-rbac" class="hidden space-y-5">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div>
+            <h2 class="text-xl font-bold text-slate-900 dark:text-white">Admin Users & Access Governance</h2>
+            <p class="text-xs text-slate-600 dark:text-slate-400">Manage administrator privileges. Note: Super Admin elevation is strictly protected.</p>
+          </div>
+          <!-- ADD SYSTEM USER BUTTON -->
+          <button onclick="openUserModal()" class="px-4 py-2.5 bg-brand-600 hover:bg-brand-700 active:scale-95 text-white rounded-xl text-xs font-bold flex items-center gap-2 shadow-md shadow-brand-500/20 transition cursor-pointer">
+            <i data-lucide="user-plus" class="w-4 h-4"></i> Add System User
+          </button>
+        </div>
+
+        <div class="p-4 bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-900/50 rounded-2xl flex items-start gap-3">
+          <i data-lucide="shield-alert" class="w-5 h-5 text-amber-600 dark:text-amber-400 shrink-0 mt-0.5"></i>
+          <div class="text-xs text-amber-800 dark:text-amber-300 leading-relaxed">
+            <strong>RBAC Security Policy Active:</strong> Non-SuperAdmin accounts cannot modify their own permissions, nor promote other accounts to Super Admin status without cryptographically signed master credentials.
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
+          <table class="w-full text-left text-xs">
+            <thead class="bg-slate-50 dark:bg-slate-800/70 text-slate-600 dark:text-slate-400 uppercase tracking-wider font-semibold">
+              <tr>
+                <th class="py-3.5 px-4">USER</th>
+                <th class="py-3.5 px-4">ROLE ASSIGNED</th>
+                <th class="py-3.5 px-4">STATUS</th>
+                <th class="py-3.5 px-4">PERMISSIONS SCOPE</th>
+                <th class="py-3.5 px-4 text-right">ACTIONS</th>
+              </tr>
+            </thead>
+            <tbody id="rbac-users-tbody" class="divide-y divide-slate-100 dark:divide-slate-800"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ==================== VIEW 7: SETTINGS ==================== -->
+      <section id="view-settings" class="hidden space-y-6">
+        <div>
+          <h2 class="text-xl font-bold text-slate-900 dark:text-white">Store & Global Configuration</h2>
+          <p class="text-xs text-slate-600 dark:text-slate-400">Configure multi-currency, payment webhooks, and tax nexus rules.</p>
+        </div>
+        <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm p-6 space-y-6">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">Legal Store Name</label>
+              <input type="text" value="ApexCommerce Global Ltd" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-2.5 text-xs text-slate-900 dark:text-white" />
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">Support Contact Email</label>
+              <input type="email" value="support@apexcommerce.io" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-2.5 text-xs text-slate-900 dark:text-white" />
+            </div>
+          </div>
+          <div class="pt-4 border-t border-slate-100 dark:border-slate-800 flex justify-end">
+            <button onclick="showToast('Configurations saved successfully', 'success')" class="px-5 py-2.5 bg-brand-600 hover:bg-brand-700 text-white rounded-xl text-xs font-bold shadow transition">
+              Save Global Configurations
+            </button>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- ==================== 3. PRODUCT ADD / EDIT MODAL ==================== -->
+  <div id="product-modal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs hidden flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-slate-900 w-full max-w-lg rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 overflow-hidden flex flex-col max-h-[90vh]">
+      <div class="p-4 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <div class="p-2 rounded-lg bg-brand-50 dark:bg-brand-900/40 text-brand-600 dark:text-brand-400">
+            <i data-lucide="package-plus" class="w-4 h-4"></i>
+          </div>
+          <h3 id="product-modal-title" class="font-bold text-sm text-slate-900 dark:text-white">Add New Product</h3>
+        </div>
+        <button onclick="closeProductModal()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <form id="product-form" onsubmit="handleProductFormSubmit(event)" class="p-5 overflow-y-auto custom-scrollbar space-y-4 text-xs">
+        <input type="hidden" id="pm-id" />
+        <div>
+          <label class="block font-semibold mb-1 text-slate-700 dark:text-slate-300">Product Title *</label>
+          <input type="text" id="pm-title" required placeholder="e.g. Ultra-Fit Running Shoes" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-2.5 text-xs text-slate-900 dark:text-white focus:ring-2 focus:ring-brand-500 focus:outline-hidden" />
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block font-semibold mb-1 text-slate-700 dark:text-slate-300">SKU Code *</label>
+            <input type="text" id="pm-sku" required placeholder="e.g. VRS-BLK-42" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-2.5 text-xs text-slate-900 dark:text-white focus:ring-2 focus:ring-brand-500 focus:outline-hidden" />
+          </div>
+          <div>
+            <label class="block font-semibold mb-1 text-slate-700 dark:text-slate-300">Category *</label>
+            <select id="pm-category" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-2.5 text-xs text-slate-900 dark:text-white focus:ring-2 focus:ring-brand-500"></select>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-3 gap-3">
+          <div>
+            <label class="block font-semibold mb-1 text-slate-700 dark:text-slate-300">Price ($) *</label>
+            <input type="number" step="0.01" id="pm-price" required placeholder="145.50" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-2.5 text-xs text-slate-900 dark:text-white focus:ring-2 focus:ring-brand-500 focus:outline-hidden" />
+          </div>
+          <div>
+            <label class="block font-semibold mb-1 text-slate-700 dark:text-slate-300">Stock Units *</label>
+            <input type="number" id="pm-stock" required placeholder="10" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-2.5 text-xs text-slate-900 dark:text-white focus:ring-2 focus:ring-brand-500 focus:outline-hidden" />
+          </div>
+          <div>
+            <label class="block font-semibold mb-1 text-slate-700 dark:text-slate-300">Status</label>
+            <select id="pm-status" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-2.5 text-xs text-slate-900 dark:text-white focus:ring-2 focus:ring-brand-500">
+              <option value="Active">Active</option>
+              <option value="Draft">Draft</option>
+              <option value="Out of Stock">Out of Stock</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label class="block font-semibold mb-1 text-slate-700 dark:text-slate-300">Product Image</label>
+          <!--
+            Was a plain URL text field, but ProductController takes an actual
+            multipart file (@RequestParam("file") MultipartFile) — the URL
+            value was being captured but never sent, and a permanently-empty
+            blob was uploaded instead. Switched to a real file input so the
+            upload endpoint is actually connected. Required when creating a
+            product (backend requires a file); optional on edit — leave
+            empty to keep the current image.
+          -->
+          <input type="file" id="pm-image" accept="image/*" onchange="previewProductImage(this)" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-2.5 text-xs text-slate-900 dark:text-white focus:ring-2 focus:ring-brand-500 focus:outline-hidden" />
+          <p class="text-[11px] text-slate-400 mt-1">Leave empty when editing to keep the current image.</p>
+          <img id="pm-image-preview" src="" alt="" class="hidden mt-2 w-16 h-16 rounded-lg object-cover border border-slate-200 dark:border-slate-700" />
+        </div>
+
+        <div class="pt-3 border-t border-slate-100 dark:border-slate-800 flex justify-end gap-2">
+          <button type="button" onclick="closeProductModal()" class="px-4 py-2 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800">
+            Cancel
+          </button>
+          <button type="submit" class="px-4 py-2 bg-brand-600 hover:bg-brand-700 text-white rounded-xl font-bold shadow-md shadow-brand-500/20">
+            Save Product
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==================== 4. USER ADD / EDIT RBAC MODAL ==================== -->
+  <div id="user-modal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs hidden flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-slate-900 w-full max-w-md rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 overflow-hidden flex flex-col">
+      <div class="p-4 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <div class="p-2 rounded-lg bg-brand-50 dark:bg-brand-900/40 text-brand-600 dark:text-brand-400">
+            <i data-lucide="user-check" class="w-4 h-4"></i>
+          </div>
+          <h3 id="user-modal-title" class="font-bold text-sm text-slate-900 dark:text-white">Add New System User</h3>
+        </div>
+        <button onclick="closeUserModal()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <form id="user-form" onsubmit="handleUserFormSubmit(event)" class="p-5 space-y-4 text-xs">
+        <input type="hidden" id="um-id" />
+        <div>
+          <label class="block font-semibold mb-1 text-slate-700 dark:text-slate-300">Full Name *</label>
+          <input type="text" id="um-name" required placeholder="e.g. Jordan Miller" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-2.5 text-xs text-slate-900 dark:text-white focus:ring-2 focus:ring-brand-500 focus:outline-hidden" />
+        </div>
+
+        <div>
+          <label class="block font-semibold mb-1 text-slate-700 dark:text-slate-300">Email Address *</label>
+          <input type="email" id="um-email" required placeholder="jordan@apexcommerce.io" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-2.5 text-xs text-slate-900 dark:text-white focus:ring-2 focus:ring-brand-500 focus:outline-hidden" />
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block font-semibold mb-1 text-slate-700 dark:text-slate-300">Assigned Role *</label>
+            <select id="um-role" onchange="handleRoleDropdownChange(this.value)" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-2.5 text-xs text-slate-900 dark:text-white focus:ring-2 focus:ring-brand-500">
+              <option value="Staff">Support Staff</option>
+              <option value="Manager">Store Manager</option>
+              <option value="Admin">Admin</option>
+              <option value="Super Admin" id="opt-superadmin">Super Admin</option>
+            </select>
+          </div>
+          <div>
+            <label class="block font-semibold mb-1 text-slate-700 dark:text-slate-300">Account Status</label>
+            <select id="um-status" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-2.5 text-xs text-slate-900 dark:text-white focus:ring-2 focus:ring-brand-500">
+              <option value="Active">Active</option>
+              <option value="Suspended">Suspended</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label class="block font-semibold mb-1 text-slate-700 dark:text-slate-300">Permissions Scope Description</label>
+          <input type="text" id="um-permissions" required placeholder="e.g. Products, Orders, CRM" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-2.5 text-xs text-slate-900 dark:text-white focus:ring-2 focus:ring-brand-500" />
+        </div>
+
+        <div class="pt-3 border-t border-slate-100 dark:border-slate-800 flex justify-end gap-2">
+          <button type="button" onclick="closeUserModal()" class="px-4 py-2 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800">
+            Cancel
+          </button>
+          <button type="submit" class="px-4 py-2 bg-brand-600 hover:bg-brand-700 text-white rounded-xl font-bold shadow-md shadow-brand-500/20">
+            Save System User
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==================== 5. GLOBAL SEARCH MODAL ==================== -->
+  <div id="search-modal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs hidden flex items-start justify-center pt-20 p-4">
+    <div class="bg-white dark:bg-slate-900 w-full max-w-xl rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 overflow-hidden">
+      <div class="p-4 border-b border-slate-200 dark:border-slate-800 flex items-center gap-3">
+        <i data-lucide="search" class="w-5 h-5 text-brand-600"></i>
+        <input type="text" id="global-search-input" onkeyup="handleGlobalSearch(this.value)" placeholder="Search anything (e.g. 'AeroPro', 'ORD-9841', 'Elena')..." class="w-full bg-transparent border-none text-sm text-slate-900 dark:text-white focus:outline-hidden" />
+        <button onclick="closeGlobalSearch()" class="text-xs bg-slate-100 dark:bg-slate-800 px-2 py-1 rounded text-slate-500">ESC</button>
+      </div>
+      <div id="global-search-results" class="max-h-80 overflow-y-auto custom-scrollbar p-3 space-y-2 text-xs"></div>
+    </div>
+  </div>
+
+  <!-- ==================== 6. TOAST CONTAINER ==================== -->
+  <div id="toast-container" class="fixed bottom-5 right-5 z-50 space-y-2 pointer-events-none"></div>
+
+  <!-- ================================================================= -->
+  <!-- 7. REAL API FETCH ENGINE -->
+  <!-- ================================================================= -->
+  <script>
+    // API calls now live in js/api/*.js (one file per backend controller) —
+    // see MAPPING.md for the full endpoint list. Using dynamic import() here
+    // (instead of type="module") so every function below stays reachable
+    // from the onclick="" attributes used throughout the markup above,
+    // exactly as before.
+    let categoryApi, productApi, orderApi, userApi, reviewApi, cartApi, apiClient, authApi, authGuard;
+    const apiModulesReady = Promise.all([
+      import('./js/api/categoryApi.js'),
+      import('./js/api/productApi.js'),
+      import('./js/api/orderApi.js'),
+      import('./js/api/userApi.js'),
+      import('./js/api/reviewApi.js'),
+      import('./js/api/cartApi.js'),
+      import('./js/api/apiClient.js'),
+      import('./js/api/authApi.js'),
+      import('./js/authGuard.js'),
+    ]).then(([c, p, o, u, r, ca, ac, au, ag]) => {
+      categoryApi = c; productApi = p; orderApi = o; userApi = u;
+      reviewApi = r; cartApi = ca; apiClient = ac; authApi = au; authGuard = ag;
+    });
+
+    const AppState = {
+      currentUser: { name: "Elena Rostova", email: "elena@apexcommerce.io", role: "Super Admin" },
+      products: [],
+      categories: [],
+      orders: [],
+      customers: [],
+      reviews: [],
+      users: []
+    };
+
+    document.addEventListener("DOMContentLoaded", async () => {
+      await apiModulesReady;
+
+      // ---- Route guard: only an ADMIN may view the dashboard -----------------
+      // Blocks non-admins / signed-out users from the admin UI by replacing the
+      // content area with an "Access Denied" screen. The backend still rejects
+      // the underlying API calls; this is defense-in-depth + correct UX.
+      const allowed = authGuard.requireAdminPage({ blockElId: 'main-view-container' });
+      hideAdminChromeIfBlocked(allowed);
+
+      lucide.createIcons();
+      initCharts();
+
+      if (!allowed) {
+        return; // do not render or fetch any admin data
+      }
+
+      await loadAllApiData();
+
+      window.addEventListener("keydown", (e) => {
+        if ((e.metaKey || e.ctrlKey) && e.key === "k") {
+          e.preventDefault();
+          openGlobalSearch();
+        }
+        if (e.key === "Escape") {
+          closeGlobalSearch();
+          closeProductModal();
+          closeUserModal();
+        }
+      });
+    });
+
+    // If the guard blocked access, hide the sidebar/topbar/nav so only the
+    // "Access Denied" panel is visible.
+    function hideAdminChromeIfBlocked(allowed) {
+      if (allowed) return;
+      document.querySelectorAll('[data-admin-nav], aside, .sidebar, .topbar').forEach((el) => {
+        if (el.id !== 'main-view-container') el.style.display = 'none';
+      });
+    }
+
+    async function loadAllApiData() {
+      try {
+        // 1. Categories (CategoryController: GET /api/categories)
+        AppState.categories = await categoryApi.getAll();
+        populateCategories();
+      } catch (err) {
+        console.warn("Could not load categories:", err);
+      }
+
+      try {
+        // 2. Products (ProductController: GET /api/products)
+        const rawP = await productApi.getAll();
+        AppState.products = rawP.map(p => ({
+          id: p.id,
+          title: p.name || p.title,
+          sku: p.sku || `SKU-${p.id}`,
+          category: p.categoryName || p.category?.name || "Apparel",
+          categoryId: p.categoryId || p.category?.id,
+          price: Number(p.price || 0),
+          stock: p.stockQuantity ?? p.stock ?? 10,
+          status: (p.stockQuantity === 0 || p.stock === 0) ? "Out of Stock" : "Active",
+          image: p.imageUrl || "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=100&h=100&fit=crop"
+        }));
+      } catch (err) {
+        console.warn("Could not load products:", err);
+      }
+
+      try {
+        // 3. Orders (OrderController: GET /api/orders/all — admin only)
+        const rawO = await orderApi.getAll();
+        AppState.orders = rawO.map(o => ({
+          id: `ORD-${o.id}`,
+          rawId: o.id,
+          customer: o.receiverName || o.customerName || "Customer",
+          email: o.receiverEmail || "customer@example.com",
+          items: o.items ? `${o.items.length} item(s)` : "1x Order Items",
+          total: Number(o.totalAmount || o.total || 0),
+          payment: "Paid (Stripe)",
+          status: o.status || "Pending"
+        }));
+      } catch (err) {
+        console.warn("Could not load orders (admin sign-in required):", err);
+      }
+
+      try {
+        // 4. Users & Customers (UserController: GET /api/users — admin only)
+        const rawU = await userApi.getAll();
+        AppState.users = rawU.map(u => ({
+          id: u.id,
+          name: u.name || u.username,
+          email: u.email,
+          role: u.role || "Admin",
+          status: "Active",
+          permissions: u.role === "SUPER_ADMIN" || u.role === "Super Admin" ? "Full Master Access" : "Product, Orders, CRM"
+        }));
+
+        AppState.customers = rawU.map(u => ({
+          id: u.id,
+          name: u.name || u.username,
+          email: u.email,
+          location: u.address || "Phnom Penh, Cambodia",
+          orders: 1,
+          spend: "$120.00",
+          status: "Active"
+        }));
+      } catch (err) {
+        console.warn("Could not load users (admin sign-in required):", err);
+      }
+
+      try {
+        // 5. Current profile (UserController: GET /api/users/me)
+        const me = await userApi.getMyProfile();
+        AppState.currentUser.name = me.name || me.username;
+        AppState.currentUser.email = me.email;
+        document.getElementById('current-user-name').innerText = AppState.currentUser.name;
+      } catch (err) {
+        console.warn("Could not load current profile (sign-in required):", err);
+      }
+
+      try {
+        // 6. Reviews (ReviewController: GET /api/reviews/product/{id})
+        if (AppState.products.length > 0) {
+          const rawR = await reviewApi.getByProduct(AppState.products[0].id);
+          AppState.reviews = rawR.map(r => ({
+            id: r.id,
+            product: AppState.products[0].title,
+            reviewer: r.userName || "Verified Buyer",
+            rating: r.rating || 5,
+            comment: r.comment || r.content || "Great quality piece."
+          }));
+        }
+      } catch (err) {
+        console.warn("Could not load reviews:", err);
+      }
+
+      renderDashboard();
+      renderProducts();
+      renderOrders();
+      renderCustomers();
+      renderReviews();
+      renderRbacUsers();
+    }
+
+    function adminSignOut() {
+      authApi.logout();
+      window.location.href = 'page/login.html';
+    }
+
+    function populateCategories() {
+      const pCat = document.getElementById("pm-category");
+      const filterCat = document.getElementById("product-category-filter");
+      if (AppState.categories.length > 0) {
+        if (pCat) pCat.innerHTML = AppState.categories.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
+        if (filterCat) filterCat.innerHTML = `<option value="All">All Categories</option>` + AppState.categories.map(c => `<option value="${c.name}">${c.name}</option>`).join('');
+      }
+    }
+
+    function switchView(viewName) {
+      document.querySelectorAll("main > section").forEach(el => el.classList.add("hidden"));
+      const target = document.getElementById(`view-${viewName}`);
+      if (target) target.classList.remove("hidden");
+
+      document.querySelectorAll(".nav-btn").forEach(btn => {
+        if (btn.getAttribute("data-page") === viewName) {
+          btn.className = "nav-btn w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-sm font-medium transition text-brand-600 bg-brand-50 dark:bg-brand-900/20 dark:text-brand-400";
+        } else {
+          btn.className = "nav-btn w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800/60 transition";
+        }
+      });
+      lucide.createIcons();
+    }
+
+    function openProductModal() {
+      document.getElementById("product-modal-title").innerText = "Add New Product";
+      document.getElementById("product-form").reset();
+      document.getElementById("pm-id").value = "";
+      document.getElementById("pm-status").value = "Active";
+      document.getElementById("pm-image-preview").classList.add("hidden");
+      populateCategories();
+      document.getElementById("product-modal").classList.remove("hidden");
+    }
+
+    function closeProductModal() {
+      document.getElementById("product-modal").classList.add("hidden");
+    }
+
+    function editProduct(id) {
+      const p = AppState.products.find(x => x.id === id);
+      if (!p) return;
+      document.getElementById("product-modal-title").innerText = `Edit Product: ${p.sku}`;
+      document.getElementById("pm-id").value = p.id;
+      document.getElementById("pm-title").value = p.title;
+      document.getElementById("pm-sku").value = p.sku;
+      if (document.getElementById("pm-category")) {
+        document.getElementById("pm-category").value = p.categoryId || AppState.categories[0]?.id;
+      }
+      document.getElementById("pm-price").value = p.price;
+      document.getElementById("pm-stock").value = p.stock;
+      document.getElementById("pm-status").value = p.status;
+      // File inputs can't be pre-filled programmatically — show the current
+      // image as a preview instead so the admin can see what's already set.
+      document.getElementById("pm-image").value = "";
+      const preview = document.getElementById("pm-image-preview");
+      if (p.image) {
+        preview.src = p.image;
+        preview.classList.remove("hidden");
+      } else {
+        preview.classList.add("hidden");
+      }
+      document.getElementById("product-modal").classList.remove("hidden");
+    }
+
+    async function handleProductFormSubmit(e) {
+      e.preventDefault();
+      const id = document.getElementById("pm-id").value;
+      const title = document.getElementById("pm-title").value;
+      const sku = document.getElementById("pm-sku").value;
+      const categoryId = document.getElementById("pm-category")?.value || 1;
+      const price = parseFloat(document.getElementById("pm-price").value);
+      const stock = parseInt(document.getElementById("pm-stock").value, 10);
+      const fileInput = document.getElementById("pm-image");
+      const file = fileInput.files && fileInput.files[0] ? fileInput.files[0] : null;
+
+      if (!id && !file) {
+        showToast("A product image is required when creating a new product.", "error");
+        return;
+      }
+
+      const fields = {
+        name: title,
+        sku,
+        categoryId,
+        price,
+        stockQuantity: stock,
+        description: title,
+      };
+
+      try {
+        if (id) {
+          // file is optional here — omitted (null) keeps the existing image.
+          await productApi.update(id, fields, file);
+          showToast(`Product ${sku} updated.`, "success");
+        } else {
+          await productApi.create(fields, file);
+          showToast(`Product ${sku} created.`, "success");
+        }
+      } catch (err) {
+        showToast(err.message || "Error saving product.", "error");
+      }
+
+      closeProductModal();
+      await loadAllApiData();
+    }
+
+    function previewProductImage(input) {
+      const preview = document.getElementById("pm-image-preview");
+      const file = input.files && input.files[0];
+      if (!file) {
+        preview.classList.add("hidden");
+        return;
+      }
+      preview.src = URL.createObjectURL(file);
+      preview.classList.remove("hidden");
+    }
+
+    async function deleteProductApi(id) {
+      const p = AppState.products.find(x => x.id === id);
+      if (!p) return;
+      if (!confirm(`Delete "${p.title}"? This cannot be undone.`)) return;
+      try {
+        await productApi.remove(id);
+        showToast(`Product ${p.sku} deleted.`, "success");
+        await loadAllApiData();
+      } catch (err) {
+        showToast(err.message || "Error deleting product.", "error");
+      }
+    }
+
+    function filterProductsTable() {
+      const q = (document.getElementById("product-search-input")?.value || "").toLowerCase();
+      const cat = document.getElementById("product-category-filter")?.value || "All";
+
+      const filtered = AppState.products.filter(p => {
+        const matchQuery = p.title.toLowerCase().includes(q) || p.sku.toLowerCase().includes(q);
+        const matchCategory = cat === "All" || p.category === cat;
+        return matchQuery && matchCategory;
+      });
+
+      renderProducts(filtered);
+    }
+
+    function renderProducts(list = AppState.products) {
+      const tbody = document.getElementById("products-table-body");
+      const countEl = document.getElementById("product-filtered-count");
+      const navCount = document.getElementById("nav-product-count");
+
+      if (countEl) countEl.innerText = list.length;
+      if (navCount) navCount.innerText = AppState.products.length;
+
+      tbody.innerHTML = list.map(p => `
+        <tr class="hover:bg-slate-50/50 dark:hover:bg-slate-800/40 transition">
+          <td class="py-3.5 px-4 flex items-center gap-3">
+            <img src="${p.image}" class="w-9 h-9 rounded-xl object-cover ring-1 ring-slate-200 dark:ring-slate-700" alt="${p.title}" />
+            <div>
+              <p class="font-semibold text-slate-900 dark:text-white">${p.title}</p>
+              <p class="text-[11px] text-slate-600 dark:text-slate-400">${p.category}</p>
+            </div>
+          </td>
+          <td class="py-3.5 px-4 font-mono font-medium text-slate-600 dark:text-slate-400">${p.sku}</td>
+          <td class="py-3.5 px-4 text-slate-700 dark:text-slate-300 font-medium">${p.category}</td>
+          <td class="py-3.5 px-4 font-mono font-bold text-slate-900 dark:text-white">$${Number(p.price).toFixed(2)}</td>
+          <td class="py-3.5 px-4">
+            <span class="font-mono ${p.stock < 5 ? 'text-rose-600 font-bold' : 'text-slate-700 dark:text-slate-300'}">${p.stock} units</span>
+          </td>
+          <td class="py-3.5 px-4">
+            <span class="px-2 py-0.5 rounded-full text-[10px] font-bold ${
+              p.status === 'Active' ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300' :
+              p.status === 'Out of Stock' ? 'bg-rose-100 text-rose-700 dark:bg-rose-950 dark:text-rose-300' :
+              'bg-amber-100 text-amber-700 dark:bg-amber-950 dark:text-amber-300'
+            }">${p.status}</span>
+          </td>
+          <td class="py-3.5 px-4 text-right whitespace-nowrap">
+            <button onclick="editProduct(${p.id})" class="text-xs text-brand-600 dark:text-brand-400 font-semibold hover:underline cursor-pointer">Edit</button>
+            <button onclick="deleteProductApi(${p.id})" class="text-xs text-rose-600 dark:text-rose-400 font-semibold hover:underline cursor-pointer ml-3">Delete</button>
+          </td>
+        </tr>
+      `).join("");
+      lucide.createIcons();
+    }
+
+    // ---------------------------------------------------------------------
+    // RBAC "manage other users" panel below (add/edit user, change role).
+    //
+    // UserController only exposes: GET /me, PUT /me, PUT /me/password,
+    // GET /{id}, GET / (list). There is NO backend endpoint for an admin to
+    // create a user, edit someone else's role, or delete a user — so the
+    // three functions below intentionally stay local-only (browser memory,
+    // lost on refresh) rather than pretending to save to the server. See
+    // MAPPING.md "Missing from backend" for what would need to be added.
+    // ---------------------------------------------------------------------
+    function openUserModal() {
+      document.getElementById("user-modal-title").innerText = "Add New System User";
+      document.getElementById("user-form").reset();
+      document.getElementById("um-id").value = "";
+      document.getElementById("user-modal").classList.remove("hidden");
+    }
+
+    function closeUserModal() {
+      document.getElementById("user-modal").classList.add("hidden");
+    }
+
+    function handleRoleDropdownChange(role) {
+      const permInput = document.getElementById("um-permissions");
+      if (role === "Super Admin") permInput.value = "Full Master Access";
+      else if (role === "Admin") permInput.value = "Product, Orders, CRM";
+      else if (role === "Manager") permInput.value = "Inventory, Order Dispatch";
+      else permInput.value = "Support Ticket Read-Only";
+    }
+
+    function promptEditUser(id) {
+      const user = AppState.users.find(u => u.id === id);
+      if (!user) return;
+      document.getElementById("user-modal-title").innerText = `Edit Privileges: ${user.name}`;
+      document.getElementById("um-id").value = user.id;
+      document.getElementById("um-name").value = user.name;
+      document.getElementById("um-email").value = user.email;
+      document.getElementById("um-role").value = user.role;
+      document.getElementById("um-status").value = user.status;
+      document.getElementById("um-permissions").value = user.permissions;
+      document.getElementById("user-modal").classList.remove("hidden");
+    }
+
+    function handleUserFormSubmit(e) {
+      e.preventDefault();
+      const id = document.getElementById("um-id").value;
+      const name = document.getElementById("um-name").value;
+      const email = document.getElementById("um-email").value;
+      const role = document.getElementById("um-role").value;
+      const status = document.getElementById("um-status").value;
+      const permissions = document.getElementById("um-permissions").value;
+
+      if (id) {
+        const idx = AppState.users.findIndex(u => u.id == id);
+        if (idx !== -1) AppState.users[idx] = { ...AppState.users[idx], name, email, role, status, permissions };
+      } else {
+        AppState.users.push({ id: Date.now(), name, email, role, status, permissions });
+      }
+
+      showToast(`User ${name} saved locally — no backend endpoint exists yet to persist this (see MAPPING.md).`, "info");
+      closeUserModal();
+      renderRbacUsers();
+    }
+
+    function simulateRoleChange(role) {
+      AppState.currentUser.role = role;
+      showToast(`Switched active context to: ${role}`, "info");
+      renderRbacUsers();
+    }
+
+    function renderRbacUsers() {
+      const tbody = document.getElementById("rbac-users-tbody");
+      const isSuper = AppState.currentUser.role === "Super Admin";
+
+      tbody.innerHTML = AppState.users.map(u => `
+        <tr class="hover:bg-slate-50/50 dark:hover:bg-slate-800/40 transition">
+          <td class="py-3.5 px-4">
+            <div class="font-semibold text-slate-900 dark:text-white">${u.name}</div>
+            <div class="text-[10px] text-slate-600 dark:text-slate-400">${u.email}</div>
+          </td>
+          <td class="py-3.5 px-4">
+            <span class="px-2.5 py-1 rounded-full text-xs font-semibold ${u.role === 'Super Admin' ? 'bg-purple-100 text-purple-800 dark:bg-purple-950 dark:text-purple-300 font-bold' : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300'}">
+              ${u.role}
+            </span>
+          </td>
+          <td class="py-3.5 px-4">
+            <span class="px-2 py-0.5 rounded-full text-[10px] font-bold ${u.status === 'Active' ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300' : 'bg-rose-100 text-rose-700 dark:bg-rose-950/60 dark:text-rose-300'}">${u.status}</span>
+          </td>
+          <td class="py-3.5 px-4 text-slate-600 dark:text-slate-300 font-medium">${u.permissions}</td>
+          <td class="py-3.5 px-4 text-right">
+            ${u.role === 'Super Admin' && !isSuper ? `
+              <span class="text-[11px] text-slate-600 dark:text-slate-400 italic">Protected</span>
+            ` : `
+              <button onclick="promptEditUser(${u.id})" class="text-xs text-brand-600 dark:text-brand-400 font-semibold hover:underline cursor-pointer">Edit Privileges</button>
+            `}
+          </td>
+        </tr>
+      `).join("");
+      lucide.createIcons();
+    }
+
+    function renderDashboard() {
+      const lowStockList = document.getElementById("dash-low-stock-list");
+      const lowItems = AppState.products.filter(p => p.stock < 5);
+      
+      const totalRev = AppState.orders.reduce((sum, o) => sum + o.total, 0);
+      document.getElementById('dash-gross-rev').innerText = `$${totalRev.toFixed(2)}`;
+      document.getElementById('dash-total-orders').innerText = AppState.orders.length;
+      document.getElementById('dash-total-users').innerText = AppState.users.length;
+      document.getElementById('dash-low-stock-count').innerText = `${lowItems.length} Items`;
+
+      const pending = AppState.orders.filter(o => (o.status || "").toUpperCase() === "PENDING").length;
+      document.getElementById('nav-pending-orders-count').innerText = `${pending} Pending`;
+
+      lowStockList.innerHTML = lowItems.map(p => `
+        <div class="flex items-center justify-between p-2 rounded-xl bg-slate-50 dark:bg-slate-800">
+          <div class="flex items-center gap-2">
+            <img src="${p.image}" class="w-8 h-8 rounded-lg object-cover" />
+            <span class="font-bold text-xs truncate max-w-[130px]">${p.title}</span>
+          </div>
+          <span class="px-2 py-0.5 bg-rose-100 text-rose-700 dark:bg-rose-950 dark:text-rose-400 rounded text-xs font-mono font-bold">${p.stock} left</span>
+        </div>
+      `).join("");
+    }
+
+    function renderOrders() {
+      const tbody = document.getElementById("orders-table-body");
+      tbody.innerHTML = AppState.orders.map(o => `
+        <tr class="hover:bg-slate-50/50 dark:hover:bg-slate-800/40">
+          <td class="py-3.5 px-4 font-bold text-brand-600">${o.id}</td>
+          <td class="py-3.5 px-4 font-semibold">${o.customer}</td>
+          <td class="py-3.5 px-4">${o.items}</td>
+          <td class="py-3.5 px-4"><span class="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-100 text-emerald-700">${o.payment}</span></td>
+          <td class="py-3.5 px-4">
+            <select onchange="updateApiOrderStatus(${o.rawId || o.id.replace('ORD-','')}, this.value)" class="text-xs rounded border border-slate-200 dark:bg-slate-800 p-1">
+              <option value="${o.status}" selected>${o.status}</option>
+              <option value="PENDING">PENDING</option>
+              <option value="PROCESSING">PROCESSING</option>
+              <option value="SHIPPED">SHIPPED</option>
+              <option value="DELIVERED">DELIVERED</option>
+              <option value="CANCEL">CANCEL</option>
+            </select>
+          </td>
+          <td class="py-3.5 px-4 font-bold font-mono">$${o.total.toFixed(2)}</td>
+          <td class="py-3.5 px-4 text-right"><button onclick="showToast('Inspecting ' + '${o.id}', 'info')" class="text-brand-600 font-semibold cursor-pointer">Inspect</button></td>
+        </tr>
+      `).join("");
+    }
+
+    async function updateApiOrderStatus(orderId, status) {
+      try {
+        if (status === 'CANCEL') {
+          await orderApi.cancelOrder(orderId);
+        } else {
+          await orderApi.updateStatus(orderId, status);
+        }
+        showToast(`Order status updated to ${status}`, "success");
+        await loadAllApiData();
+      } catch (e) {
+        showToast(e.message || "Could not update order status.", "error");
+      }
+    }
+
+    function renderCustomers() {
+      const tbody = document.getElementById("customers-table-body");
+      tbody.innerHTML = AppState.customers.map(c => `
+        <tr class="hover:bg-slate-50/50 dark:hover:bg-slate-800/40">
+          <td class="py-3.5 px-4 font-semibold">${c.name}</td>
+          <td class="py-3.5 px-4">${c.location}</td>
+          <td class="py-3.5 px-4 font-mono">${c.orders}</td>
+          <td class="py-3.5 px-4 font-bold font-mono text-emerald-600">${c.spend}</td>
+          <td class="py-3.5 px-4"><span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-700">${c.status}</span></td>
+          <td class="py-3.5 px-4 text-right"><button onclick="showToast('Customer CRM Dossier opened', 'info')" class="text-brand-600 font-semibold cursor-pointer">View</button></td>
+        </tr>
+      `).join("");
+    }
+
+    function renderReviews() {
+      const c = document.getElementById("reviews-container");
+      if (AppState.reviews.length === 0) {
+        c.innerHTML = `<div class="p-6 text-center text-xs opacity-60">No pending reviews.</div>`;
+        return;
+      }
+      c.innerHTML = AppState.reviews.map(r => `
+        <div class="p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex items-center justify-between">
+          <div>
+            <div class="flex items-center gap-2">
+              <strong>${r.reviewer}</strong>
+              <span class="text-amber-500 text-xs font-bold">★ ${r.rating}.0</span>
+              <span class="text-xs text-slate-500">on ${r.product}</span>
+            </div>
+            <p class="text-xs text-slate-600 dark:text-slate-400 mt-1">"${r.comment}"</p>
+          </div>
+          <button onclick="deleteReviewApi(${r.id})" class="text-xs font-bold text-rose-600 bg-rose-50 px-2 py-1 rounded">Delete</button>
+        </div>
+      `).join("");
+    }
+
+    async function deleteReviewApi(reviewId) {
+      try {
+        await reviewApi.remove(reviewId);
+        AppState.reviews = AppState.reviews.filter(r => r.id !== reviewId);
+        renderReviews();
+        showToast("Review moderated.", "success");
+      } catch (e) {
+        showToast(e.message || "Could not delete review.", "error");
+      }
+    }
+
+    function showToast(msg, type = "info") {
+      const container = document.getElementById("toast-container");
+      const el = document.createElement("div");
+      let bg = "bg-slate-900 text-white dark:bg-white dark:text-slate-900";
+      if (type === "success") bg = "bg-emerald-600 text-white";
+      if (type === "error") bg = "bg-rose-600 text-white";
+
+      el.className = `${bg} px-4 py-3 rounded-2xl shadow-xl text-xs font-semibold flex items-center gap-2 transform transition-all duration-300 translate-y-2 opacity-0 pointer-events-auto`;
+      el.innerHTML = `<span>${msg}</span>`;
+      container.appendChild(el);
+
+      setTimeout(() => { el.classList.remove("translate-y-2", "opacity-0"); }, 10);
+      setTimeout(() => {
+        el.classList.add("opacity-0", "translate-y-2");
+        setTimeout(() => el.remove(), 300);
+      }, 3500);
+    }
+
+    function openGlobalSearch() {
+      document.getElementById("search-modal").classList.remove("hidden");
+      setTimeout(() => document.getElementById("global-search-input").focus(), 50);
+    }
+    function closeGlobalSearch() {
+      document.getElementById("search-modal").classList.add("hidden");
+    }
+    function handleGlobalSearch(q) {
+      const results = document.getElementById("global-search-results");
+      if (q.length < 2) {
+        results.innerHTML = `<div class="p-4 text-center text-slate-500">Type at least 2 characters to search...</div>`;
+        return;
+      }
+      results.innerHTML = `<div class="p-3 bg-slate-50 dark:bg-slate-800 rounded-xl cursor-pointer" onclick="closeGlobalSearch(); switchView('products');">
+        <strong>Matched Entities</strong>
+        <p class="text-slate-500">Query: "${q}" — Click to jump to catalog</p>
+      </div>`;
+    }
+
+    function toggleTheme() {
+      document.documentElement.classList.toggle("dark");
+    }
+
+    function toggleSidebar() {
+      document.getElementById("sidebar").classList.toggle("-translate-x-full");
+    }
+
+    function initCharts() {
+      const ctx = document.getElementById("revenueChart").getContext("2d");
+      new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+          datasets: [{
+            label: 'Sales ($)',
+            data: [14200, 18500, 16900, 24000, 21500, 31200, 28400],
+            borderColor: '#6366f1',
+            backgroundColor: 'rgba(99, 102, 241, 0.1)',
+            fill: true,
+            tension: 0.35,
+            borderWidth: 2.5
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { display: false } }
+        }
+      });
+    }
+  </script>
+</body>
+</html>

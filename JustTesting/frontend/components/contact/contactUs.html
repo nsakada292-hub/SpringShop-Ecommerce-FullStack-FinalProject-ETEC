@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact-MALUB Restaurant</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config = { darkMode: 'class' }</script>
+
+    <style>
+        body { font-family: 'DM Sans', sans-serif; }
+
+        .nav-link { position: relative; }
+        .nav-link::after {
+            content: '';
+            position: absolute; bottom: -2px; left: 0;
+            width: 100%; height: 2px;
+            background: #16a34a;
+            transform: scaleX(0); transform-origin: right;
+            transition: transform .3s ease;
+        }
+        .nav-link:hover::after { transform: scaleX(1); transform-origin: left; }
+        .nav-active { color: #16a34a !important; font-weight: 600; }
+
+        @keyframes floatLeaf {
+            0%,100% { transform: translateY(0) rotate(0deg); }
+            50%      { transform: translateY(-22px) rotate(12deg); }
+        }
+        .leaf { animation: floatLeaf 5s ease-in-out infinite; opacity: .22; }
+        .leaf:nth-child(2){ animation-delay:1.2s; animation-duration:6.5s; }
+        .leaf:nth-child(3){ animation-delay:2.5s; animation-duration:7s; }
+
+        .reveal { opacity:0; transform:translateY(28px); transition: opacity .65s ease, transform .65s ease; }
+        .reveal.visible { opacity:1; transform:translateY(0); }
+
+        .info-card { transition: transform .2s ease, box-shadow .2s ease; border-left: 4px solid #16a34a; }
+        .info-card:hover { transform:translateY(-4px); box-shadow:0 14px 36px rgba(0,0,0,.09); }
+
+        .faq-answer { max-height: 0; overflow: hidden; transition: max-height .4s ease; }
+        .faq-answer.open { max-height: 300px; }
+        .faq-icon { transition: transform .35s ease; display:inline-block; }
+        .faq-icon.rotated { transform: rotate(45deg); }
+
+        .social-pill { transition: transform .2s ease, box-shadow .2s ease; }
+        .social-pill:hover { transform: translateY(-4px); box-shadow: 0 10px 24px rgba(0,0,0,.15); }
+
+        /* hero label */
+        .hero-label { color: #86efac; }
+    </style>
+    <style>
+        body { font-family: 'DM Sans', sans-serif; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root { --primary: #14532d; --accent: #ffffff; }
+
+        /* Dark mode smooth transition */
+        *, *::before, *::after { transition: background-color 0.3s ease, border-color 0.3s ease, color 0.2s ease; }
+        img, svg, button { transition: none !important; }
+
+        /* Navbar */
+        @keyframes fadeInDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+        .animate-fade-in { animation: fadeInDown 0.4s ease-out forwards; }
+        .nav-link { position: relative; overflow: hidden; }
+        .nav-link::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 2px; background-color: currentColor; transform: scaleX(0); transform-origin: right; transition: transform 0.3s ease-out; }
+        .nav-link:hover::after { transform: scaleX(1); transform-origin: left; }
+        .mobile-menu { transition: transform 0.3s ease-out, opacity 0.3s ease-out; }
+
+        /* Hero */
+        @keyframes float { 0%, 100% { transform: translateY(0px) rotate(-5deg); } 50% { transform: translateY(-20px) rotate(5deg); } }
+        .float-shoe { animation: float 3s ease-in-out infinite; }
+
+        /* Cards */
+        .product-card { transition: transform 0.18s ease, box-shadow 0.18s ease !important; }
+        .product-card:hover { transform: translateY(-4px); box-shadow: 0 12px 28px rgba(0,0,0,0.12); }
+        .dark .product-card:hover { box-shadow: 0 12px 28px rgba(0,0,0,0.4); }
+        .arrow { display: inline-block; transition: transform 0.3s ease; }
+
+        /* Dark mode toggle button */
+        .toggle-track { width: 52px; height: 28px; background: #d1d5db; border-radius: 9999px; position: relative; cursor: pointer; transition: background 0.3s ease !important; }
+        .dark .toggle-track { background: #16a34a; }
+        .toggle-thumb { width: 22px; height: 22px; background: white; border-radius: 50%; position: absolute; top: 3px; left: 3px; transition: transform 0.3s ease !important; display: flex; align-items: center; justify-content: center; box-shadow: 0 1px 4px rgba(0,0,0,0.2); }
+        .dark .toggle-thumb { transform: translateX(24px); }
+        .toggle-icon { font-size: 12px; line-height: 1; }
+
+        /* Hamburger animation */
+        .ham-line { display: block; width: 22px; height: 2px; background: currentColor; border-radius: 2px; transition: transform 0.3s ease, opacity 0.3s ease !important; }
+        .ham-open .ham-line:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+        .ham-open .ham-line:nth-child(2) { opacity: 0; }
+        .ham-open .ham-line:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+
+        /* Mobile menu slide */
+        #mobileMenu { max-height: 0; overflow: hidden; transition: max-height 0.4s cubic-bezier(0.4,0,0.2,1) !important; }
+        #mobileMenu.open { max-height: 500px; }
+
+        /* Section card hover */
+        .category-card { transition: box-shadow 0.2s ease, transform 0.2s ease; }
+        .category-card:hover { transform: translateY(-2px); }
+
+        /* Scrollbar dark */
+        .dark ::-webkit-scrollbar-track { background: #1f2937; }
+        .dark ::-webkit-scrollbar-thumb { background: #4b5563; }
+    </style>
+</head>
+<body class="bg-gray-50 dark:bg-gray-950 transition-colors duration-300 loading">
+
+<!-- ── NAVBAR ── -->
+    <header class="fixed top-0 left-0 right-0 z-50 bg-green-200 dark:bg-gray-900/90 backdrop-blur-md border-b border-gray-200 dark:border-gray-700 shadow-sm">
+        <nav class="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex justify-between items-center">
+
+            <!-- Logo -->
+            <a href="#" class="flex items-center gap-2 group">
+                <span class="text-2xl font-black text-green-600 dark:text-green-400 tracking-tight group-hover:text-green-700 dark:group-hover:text-green-300 transition-colors">MALUB</span>
+                <span class="hidden sm:inline text-xs font-medium text-gray-400 dark:text-gray-500 tracking-widest uppercase mt-1">Restaurant</span>
+            </a>
+
+            <!-- Desktop Links -->
+            <div class="hidden md:flex items-center space-x-1">
+                <a href="./homePage.html" class="nav-link px-3 py-2 text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 rounded-lg hover:bg-green-50 dark:hover:bg-green-900/30 transition-colors">Home</a>
+                <a href="./menuPage.html" class="nav-link px-3 py-2 text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 rounded-lg hover:bg-green-50 dark:hover:bg-green-900/30 transition-colors">Menu</a>
+                <a href="./aboutPage.html" class="nav-link px-3 py-2 text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 rounded-lg hover:bg-green-50 dark:hover:bg-green-900/30 transition-colors">About Us</a>
+                <a href="./services.html" class="nav-link px-3 py-2 text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 rounded-lg hover:bg-green-50 dark:hover:bg-green-900/30 transition-colors">Services</a>
+                <a href="./contactPage.html" class="nav-link px-3 py-2 text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 rounded-lg hover:bg-green-50 dark:hover:bg-green-900/30 transition-colors">Contact</a>
+            </div>
+
+            <!-- Desktop Right -->
+            <div class="hidden md:flex items-center gap-3">
+                <!-- Dark Mode Toggle -->
+                <button id="darkModeToggle" aria-label="Toggle dark mode" onclick="toggleDark()">
+                    <div class="toggle-track">
+                        <div class="toggle-thumb">
+                            <span class="toggle-icon" id="toggleIcon">☀️</span>
+                        </div>
+                    </div>
+                </button>
+                <a href="./sign_in.html" class="bg-green-600 hover:bg-green-700 dark:bg-green-500 dark:hover:bg-green-600 text-white text-sm font-semibold px-5 py-2 rounded-full transition-colors shadow-sm">Sign In</a>
+            </div>
+
+            <!-- Mobile Right: toggle + hamburger -->
+            <div class="flex md:hidden items-center gap-3">
+                <button aria-label="Toggle dark mode" onclick="toggleDark()">
+                    <div class="toggle-track">
+                        <div class="toggle-thumb">
+                            <span class="toggle-icon" id="toggleIconMobile">☀️</span>
+                        </div>
+                    </div>
+                </button>
+                <button id="mobileMenuButton" class="flex flex-col gap-1.5 p-1.5 text-gray-700 dark:text-gray-200 focus:outline-none" aria-label="Open menu">
+                    <span class="ham-line"></span>
+                    <span class="ham-line"></span>
+                    <span class="ham-line"></span>
+                </button>
+            </div>
+
+        </nav>
+
+        <!-- Mobile Menu -->
+        <div id="mobileMenu" class="md:hidden bg-white dark:bg-gray-900 border-t border-gray-100 dark:border-gray-700">
+            <div class="max-w-7xl mx-auto px-4 py-3 space-y-1">
+                <a href="./homePage.html" class="flex items-center gap-2 px-4 py-3 text-sm font-medium text-gray-700 dark:text-gray-200 hover:text-green-600 dark:hover:text-green-400 hover:bg-green-50 dark:hover:bg-green-900/30 rounded-xl transition-colors">🏠 Home</a>
+                <a href="./menuPage.html" class="flex items-center gap-2 px-4 py-3 text-sm font-medium text-gray-700 dark:text-gray-200 hover:text-green-600 dark:hover:text-green-400 hover:bg-green-50 dark:hover:bg-green-900/30 rounded-xl transition-colors">🍽️ Menu</a>
+                <a href="./aboutPage.html" class="flex items-center gap-2 px-4 py-3 text-sm font-medium text-gray-700 dark:text-gray-200 hover:text-green-600 dark:hover:text-green-400 hover:bg-green-50 dark:hover:bg-green-900/30 rounded-xl transition-colors">👨‍🍳 About Us</a>
+                <a href="./services.html" class="flex items-center gap-2 px-4 py-3 text-sm font-medium text-gray-700 dark:text-gray-200 hover:text-green-600 dark:hover:text-green-400 hover:bg-green-50 dark:hover:bg-green-900/30 rounded-xl transition-colors">🛎️ Services</a>
+                <a href="./contactPage.html" class="flex items-center gap-2 px-4 py-3 text-sm font-medium text-gray-700 dark:text-gray-200 hover:text-green-600 dark:hover:text-green-400 hover:bg-green-50 dark:hover:bg-green-900/30 rounded-xl transition-colors">📞 Contact</a>
+                <div class="pt-2 pb-1">
+                    <a href="./sign_in.html" class="block w-full text-center bg-green-600 hover:bg-green-700 text-white text-sm font-semibold px-5 py-3 rounded-xl transition-colors">Sign In</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+<!-- HERO -->
+<section class="relative min-h-[45vh] flex items-end pt-20 overflow-hidden" style="background-image: linear-gradient(rgba(10,38,20,0.60), rgba(8,30,16,0.70)), url('../asset/header_food1.jpg'); background-size: cover; background-position: center;">
+    <!-- <div class="absolute -top-24 -right-24 w-96 h-96 bg-green-400 rounded-full filter blur-3xl opacity-20 animate-pulse"></div> -->
+    <!-- <div class="absolute -bottom-16 -left-16 w-72 h-72 bg-yellow-300 rounded-full filter blur-3xl opacity-20 animate-pulse" style="animation-delay:1.5s"></div> -->
+
+    <div class="relative z-10 container mx-auto px-6 pb-16 text-center" data-aos="zoom-in-down">
+    <h1 class="text-6xl sm:text-8xl font-bold text-white leading-none" style="font-family:'DM Sans', sans-serif">
+        Contact <span class="text-green-400 italic">Us</span>
+    </h1>
+    <p class="mt-4 text-white/75 text-lg max-w-lg mx-auto">
+        Everything you need to visit, call, or follow us — all in one place.
+    </p>
+    <div class="flex flex-wrap gap-2 mt-6 justify-center">
+        <a href="#address" class="bg-white/10 backdrop-blur-sm border border-white/25 text-white text-xs font-semibold px-4 py-2 rounded-full hover:bg-green-600 hover:text-white hover:border-green-600 transition-all duration-200">📍 Address</a>
+        <a href="#phones" class="bg-white/10 backdrop-blur-sm border border-white/25 text-white text-xs font-semibold px-4 py-2 rounded-full hover:bg-green-600 hover:text-white hover:border-green-600 transition-all duration-200">📞 Phone</a>
+        <a href="#hours" class="bg-white/10 backdrop-blur-sm border border-white/25 text-white text-xs font-semibold px-4 py-2 rounded-full hover:bg-green-600 hover:text-white hover:border-green-600 transition-all duration-200">🕐 Hours</a>
+        <a href="#social" class="bg-white/10 backdrop-blur-sm border border-white/25 text-white text-xs font-semibold px-4 py-2 rounded-full hover:bg-green-600 hover:text-white hover:border-green-600 transition-all duration-200">📲 Social</a>
+        <a href="#faq" class="bg-white/10 backdrop-blur-sm border border-white/25 text-white text-xs font-semibold px-4 py-2 rounded-full hover:bg-green-600 hover:text-white hover:border-green-600 transition-all duration-200">❓ FAQ</a>
+    </div>
+</div>
+</section>
+
+<!-- ADDRESS & MAP -->
+<section id="address" class="bg-green-100 dark:bg-gray-900 py-16 px-4">
+    <div class="max-w-6xl mx-auto">
+        <div class="reveal mb-10">
+            <span class="text-xs font-bold tracking-widest uppercase text-green-300">Where to find us</span>
+            <h2 class="text-4xl font-bold text-gray-900 dark:text-white mt-1" style="font-family:'DM Sans', sans-serif">Address &amp; Map</h2>
+        </div>
+        <div class="grid lg:grid-cols-5 gap-8 items-start reveal" style="transition-delay:.1s">
+            <div class="lg:col-span-2">
+                <div class="info-card bg-green-50 dark:bg-gray-800 rounded-2xl p-7">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-11 h-11 rounded-xl bg-green-600 flex items-center justify-center text-white">
+                            <i class="fa-solid fa-location-dot text-lg"></i>
+                        </div>
+                        <h3 class="font-semibold text-gray-900 dark:text-white text-lg">Our Location</h3>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-300 text-sm leading-7">
+                        No. 40, Street 273,<br>
+                        Sangkat Boeung Kak I,<br>
+                        Khan Toul Kork,<br>
+                        <span class="font-semibold text-green-700 dark:text-green-400">Phnom Penh, Cambodia</span>
+                    </p>
+                    <a href="https://maps.app.goo.gl/tRfPPGr34Ec6JuPGA" target="_blank"
+                       class="inline-flex items-center gap-2 mt-5 bg-green-700 hover:bg-green-600 text-white text-xs font-semibold px-5 py-2.5 rounded-full transition-colors duration-200">
+                        <i class="fa-solid fa-diamond-turn-right"></i> Get Directions
+                    </a>
+                </div>
+            </div>
+            <div class="lg:col-span-3 w-full h-72 lg:h-80 rounded-2xl overflow-hidden shadow-md border border-green-100 dark:border-gray-700">
+                <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3908.853!2d104.9211!3d11.5693!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3109513dc76a6b31%3A0x9b5bc6e0b6b1c2e4!2sKhan%20Toul%20Kork%2C%20Phnom%20Penh!5e0!3m2!1sen!2skh!4v1"
+                    width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"
+                    referrerpolicy="no-referrer-when-downgrade" title="MALUB Location">
+                </iframe>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- PHONE & HOURS -->
+<section class="bg-green-100 dark:bg-gray-800 py-16 px-4">
+    <div class="max-w-6xl mx-auto grid md:grid-cols-2 gap-10">
+
+        <!-- Phone -->
+        <div id="phones" class="reveal">
+            <span class="text-xs font-bold tracking-widest uppercase text-green-600">Call us anytime</span>
+            <h2 class="text-4xl font-bold text-gray-900 dark:text-white mt-1 mb-7" style="font-family:'DM Sans', sans-serif">Phone Numbers</h2>
+            <div class="space-y-3">
+                <a href="tel:+85517928998" class="info-card flex items-center gap-4 bg-white dark:bg-gray-700 rounded-xl px-5 py-4 group cursor-pointer">
+                    <div class="w-10 h-10 rounded-full bg-green-100 dark:bg-green-900 flex items-center justify-center text-green-700 dark:text-green-300 group-hover:bg-green-600 group-hover:text-white transition-colors duration-200 flex-shrink-0">
+                        <i class="fa-solid fa-phone text-sm"></i>
+                    </div>
+                    <div>
+                        <p class="text-xs text-gray-400">Main Line</p>
+                        <p class="font-semibold text-gray-900 dark:text-white text-sm">(+855) 17-928-998</p>
+                    </div>
+                    <i class="fa-solid fa-arrow-up-right-from-square ml-auto text-xs text-gray-300 group-hover:text-green-600 transition-colors"></i>
+                </a>
+                <a href="tel:+85586243016" class="info-card flex items-center gap-4 bg-white dark:bg-gray-700 rounded-xl px-5 py-4 group cursor-pointer">
+                    <div class="w-10 h-10 rounded-full bg-green-100 dark:bg-green-900 flex items-center justify-center text-green-700 dark:text-green-300 group-hover:bg-green-600 group-hover:text-white transition-colors duration-200 flex-shrink-0">
+                        <i class="fa-solid fa-phone text-sm"></i>
+                    </div>
+                    <div>
+                        <p class="text-xs text-gray-400">Reservations</p>
+                        <p class="font-semibold text-gray-900 dark:text-white text-sm">(+855) 86-243-016</p>
+                    </div>
+                    <i class="fa-solid fa-arrow-up-right-from-square ml-auto text-xs text-gray-300 group-hover:text-green-600 transition-colors"></i>
+                </a>
+                <a href="tel:+855972977674" class="info-card flex items-center gap-4 bg-white dark:bg-gray-700 rounded-xl px-5 py-4 group cursor-pointer">
+                    <div class="w-10 h-10 rounded-full bg-green-100 dark:bg-green-900 flex items-center justify-center text-green-700 dark:text-green-300 group-hover:bg-green-600 group-hover:text-white transition-colors duration-200 flex-shrink-0">
+                        <i class="fa-solid fa-phone text-sm"></i>
+                    </div>
+                    <div>
+                        <p class="text-xs text-gray-400">Events &amp; Catering</p>
+                        <p class="font-semibold text-gray-900 dark:text-white text-sm">(+855) 97-297-7674</p>
+                    </div>
+                    <i class="fa-solid fa-arrow-up-right-from-square ml-auto text-xs text-gray-300 group-hover:text-green-600 transition-colors"></i>
+                </a>
+                <a href="tel:+85569298825" class="info-card flex items-center gap-4 bg-white dark:bg-gray-700 rounded-xl px-5 py-4 group cursor-pointer">
+                    <div class="w-10 h-10 rounded-full bg-green-100 dark:bg-green-900 flex items-center justify-center text-green-700 dark:text-green-300 group-hover:bg-green-600 group-hover:text-white transition-colors duration-200 flex-shrink-0">
+                        <i class="fa-solid fa-phone text-sm"></i>
+                    </div>
+                    <div>
+                        <p class="text-xs text-gray-400">Customer Support</p>
+                        <p class="font-semibold text-gray-900 dark:text-white text-sm">(+855) 69-298-825</p>
+                    </div>
+                    <i class="fa-solid fa-arrow-up-right-from-square ml-auto text-xs text-gray-300 group-hover:text-green-600 transition-colors"></i>
+                </a>
+                <a href="tel:+855966733867" class="info-card flex items-center gap-4 bg-white dark:bg-gray-700 rounded-xl px-5 py-4 group cursor-pointer">
+                    <div class="w-10 h-10 rounded-full bg-green-100 dark:bg-green-900 flex items-center justify-center text-green-700 dark:text-green-300 group-hover:bg-green-600 group-hover:text-white transition-colors duration-200 flex-shrink-0">
+                        <i class="fa-solid fa-phone text-sm"></i>
+                    </div>
+                    <div>
+                        <p class="text-xs text-gray-400">Asking Information</p>
+                        <p class="font-semibold text-gray-900 dark:text-white text-sm">(+855) 96-673-3867</p>
+                    </div>
+                    <i class="fa-solid fa-arrow-up-right-from-square ml-auto text-xs text-gray-300 group-hover:text-green-600 transition-colors"></i>
+                </a>
+            </div>
+        </div>
+
+        <!-- Hours -->
+        <div id="hours" class="reveal" style="transition-delay:.15s">
+            <span class="text-xs font-bold tracking-widest uppercase text-green-600">We're open</span>
+            <h2 class="text-4xl font-bold text-gray-900 dark:text-white mt-1 mb-7" style="font-family:'DM Sans', sans-serif">Opening Hours</h2>
+            <div class="info-card bg-white dark:bg-gray-700 rounded-2xl overflow-hidden shadow-sm">
+                <div class="px-6 py-4 border-b border-stone-100 dark:border-gray-600 flex justify-between items-center">
+                    <span class="text-sm text-gray-700 dark:text-gray-300 font-medium">Monday – Friday</span>
+                    <span class="text-xs font-bold text-green-700 dark:text-green-400 bg-green-100 dark:bg-green-900/40 px-3 py-1 rounded-full">7:00 AM – 10:00 PM</span>
+                </div>
+                <div class="px-6 py-4 border-b border-stone-100 dark:border-gray-600 flex justify-between items-center">
+                    <span class="text-sm text-gray-700 dark:text-gray-300 font-medium">Saturday</span>
+                    <span class="text-xs font-bold text-green-700 dark:text-green-400 bg-green-100 dark:bg-green-900/40 px-3 py-1 rounded-full">8:00 AM – 11:00 PM</span>
+                </div>
+                <div class="px-6 py-4 border-b border-stone-100 dark:border-gray-600 flex justify-between items-center">
+                    <span class="text-sm text-gray-700 dark:text-gray-300 font-medium">Sunday</span>
+                    <span class="text-xs font-bold text-green-700 dark:text-green-400 bg-green-100 dark:bg-green-900/40 px-3 py-1 rounded-full">9:00 AM – 9:00 PM</span>
+                </div>
+                <div id="liveStatus" class="mx-6 my-4 rounded-xl px-4 py-3 flex items-center gap-3 text-sm font-medium"></div>
+            </div>
+            <p class="mt-4 text-xs text-gray-400 dark:text-gray-500 flex items-center gap-1.5">
+                <i class="fa-solid fa-circle-info text-green-500"></i>
+                Kitchen closes 30 minutes before closing time.
+            </p>
+        </div>
+    </div>
+</section>
+
+<!-- SOCIAL MEDIA -->
+<section id="social" class="bg-green-100 dark:bg-gray-900 py-16 px-4">
+    <div class="max-w-6xl mx-auto">
+        <div class="reveal text-center mb-10">
+            <span class="text-xs font-bold tracking-widest uppercase text-green-600">Stay connected</span>
+            <h2 class="text-4xl font-bold text-gray-900 dark:text-white mt-1" style="font-family:'DM Sans', sans-serif">Follow Us</h2>
+            <p class="text-gray-500 dark:text-gray-400 text-sm mt-2">Daily specials, behind-the-scenes, and more.</p>
+        </div>
+        <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5 reveal" style="transition-delay:.1s">
+            <a href="#" target="_blank" class="social-pill bg-[#1877F2] rounded-2xl p-6 flex flex-col items-center gap-3 text-white text-center group">
+                <div class="w-14 h-14 rounded-full bg-white/20 flex items-center justify-center text-3xl group-hover:bg-white/30 transition">
+                    <i class="fa-brands fa-facebook"></i>
+                </div>
+                <div>
+                    <p class="font-bold text-sm">Facebook</p>
+                    <p class="text-xs text-white/70">MALUB Restaurant</p>
+                </div>
+                <span class="text-xs bg-white/20 px-3 py-1 rounded-full">Follow us</span>
+            </a>
+            <a href="#" target="_blank" class="social-pill bg-black rounded-2xl p-6 flex flex-col items-center gap-3 text-white text-center group">
+                <div class="w-14 h-14 rounded-full bg-white/10 flex items-center justify-center text-3xl group-hover:bg-white/20 transition">
+                    <i class="fa-brands fa-tiktok"></i>
+                </div>
+                <div>
+                    <p class="font-bold text-sm">TikTok</p>
+                    <p class="text-xs text-white/60">@malub.restaurant</p>
+                </div>
+                <span class="text-xs bg-white/10 px-3 py-1 rounded-full">Watch us cook</span>
+            </a>
+            <a href="#" target="_blank" class="social-pill bg-[#229ED9] rounded-2xl p-6 flex flex-col items-center gap-3 text-white text-center group">
+                <div class="w-14 h-14 rounded-full bg-white/20 flex items-center justify-center text-3xl group-hover:bg-white/30 transition">
+                    <i class="fa-brands fa-telegram"></i>
+                </div>
+                <div>
+                    <p class="font-bold text-sm">Telegram</p>
+                    <p class="text-xs text-white/70">@malubrestaurant</p>
+                </div>
+                <span class="text-xs bg-white/20 px-3 py-1 rounded-full">Message us</span>
+            </a>
+            <a href="#" target="_blank" class="social-pill rounded-2xl p-6 flex flex-col items-center gap-3 text-white text-center group" style="background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);">
+                <div class="w-14 h-14 rounded-full bg-white/20 flex items-center justify-center text-3xl group-hover:bg-white/30 transition">
+                    <i class="fa-brands fa-instagram"></i>
+                </div>
+                <div>
+                    <p class="font-bold text-sm">Instagram</p>
+                    <p class="text-xs text-white/70">@malub.restaurant</p>
+                </div>
+                <span class="text-xs bg-white/20 px-3 py-1 rounded-full">See our food</span>
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq" class="bg-green-100 dark:bg-gray-800 py-16 px-4">
+    <div class="max-w-3xl mx-auto">
+        <div class="reveal text-center mb-10">
+            <span class="text-xs font-bold tracking-widest uppercase text-green-600">Common questions</span>
+            <h2 class="text-4xl font-bold text-gray-900 dark:text-white mt-1" style="font-family:'Cormorant Garamond',serif">FAQ</h2>
+            <p class="text-gray-500 dark:text-gray-400 text-sm mt-2">Can't find an answer? Call us directly.</p>
+        </div>
+        <div class="space-y-3 reveal" style="transition-delay:.1s">
+
+            <div class="bg-white dark:bg-gray-700 rounded-2xl overflow-hidden border border-green-100 dark:border-gray-600">
+                <button onclick="toggleFaq(this)" class="w-full flex justify-between items-center px-6 py-5 text-left text-gray-900 dark:text-white font-medium text-sm hover:text-green-600 transition-colors duration-200">
+                    <span>Do I need a reservation to visit?</span>
+                    <span class="faq-icon text-green-600 text-xl font-bold flex-shrink-0 ml-4">+</span>
+                </button>
+                <div class="faq-answer">
+                    <p class="px-6 pb-5 text-gray-500 dark:text-gray-300 text-sm leading-relaxed">Walk-ins are always welcome! However, for weekends and public holidays we strongly recommend calling ahead to reserve a table, especially for groups of 4 or more.</p>
+                </div>
+            </div>
+
+            <div class="bg-white dark:bg-gray-700 rounded-2xl overflow-hidden border border-green-100 dark:border-gray-600">
+                <button onclick="toggleFaq(this)" class="w-full flex justify-between items-center px-6 py-5 text-left text-gray-900 dark:text-white font-medium text-sm hover:text-green-600 transition-colors duration-200">
+                    <span>Is there parking available?</span>
+                    <span class="faq-icon text-green-600 text-xl font-bold flex-shrink-0 ml-4">+</span>
+                </button>
+                <div class="faq-answer">
+                    <p class="px-6 pb-5 text-gray-500 dark:text-gray-300 text-sm leading-relaxed">Yes! We have free parking for customers right next to the restaurant on Street 273. Street parking is also available nearby.</p>
+                </div>
+            </div>
+
+            <div class="bg-white dark:bg-gray-700 rounded-2xl overflow-hidden border border-green-100 dark:border-gray-600">
+                <button onclick="toggleFaq(this)" class="w-full flex justify-between items-center px-6 py-5 text-left text-gray-900 dark:text-white font-medium text-sm hover:text-green-600 transition-colors duration-200">
+                    <span>Do you offer delivery or takeaway?</span>
+                    <span class="faq-icon text-green-600 text-xl font-bold flex-shrink-0 ml-4">+</span>
+                </button>
+                <div class="faq-answer">
+                    <p class="px-6 pb-5 text-gray-500 dark:text-gray-300 text-sm leading-relaxed">Yes! Takeaway is available during all opening hours. For delivery we partner with local delivery apps. You can also call us for large orders.</p>
+                </div>
+            </div>
+
+            <div class="bg-white dark:bg-gray-700 rounded-2xl overflow-hidden border border-green-100 dark:border-gray-600">
+                <button onclick="toggleFaq(this)" class="w-full flex justify-between items-center px-6 py-5 text-left text-gray-900 dark:text-white font-medium text-sm hover:text-green-600 transition-colors duration-200">
+                    <span>Can you accommodate large groups or events?</span>
+                    <span class="faq-icon text-green-600 text-xl font-bold flex-shrink-0 ml-4">+</span>
+                </button>
+                <div class="faq-answer">
+                    <p class="px-6 pb-5 text-gray-500 dark:text-gray-300 text-sm leading-relaxed">Absolutely! We have a private dining area for up to 30 people. Please call our Events line at (+855) 97-297-7674 to discuss your requirements.</p>
+                </div>
+            </div>
+
+            <div class="bg-white dark:bg-gray-700 rounded-2xl overflow-hidden border border-green-100 dark:border-gray-600">
+                <button onclick="toggleFaq(this)" class="w-full flex justify-between items-center px-6 py-5 text-left text-gray-900 dark:text-white font-medium text-sm hover:text-green-600 transition-colors duration-200">
+                    <span>Are vegetarian or halal options available?</span>
+                    <span class="faq-icon text-green-600 text-xl font-bold flex-shrink-0 ml-4">+</span>
+                </button>
+                <div class="faq-answer">
+                    <p class="px-6 pb-5 text-gray-500 dark:text-gray-300 text-sm leading-relaxed">We offer a variety of vegetarian-friendly dishes. For halal requirements, please speak to our staff when you arrive and we'll do our best to accommodate your needs.</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- ── FOOTER ── -->
+    <footer class="bg-green-800 dark:bg-gray-900 border-t border-green-700 dark:border-gray-800 text-white transition-colors duration-300">
+        <div class="max-w-7xl mx-auto px-6 py-14">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 mb-10">
+
+                <!-- Logo -->
+                <div class="flex flex-col items-center sm:items-start text-center sm:text-left">
+                    <div class="w-20 h-20 rounded-2xl bg-white flex items-center justify-center mb-4 shadow-lg">
+                        <img src="../../asset/logo_malub-removebg-preview.png" alt="MALUB Logo" class="w-16 h-16 object-contain">
+                    </div>
+                    <p class="font-black text-lg text-white mb-1">MALUB</p>
+                    <p class="text-green-300 dark:text-gray-400 text-sm mb-4">Restaurant</p>
+                    <div class="flex gap-2 flex-wrap justify-center sm:justify-start">
+                        <a href="#" class="w-9 h-9 rounded-xl bg-blue-600 hover:bg-blue-500 flex items-center justify-center hover:scale-110 transition-all">
+                            <svg width="16" height="16" fill="white" viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+                        </a>
+                        <a href="#" class="w-9 h-9 rounded-xl bg-black hover:bg-gray-800 flex items-center justify-center hover:scale-110 transition-all">
+                            <svg width="16" height="16" fill="white" viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.17 8.17 0 0 0 4.78 1.52V6.75a4.85 4.85 0 0 1-1.01-.06z"/></svg>
+                        </a>
+                        <a href="#" class="w-9 h-9 rounded-xl bg-sky-500 hover:bg-sky-400 flex items-center justify-center hover:scale-110 transition-all">
+                            <i class="fa-brands fa-telegram text-white text-sm"></i>
+                        </a>
+                        <a href="#" class="w-9 h-9 rounded-xl flex items-center justify-center hover:scale-110 transition-all" style="background:linear-gradient(45deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888)">
+                            <i class="fa-brands fa-instagram text-white text-sm"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Explore -->
+                <div>
+                    <h3 class="font-bold text-xs tracking-widest uppercase mb-5 text-green-300 dark:text-gray-400">Explore</h3>
+                    <ul class="space-y-3 text-sm text-green-100 dark:text-gray-300">
+                        <li><a href="./homePage.html" class="hover:text-white hover:translate-x-1 inline-block transition-all duration-200">Home</a></li>
+                        <li><a href="./menuPage.html" class="hover:text-white hover:translate-x-1 inline-block transition-all duration-200">Menu</a></li>
+                        <li><a href="./aboutPage.html" class="hover:text-white hover:translate-x-1 inline-block transition-all duration-200">About Us</a></li>
+                        <li><a href="./services.html" class="hover:text-white hover:translate-x-1 inline-block transition-all duration-200">Services</a></li>
+                        <li><a href="./contactPage.html" class="hover:text-white hover:translate-x-1 inline-block transition-all duration-200">Contact</a></li>
+                    </ul>
+                </div>
+
+                <!-- Address -->
+                <div>
+                    <h3 class="font-bold text-xs tracking-widest uppercase mb-5 text-green-300 dark:text-gray-400">Address & Contacts</h3>
+                    <p class="text-sm leading-relaxed mb-5 text-green-100 dark:text-gray-300">
+                        No. 40, Street 273,<br>Sangkat Boeung Kak I,<br>Khan Toul Kork,<br>Phnom Penh, Cambodia
+                    </p>
+                    <ul class="space-y-2 text-sm text-green-100 dark:text-gray-300">
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-phone text-green-400 text-xs"></i> (+855) 17-928-998</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-phone text-green-400 text-xs"></i> (+855) 86-243-016</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-phone text-green-400 text-xs"></i> (+855) 97-297-7674</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-phone text-green-400 text-xs"></i> (+855) 69-298-825</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-phone text-green-400 text-xs"></i> (+855) 96-673-3867</li>
+                    </ul>
+                </div>
+
+                <!-- Follow -->
+                <div>
+                    <h3 class="font-bold text-xs tracking-widest uppercase mb-5 text-green-300 dark:text-gray-400">Follow Us</h3>
+                    <div class="bg-white/10 dark:bg-gray-800 backdrop-blur rounded-2xl p-4 flex items-center gap-3 border border-white/10 dark:border-gray-700">
+                        <img src="../../asset/logo_malub-removebg-preview.png" alt="MALUB" class="w-12 h-12 rounded-xl border-2 border-green-400 flex-shrink-0 bg-white p-1">
+                        <div>
+                            <p class="font-bold text-sm text-white">MALUB Restaurant</p>
+                            <p class="text-xs text-green-300 dark:text-gray-400 mb-2">Follow us on Facebook</p>
+                            <button class="text-xs text-white bg-blue-600 hover:bg-blue-500 px-3 py-1 rounded-full flex items-center gap-1 transition-colors font-semibold">
+                                <i class="fa-brands fa-facebook text-xs"></i> Follow
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="border-t border-green-700 dark:border-gray-800 py-5 px-6 text-center text-sm text-green-300 dark:text-gray-500">
+            © 2026 MALUB Restaurant — All Rights Reserved
+        </div>
+    </footer>
+
+<script>
+    // Dark mode
+    var darkModeToggle = document.getElementById('darkModeToggle');
+    var mobileMenuButton = document.getElementById('mobileMenuButton');
+    var mobileMenu = document.getElementById('mobileMenu');
+    var isMobileOpen = false;
+
+    if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.documentElement.classList.add('dark');
+    }
+    darkModeToggle.addEventListener('click', function() {
+        document.documentElement.classList.toggle('dark');
+    });
+    mobileMenuButton.addEventListener('click', function() {
+        isMobileOpen = !isMobileOpen;
+        if (isMobileOpen) {
+            mobileMenu.style.display = 'block';
+            mobileMenu.style.transform = 'translateY(0)';
+            mobileMenu.style.opacity = '1';
+        } else {
+            mobileMenu.style.transform = 'translateY(-100%)';
+            mobileMenu.style.opacity = '0';
+            setTimeout(function() { mobileMenu.style.display = 'none'; }, 300);
+        }
+    });
+
+    // Scroll reveal
+    var observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(e) { if (e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold: 0.08 });
+    document.querySelectorAll('.reveal').forEach(function(el) { observer.observe(el); });
+
+    // FAQ accordion
+    function toggleFaq(btn) {
+        var answer = btn.nextElementSibling;
+        var icon   = btn.querySelector('.faq-icon');
+        var isOpen = answer.classList.contains('open');
+        document.querySelectorAll('.faq-answer.open').forEach(function(a) { a.classList.remove('open'); });
+        document.querySelectorAll('.faq-icon.rotated').forEach(function(i) { i.classList.remove('rotated'); });
+        if (!isOpen) {
+            answer.classList.add('open');
+            icon.classList.add('rotated');
+        }
+    }
+
+    // Live open/closed status
+    (function() {
+        var now  = new Date();
+        var day  = now.getDay();
+        var time = now.getHours() + now.getMinutes() / 60;
+        var open = false;
+        if      (day >= 1 && day <= 5) open = time >= 7  && time < 21.5;
+        else if (day === 6)            open = time >= 8  && time < 22.5;
+        else if (day === 0)            open = time >= 9  && time < 20.5;
+
+        var el = document.getElementById('liveStatus');
+        if (open) {
+            el.className = el.className + ' bg-green-100 dark:bg-green-900/30';
+            el.innerHTML = '<span class="w-2.5 h-2.5 rounded-full bg-green-500 animate-pulse flex-shrink-0 inline-block"></span><span class="text-green-700 dark:text-green-400 ml-2">We\'re <strong>Open Now</strong> — come on in! 🎉</span>';
+        } else {
+            el.className = el.className + ' bg-red-50 dark:bg-red-900/20';
+            el.innerHTML = '<span class="w-2.5 h-2.5 rounded-full bg-red-400 flex-shrink-0 inline-block"></span><span class="text-red-600 dark:text-red-400 ml-2">We\'re <strong>Closed</strong> right now. See you soon!</span>';
+        }
+    })();
+</script>
+<script>
+        // ── Dark Mode ──
+        var isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        applyDark(isDark);
+
+        function applyDark(dark) {
+            isDark = dark;
+            if (dark) {
+                document.documentElement.classList.add('dark');
+                document.documentElement.classList.remove('light');
+            } else {
+                document.documentElement.classList.remove('dark');
+                document.documentElement.classList.add('light');
+            }
+            var icon = dark ? '🌙' : '☀️';
+            var i1 = document.getElementById('toggleIcon');
+            var i2 = document.getElementById('toggleIconMobile');
+            if (i1) i1.textContent = icon;
+            if (i2) i2.textContent = icon;
+        }
+
+        function toggleDark() {
+            applyDark(!isDark);
+        }
+
+        // ── Mobile Menu ──
+        window.addEventListener('DOMContentLoaded', function() {
+            var btn = document.getElementById('mobileMenuButton');
+            var menu = document.getElementById('mobileMenu');
+            var isOpen = false;
+
+            if (btn && menu) {
+                btn.addEventListener('click', function() {
+                    isOpen = !isOpen;
+                    btn.classList.toggle('ham-open', isOpen);
+                    menu.classList.toggle('open', isOpen);
+                });
+            }
+
+            // Nav link animations
+            document.querySelectorAll('.nav-link').forEach(function(link, i) {
+                link.classList.add('animate-fade-in');
+                link.style.animationDelay = (i * 0.08) + 's';
+            });
+
+            // Close mobile menu when clicking outside
+            document.addEventListener('click', function(e) {
+                if (isOpen && !btn.contains(e.target) && !menu.contains(e.target)) {
+                    isOpen = false;
+                    btn.classList.remove('ham-open');
+                    menu.classList.remove('open');
+                }
+            });
+        });
+
+        // ── Category Toggle ──
+        function toggleCategory(btn, gridId) {
+            var grid = document.getElementById(gridId);
+            var extras = grid.querySelectorAll('[data-extra]');
+            var open = btn.getAttribute('data-open') === 'true';
+            var label = btn.querySelector('.label');
+            var arrow = btn.querySelector('.arrow');
+            var total = grid.querySelectorAll('.product-card').length;
+
+            for (var i = 0; i < extras.length; i++) {
+                extras[i].style.display = open ? 'none' : 'block';
+            }
+            btn.setAttribute('data-open', open ? 'false' : 'true');
+            arrow.style.transform = open ? 'rotate(0deg)' : 'rotate(180deg)';
+            label.textContent = open ? 'See all ' + total + ' items' : 'Show less';
+        }
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script>
+        window.addEventListener('load', function() {
+            AOS.init({ offset: 0, once: true, duration: 800 });
+        });
+    </script>
+</body>
+</html>

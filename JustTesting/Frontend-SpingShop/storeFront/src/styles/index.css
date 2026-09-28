@@ -1,0 +1,19 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --brand-green: #4ce600;
+  --brand-emerald: #00e000;
+  --brand-aqua: #00e1ff;
+  --brand-blue: #009dff;
+  --brand-sky: #2eaeff;
+}
+
+body {
+  font-family: 'Lexend', sans-serif;
+}
+
+:lang(km) {
+  font-family: 'Kantumruy Pro', sans-serif;
+}

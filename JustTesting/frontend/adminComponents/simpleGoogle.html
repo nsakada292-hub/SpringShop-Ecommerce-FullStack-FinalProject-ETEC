@@ -1,0 +1,1572 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ApexCommerce — Enterprise Admin Suite</title>
+  
+  <!-- Tailwind CSS & Flowbite / Lucide UI CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#eef2ff',
+              100: '#e0e7ff',
+              500: '#6366f1',
+              600: '#4f46e5',
+              700: '#4338ca',
+              900: '#312e81',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+    body { font-family: 'Inter', sans-serif; }
+    .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
+    .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+    .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(156, 163, 175, 0.4); border-radius: 4px; }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 antialiased h-full flex overflow-hidden">
+
+  <!-- ==================== SIDEBAR NAVIGATION ==================== -->
+  <aside id="sidebar" class="w-64 bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 flex flex-col z-30 transition-all duration-300">
+    <!-- Brand Header -->
+    <div class="h-16 flex items-center justify-between px-6 border-b border-slate-200 dark:border-slate-800">
+      <div class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-xl bg-brand-600 flex items-center justify-center text-white font-bold shadow-lg shadow-brand-500/30">
+          <i data-lucide="shopping-bag" class="w-5 h-5"></i>
+        </div>
+        <div>
+          <span class="font-bold text-base tracking-tight block leading-tight text-slate-900 dark:text-white">Apex<span class="text-brand-600">Admin</span></span>
+          <span class="text-[10px] text-slate-600 dark:text-slate-400 font-medium tracking-wider uppercase">Enterprise v4.2</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Navigation Links -->
+    <div class="flex-1 overflow-y-auto custom-scrollbar py-4 px-3 space-y-1" id="nav-container">
+      <div class="px-3 pb-2 text-[11px] font-semibold tracking-wider text-slate-600 dark:text-slate-400 uppercase">Core Operations</div>
+      
+      <button onclick="switchView('dashboard')" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition text-brand-600 bg-brand-50 dark:bg-brand-900/20 dark:text-brand-400" data-page="dashboard">
+        <i data-lucide="layout-dashboard" class="w-4 h-4"></i> Dashboard
+      </button>
+
+      <button onclick="switchView('products')" class="nav-btn w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800/60 transition" data-page="products">
+        <div class="flex items-center gap-3">
+          <i data-lucide="package" class="w-4 h-4"></i> Products
+        </div>
+        <span class="text-xs bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 px-2 py-0.5 rounded-full font-mono font-semibold" id="nav-product-count">142</span>
+      </button>
+
+      <button onclick="switchView('orders')" class="nav-btn w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800/60 transition" data-page="orders">
+        <div class="flex items-center gap-3">
+          <i data-lucide="shopping-cart" class="w-4 h-4"></i> Orders
+        </div>
+        <span class="text-xs bg-amber-100 dark:bg-amber-900/40 text-amber-600 dark:text-amber-400 px-2 py-0.5 rounded-full font-semibold">12 Pending</span>
+      </button>
+
+      <button onclick="switchView('customers')" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800/60 transition" data-page="customers">
+        <i data-lucide="users" class="w-4 h-4"></i> Customers
+      </button>
+
+      <button onclick="switchView('reviews')" class="nav-btn w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800/60 transition" data-page="reviews">
+        <div class="flex items-center gap-3">
+          <i data-lucide="star" class="w-4 h-4"></i> Reviews & Ratings
+        </div>
+        <span class="w-2 h-2 rounded-full bg-rose-500"></span>
+      </button>
+
+      <div class="pt-4 px-3 pb-2 text-[11px] font-semibold tracking-wider text-slate-600 dark:text-slate-400 uppercase">Growth & Marketing</div>
+
+      <button onclick="switchView('analytics')" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800/60 transition" data-page="analytics">
+        <i data-lucide="bar-chart-3" class="w-4 h-4"></i> Analytics & Reports
+      </button>
+
+      <button onclick="switchView('promotions')" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800/60 transition" data-page="promotions">
+        <i data-lucide="tag" class="w-4 h-4"></i> Coupons & Discounts
+      </button>
+
+      <div class="pt-4 px-3 pb-2 text-[11px] font-semibold tracking-wider text-slate-600 dark:text-slate-400 uppercase">System & Governance</div>
+
+      <button onclick="switchView('rbac')" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800/60 transition" data-page="rbac">
+        <i data-lucide="shield-check" class="w-4 h-4"></i> User & RBAC Matrix
+      </button>
+
+      <button onclick="switchView('logs')" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800/60 transition" data-page="logs">
+        <i data-lucide="file-clock" class="w-4 h-4"></i> Audit & Activity Logs
+      </button>
+
+      <button onclick="switchView('settings')" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800/60 transition" data-page="settings">
+        <i data-lucide="settings" class="w-4 h-4"></i> Store Settings
+      </button>
+    </div>
+
+    <!-- Active User & Role Switcher Simulator Footer -->
+    <div class="p-3 border-t border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/50">
+      <div class="flex items-center gap-3 p-2 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
+        <img id="current-user-avatar" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=80&h=80&fit=crop&crop=face" class="w-9 h-9 rounded-full object-cover ring-2 ring-brand-500" alt="Avatar" />
+        <div class="flex-1 min-w-0">
+          <p id="current-user-name" class="text-xs font-semibold truncate text-slate-800 dark:text-slate-100">Elena Rostova</p>
+          <div class="flex items-center gap-1">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+            <select id="role-simulator-select" onchange="simulateRoleChange(this.value)" class="text-[11px] font-medium bg-transparent border-none p-0 text-slate-600 dark:text-slate-400 focus:ring-0 cursor-pointer">
+              <option value="Super Admin" selected>Super Admin</option>
+              <option value="Admin">Admin</option>
+              <option value="Manager">Store Manager</option>
+              <option value="Staff">Support Staff</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ==================== MAIN CONTENT WRAPPER ==================== -->
+  <div class="flex-1 flex flex-col min-w-0 overflow-hidden">
+
+    <!-- TOPBAR / GLOBAL HEADER -->
+    <header class="h-16 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 px-6 flex items-center justify-between gap-4 z-20">
+      
+      <!-- Left: Mobile Menu & Global Search Bar Trigger -->
+      <div class="flex items-center gap-4 flex-1 max-w-xl">
+        <button onclick="toggleSidebar()" class="lg:hidden text-slate-500 hover:text-slate-700 dark:text-slate-400">
+          <i data-lucide="menu" class="w-6 h-6"></i>
+        </button>
+
+        <div class="relative w-full">
+          <button onclick="openGlobalSearch()" class="w-full flex items-center justify-between bg-slate-100 dark:bg-slate-800 hover:bg-slate-200/70 text-slate-600 dark:text-slate-400 px-3.5 py-2 rounded-xl text-sm transition border border-transparent focus:border-brand-500">
+            <div class="flex items-center gap-2">
+              <i data-lucide="search" class="w-4 h-4 text-slate-600 dark:text-slate-400"></i>
+              <span class="text-xs">Search SKU, Orders (#ORD-), Customers, Coupons...</span>
+            </div>
+            <kbd class="hidden md:inline-block text-[10px] font-semibold bg-white dark:bg-slate-700 px-1.5 py-0.5 rounded shadow-sm text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-600">⌘K</kbd>
+          </button>
+        </div>
+      </div>
+
+      <!-- Right Header Actions -->
+      <div class="flex items-center gap-3">
+        <!-- Live System Status Badge -->
+        <div class="hidden sm:flex items-center gap-2 px-2.5 py-1 rounded-full bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/50 text-[11px] font-medium text-emerald-700 dark:text-emerald-400">
+          <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+          Store Live • 99.98%
+        </div>
+
+        <!-- Dark/Light Theme Toggle -->
+        <button onclick="toggleTheme()" class="w-9 h-9 flex items-center justify-center rounded-xl text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 dark:text-slate-400 transition" title="Toggle Theme">
+          <i data-lucide="moon" id="theme-icon-moon" class="w-4 h-4 hidden dark:block"></i>
+          <i data-lucide="sun" id="theme-icon-sun" class="w-4 h-4 block dark:hidden"></i>
+        </button>
+
+        <!-- Notifications Dropdown Trigger -->
+        <div class="relative">
+          <button onclick="toggleNotificationDrawer()" class="relative w-9 h-9 flex items-center justify-center rounded-xl text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 dark:text-slate-400 transition">
+            <i data-lucide="bell" class="w-4 h-4"></i>
+            <span class="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-rose-500 ring-2 ring-white dark:ring-slate-900"></span>
+          </button>
+        </div>
+
+        <!-- Breadcrumb / User Profile Quick Action -->
+        <div class="h-6 w-px bg-slate-200 dark:bg-slate-800"></div>
+        <button onclick="switchView('settings')" class="flex items-center gap-2 text-xs font-semibold text-slate-700 dark:text-slate-200 hover:text-brand-600 transition">
+          <i data-lucide="settings-2" class="w-4 h-4"></i>
+        </button>
+      </div>
+    </header>
+
+    <!-- ==================== BODY CONTENT ROUTER CONTAINER ==================== -->
+    <main class="flex-1 overflow-y-auto custom-scrollbar p-6 bg-slate-50 dark:bg-slate-950" id="main-view-container">
+
+      <!-- ============================================================ -->
+      <!-- 1. DASHBOARD VIEW (DEFAULT) -->
+      <!-- ============================================================ -->
+      <section id="view-dashboard" class="space-y-6">
+        <!-- Dashboard Top Banner -->
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 bg-gradient-to-r from-brand-900 via-brand-700 to-indigo-800 rounded-2xl p-6 text-white shadow-xl">
+          <div>
+            <span class="text-xs font-semibold tracking-wider uppercase text-brand-200">Store Executive Summary</span>
+            <h1 class="text-2xl font-bold mt-1">Apex OmniCommerce Performance Hub</h1>
+            <p class="text-xs text-brand-100 mt-1">Real-time telemetry across checkout funnels, inventory velocity, and fulfillment SLA.</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <button onclick="exportCSVData()" class="px-3.5 py-2 rounded-xl bg-white/10 backdrop-blur text-xs font-semibold hover:bg-white/20 border border-white/20 transition flex items-center gap-2">
+              <i data-lucide="download" class="w-3.5 h-3.5"></i> Export Report
+            </button>
+            <button onclick="openAddProductModal()" class="px-3.5 py-2 rounded-xl bg-white text-brand-900 text-xs font-bold shadow hover:bg-brand-50 transition flex items-center gap-2">
+              <i data-lucide="plus-circle" class="w-3.5 h-3.5"></i> Add Product
+            </button>
+          </div>
+        </div>
+
+        <!-- 4 Primary KPI Cards -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <!-- Card 1 -->
+          <div class="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm relative overflow-hidden">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-medium text-slate-600 dark:text-slate-400">Gross Revenue</span>
+              <span class="p-2 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400">
+                <i data-lucide="dollar-sign" class="w-4 h-4"></i>
+              </span>
+            </div>
+            <div class="mt-3 flex items-baseline gap-2">
+              <h3 class="text-2xl font-bold text-slate-900 dark:text-white">$128,430.50</h3>
+              <span class="text-xs font-semibold text-emerald-600 flex items-center gap-0.5">
+                <i data-lucide="trending-up" class="w-3 h-3"></i> +14.2%
+              </span>
+            </div>
+            <p class="text-[11px] text-slate-600 dark:text-slate-400 mt-1">vs. $112,450.00 prior 30d</p>
+          </div>
+
+          <!-- Card 2 -->
+          <div class="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm relative overflow-hidden">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-medium text-slate-600 dark:text-slate-400">Total Orders</span>
+              <span class="p-2 rounded-xl bg-brand-50 dark:bg-brand-950/40 text-brand-600 dark:text-brand-400">
+                <i data-lucide="shopping-bag" class="w-4 h-4"></i>
+              </span>
+            </div>
+            <div class="mt-3 flex items-baseline gap-2">
+              <h3 class="text-2xl font-bold text-slate-900 dark:text-white">1,842</h3>
+              <span class="text-xs font-semibold text-emerald-600 flex items-center gap-0.5">
+                <i data-lucide="trending-up" class="w-3 h-3"></i> +8.1%
+              </span>
+            </div>
+            <p class="text-[11px] text-slate-600 dark:text-slate-400 mt-1">12 orders awaiting dispatch</p>
+          </div>
+
+          <!-- Card 3 -->
+          <div class="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm relative overflow-hidden">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-medium text-slate-600 dark:text-slate-400">Active Customers</span>
+              <span class="p-2 rounded-xl bg-purple-50 dark:bg-purple-950/40 text-purple-600 dark:text-purple-400">
+                <i data-lucide="user-check" class="w-4 h-4"></i>
+              </span>
+            </div>
+            <div class="mt-3 flex items-baseline gap-2">
+              <h3 class="text-2xl font-bold text-slate-900 dark:text-white">8,924</h3>
+              <span class="text-xs font-semibold text-emerald-600 flex items-center gap-0.5">
+                <i data-lucide="trending-up" class="w-3 h-3"></i> +19.4%
+              </span>
+            </div>
+            <p class="text-[11px] text-slate-600 dark:text-slate-400 mt-1">73.8% repeat buyer rate</p>
+          </div>
+
+          <!-- Card 4 -->
+          <div class="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm relative overflow-hidden">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-medium text-slate-600 dark:text-slate-400">Low Stock Warnings</span>
+              <span class="p-2 rounded-xl bg-amber-50 dark:bg-amber-950/40 text-amber-600 dark:text-amber-400">
+                <i data-lucide="alert-triangle" class="w-4 h-4"></i>
+              </span>
+            </div>
+            <div class="mt-3 flex items-baseline gap-2">
+              <h3 class="text-2xl font-bold text-amber-600 dark:text-amber-400">4 Items</h3>
+              <span class="text-xs font-semibold text-rose-500 flex items-center gap-0.5">
+                Action Req.
+              </span>
+            </div>
+            <p class="text-[11px] text-slate-600 dark:text-slate-400 mt-1">Threshold: &lt; 10 units in warehouse</p>
+          </div>
+        </div>
+
+        <!-- Charts Grid (2 columns: Revenue Trend + Category Split) -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div class="lg:col-span-2 bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm">
+            <div class="flex items-center justify-between mb-4">
+              <div>
+                <h4 class="font-bold text-sm text-slate-900 dark:text-white">Revenue & Order Volume Analytics</h4>
+                <p class="text-xs text-slate-600 dark:text-slate-400">Multi-channel aggregated sales pipeline (Daily trend)</p>
+              </div>
+              <div class="flex items-center gap-1 bg-slate-100 dark:bg-slate-800 p-1 rounded-xl text-xs">
+                <button class="px-2.5 py-1 rounded-lg bg-white dark:bg-slate-700 shadow-xs font-semibold text-slate-900 dark:text-white">7D</button>
+                <button class="px-2.5 py-1 rounded-lg text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white">30D</button>
+                <button class="px-2.5 py-1 rounded-lg text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white">12M</button>
+              </div>
+            </div>
+            <div class="h-72 w-full">
+              <canvas id="revenueChart"></canvas>
+            </div>
+          </div>
+
+          <div class="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col justify-between">
+            <div>
+              <h4 class="font-bold text-sm text-slate-900 dark:text-white">Sales by Category</h4>
+              <p class="text-xs text-slate-600 dark:text-slate-400 mb-4">Distribution across inventory lines</p>
+              <div class="h-52 relative flex items-center justify-center">
+                <canvas id="categoryChart"></canvas>
+              </div>
+            </div>
+            <div class="grid grid-cols-2 gap-2 mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 text-xs">
+              <div class="flex items-center gap-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-brand-500"></span>
+                <span class="text-slate-600 dark:text-slate-400">Electronics (42%)</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+                <span class="text-slate-600 dark:text-slate-400">Apparel (28%)</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span>
+                <span class="text-slate-600 dark:text-slate-400">Accessories (18%)</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-rose-500"></span>
+                <span class="text-slate-600 dark:text-slate-400">Home/Living (12%)</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recent Orders & Top-Selling Products Hybrid Section -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <!-- Recent Orders (2 cols) -->
+          <div class="lg:col-span-2 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
+            <div class="p-5 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
+              <div>
+                <h4 class="font-bold text-sm text-slate-900 dark:text-white">Recent Fulfillment Pipeline</h4>
+                <p class="text-xs text-slate-600 dark:text-slate-400">Real-time incoming orders</p>
+              </div>
+              <button onclick="switchView('orders')" class="text-xs font-semibold text-brand-600 hover:text-brand-700 flex items-center gap-1">
+                View All Orders <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+              </button>
+            </div>
+            <div class="overflow-x-auto">
+              <table class="w-full text-left text-xs">
+                <thead class="bg-slate-50 dark:bg-slate-800/60 text-slate-600 dark:text-slate-400 font-semibold uppercase tracking-wider">
+                  <tr>
+                    <th class="px-5 py-3">Order ID</th>
+                    <th class="px-5 py-3">Customer</th>
+                    <th class="px-5 py-3">Status</th>
+                    <th class="px-5 py-3">Total</th>
+                    <th class="px-5 py-3 text-right">Quick Action</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100 dark:divide-slate-800" id="dash-recent-orders-tbody">
+                  <!-- Injected via JS -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Low Stock & Critical Warnings (1 col) -->
+          <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm p-5 flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between mb-4">
+                <h4 class="font-bold text-sm text-slate-900 dark:text-white">Stock Depletion Alerts</h4>
+                <span class="text-[10px] uppercase font-bold bg-rose-100 text-rose-700 dark:bg-rose-950 dark:text-rose-400 px-2 py-0.5 rounded-full">Urgent</span>
+              </div>
+              <div class="space-y-3" id="dash-low-stock-list">
+                <!-- Injected via JS -->
+              </div>
+            </div>
+            <button onclick="switchView('products')" class="mt-4 w-full py-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 rounded-xl text-xs font-semibold text-slate-700 dark:text-slate-300 transition">
+              Manage Warehouse Stock
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================ -->
+      <!-- 2. PRODUCT MANAGEMENT VIEW -->
+      <!-- ============================================================ -->
+      <section id="view-products" class="hidden space-y-5">
+        <!-- Product Header Bar -->
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div>
+            <h2 class="text-xl font-bold text-slate-900 dark:text-white">Products Catalog</h2>
+            <p class="text-xs text-slate-600 dark:text-slate-400">Control SKUs, inventory thresholds, multi-variants, and price indexing.</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <button onclick="bulkDeleteProducts()" class="hidden rbac-product-write px-3 py-2 border border-rose-300 dark:border-rose-800 text-rose-600 dark:text-rose-400 rounded-xl text-xs font-semibold hover:bg-rose-50 dark:hover:bg-rose-950/40 flex items-center gap-1.5" id="bulk-delete-btn">
+              <i data-lucide="trash-2" class="w-3.5 h-3.5"></i> Bulk Delete (<span id="bulk-count">0</span>)
+            </button>
+            <button onclick="openAddProductModal()" class="rbac-product-write px-4 py-2 bg-brand-600 hover:bg-brand-700 text-white rounded-xl text-xs font-bold shadow-md shadow-brand-500/20 flex items-center gap-2 transition">
+              <i data-lucide="plus" class="w-4 h-4"></i> Add New Product
+            </button>
+          </div>
+        </div>
+
+        <!-- Filter & Search Controls -->
+        <div class="bg-white dark:bg-slate-900 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col md:flex-row gap-3 items-center justify-between">
+          <div class="flex flex-1 items-center gap-3 w-full">
+            <div class="relative flex-1">
+              <i data-lucide="search" class="w-4 h-4 absolute left-3 top-2.5 text-slate-600 dark:text-slate-400"></i>
+              <input type="text" id="product-search-input" onkeyup="filterProductsTable()" placeholder="Search by name, SKU, or category..." class="w-full bg-slate-50 dark:bg-slate-800 pl-9 pr-4 py-2 rounded-xl text-xs border border-slate-200 dark:border-slate-700 focus:outline-hidden focus:ring-2 focus:ring-brand-500 text-slate-900 dark:text-white" />
+            </div>
+            <select id="product-category-filter" onchange="filterProductsTable()" class="bg-slate-50 dark:bg-slate-800 py-2 px-3 rounded-xl text-xs border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+              <option value="All">All Categories</option>
+              <option value="Electronics">Electronics</option>
+              <option value="Apparel">Apparel</option>
+              <option value="Footwear">Footwear</option>
+              <option value="Audio">Audio</option>
+              <option value="Accessories">Accessories</option>
+            </select>
+            <select id="product-status-filter" onchange="filterProductsTable()" class="bg-slate-50 dark:bg-slate-800 py-2 px-3 rounded-xl text-xs border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+              <option value="All">All Statuses</option>
+              <option value="Active">Active</option>
+              <option value="Draft">Draft</option>
+              <option value="Out of Stock">Out of Stock</option>
+            </select>
+          </div>
+          <div class="text-xs text-slate-600 dark:text-slate-400 whitespace-nowrap font-medium">
+            Showing <span id="product-filtered-count" class="font-bold text-slate-900 dark:text-white">0</span> items
+          </div>
+        </div>
+
+        <!-- Product Table -->
+        <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs">
+              <thead class="bg-slate-50 dark:bg-slate-800/70 text-slate-600 dark:text-slate-400 uppercase tracking-wider font-semibold">
+                <tr>
+                  <th class="p-4 w-10">
+                    <input type="checkbox" onchange="toggleSelectAllProducts(this)" class="rounded border-slate-300 text-brand-600 focus:ring-brand-500" />
+                  </th>
+                  <th class="py-3.5 px-4">Product</th>
+                  <th class="py-3.5 px-4">SKU</th>
+                  <th class="py-3.5 px-4">Category</th>
+                  <th class="py-3.5 px-4">Price</th>
+                  <th class="py-3.5 px-4">Stock</th>
+                  <th class="py-3.5 px-4">Status</th>
+                  <th class="py-3.5 px-4 text-right">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="products-table-body" class="divide-y divide-slate-100 dark:divide-slate-800">
+                <!-- Injected via renderProducts() -->
+              </tbody>
+            </table>
+          </div>
+          <div class="p-4 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs text-slate-600 dark:text-slate-400">
+            <span>Page 1 of 1 (Indexed in real-time)</span>
+            <div class="flex items-center gap-1">
+              <button class="px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 disabled:opacity-40" disabled>Previous</button>
+              <button class="px-3 py-1.5 rounded-lg bg-brand-600 text-white font-bold">1</button>
+              <button class="px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 disabled:opacity-40" disabled>Next</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================ -->
+      <!-- 3. ORDER MANAGEMENT VIEW -->
+      <!-- ============================================================ -->
+      <section id="view-orders" class="hidden space-y-5">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div>
+            <h2 class="text-xl font-bold text-slate-900 dark:text-white">Orders & Fulfillment Pipeline</h2>
+            <p class="text-xs text-slate-600 dark:text-slate-400">Track shipments, verify payment gateways, and process customer refunds.</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <button onclick="exportOrdersReport()" class="px-3 py-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 rounded-xl text-xs font-semibold flex items-center gap-2">
+              <i data-lucide="file-spreadsheet" class="w-3.5 h-3.5"></i> Export CSV
+            </button>
+          </div>
+        </div>
+
+        <!-- Orders Status Tabs -->
+        <div class="flex gap-2 border-b border-slate-200 dark:border-slate-800 pb-2 overflow-x-auto custom-scrollbar">
+          <button onclick="filterOrdersByTab('All')" class="order-tab active px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-brand-50 text-brand-600 dark:bg-brand-950 dark:text-brand-400">All (8)</button>
+          <button onclick="filterOrdersByTab('Pending')" class="order-tab px-3.5 py-1.5 rounded-xl text-xs font-semibold text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800">Pending (2)</button>
+          <button onclick="filterOrdersByTab('Processing')" class="order-tab px-3.5 py-1.5 rounded-xl text-xs font-semibold text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800">Processing (2)</button>
+          <button onclick="filterOrdersByTab('Shipped')" class="order-tab px-3.5 py-1.5 rounded-xl text-xs font-semibold text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800">Shipped (2)</button>
+          <button onclick="filterOrdersByTab('Delivered')" class="order-tab px-3.5 py-1.5 rounded-xl text-xs font-semibold text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800">Delivered (1)</button>
+          <button onclick="filterOrdersByTab('Refunded')" class="order-tab px-3.5 py-1.5 rounded-xl text-xs font-semibold text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800">Refunded (1)</button>
+        </div>
+
+        <!-- Orders Table -->
+        <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs">
+              <thead class="bg-slate-50 dark:bg-slate-800/70 text-slate-600 dark:text-slate-400 uppercase tracking-wider font-semibold">
+                <tr>
+                  <th class="py-3.5 px-4">Order ID</th>
+                  <th class="py-3.5 px-4">Customer</th>
+                  <th class="py-3.5 px-4">Items / SKU</th>
+                  <th class="py-3.5 px-4">Payment</th>
+                  <th class="py-3.5 px-4">Order Status</th>
+                  <th class="py-3.5 px-4">Total Amount</th>
+                  <th class="py-3.5 px-4 text-right">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="orders-table-body" class="divide-y divide-slate-100 dark:divide-slate-800">
+                <!-- Injected via renderOrders() -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================ -->
+      <!-- 4. CUSTOMERS CRM VIEW -->
+      <!-- ============================================================ -->
+      <section id="view-customers" class="hidden space-y-5">
+        <div class="flex items-center justify-between">
+          <div>
+            <h2 class="text-xl font-bold text-slate-900 dark:text-white">Customer Database & Lifetime Value</h2>
+            <p class="text-xs text-slate-600 dark:text-slate-400">Inspect buyer order frequencies, total spend, and account states.</p>
+          </div>
+        </div>
+        <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
+          <table class="w-full text-left text-xs">
+            <thead class="bg-slate-50 dark:bg-slate-800/70 text-slate-600 dark:text-slate-400 uppercase tracking-wider font-semibold">
+              <tr>
+                <th class="py-3.5 px-4">Customer</th>
+                <th class="py-3.5 px-4">Location</th>
+                <th class="py-3.5 px-4">Total Orders</th>
+                <th class="py-3.5 px-4">Lifetime Spend</th>
+                <th class="py-3.5 px-4">Account Status</th>
+                <th class="py-3.5 px-4 text-right">Inspect Profile</th>
+              </tr>
+            </thead>
+            <tbody id="customers-table-body" class="divide-y divide-slate-100 dark:divide-slate-800">
+              <!-- Injected via JS -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ============================================================ -->
+      <!-- 5. REVIEWS & RATINGS MODERATION VIEW -->
+      <!-- ============================================================ -->
+      <section id="view-reviews" class="hidden space-y-5">
+        <div class="flex items-center justify-between">
+          <div>
+            <h2 class="text-xl font-bold text-slate-900 dark:text-white">Product Reviews & Sentiment</h2>
+            <p class="text-xs text-slate-600 dark:text-slate-400">Moderate feedback, approve verified buyer testimonials, and flag spam.</p>
+          </div>
+        </div>
+        <div class="grid grid-cols-1 gap-4" id="reviews-container">
+          <!-- Injected via JS -->
+        </div>
+      </section>
+
+      <!-- ============================================================ -->
+      <!-- 6. ANALYTICS & DEEP REPORTS VIEW -->
+      <!-- ============================================================ -->
+      <section id="view-analytics" class="hidden space-y-6">
+        <div>
+          <h2 class="text-xl font-bold text-slate-900 dark:text-white">Business Intelligence & Conversion Funnel</h2>
+          <p class="text-xs text-slate-600 dark:text-slate-400">Aggregated conversion, average order value (AOV), and customer cohorts.</p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div class="p-5 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm">
+            <span class="text-xs text-slate-600 dark:text-slate-400">Checkout Conversion Rate</span>
+            <h3 class="text-2xl font-bold text-slate-900 dark:text-white mt-1">3.84%</h3>
+            <div class="w-full bg-slate-100 dark:bg-slate-800 h-2 rounded-full mt-3 overflow-hidden">
+              <div class="bg-brand-600 h-full rounded-full" style="width: 65%"></div>
+            </div>
+          </div>
+          <div class="p-5 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm">
+            <span class="text-xs text-slate-600 dark:text-slate-400">Average Order Value (AOV)</span>
+            <h3 class="text-2xl font-bold text-slate-900 dark:text-white mt-1">$142.30</h3>
+            <p class="text-xs text-emerald-600 mt-2 font-semibold">+$8.40 vs industry benchmark</p>
+          </div>
+          <div class="p-5 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm">
+            <span class="text-xs text-slate-600 dark:text-slate-400">Cart Abandonment Rate</span>
+            <h3 class="text-2xl font-bold text-rose-500 mt-1">24.2%</h3>
+            <p class="text-xs text-slate-600 dark:text-slate-400 mt-2">Automated recovery emails enabled</p>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm">
+          <h4 class="font-bold text-sm text-slate-900 dark:text-white mb-4">Year-over-Year Growth Comparison</h4>
+          <div class="h-80">
+            <canvas id="deepAnalyticsChart"></canvas>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================ -->
+      <!-- 7. PROMOTIONS & COUPONS VIEW -->
+      <!-- ============================================================ -->
+      <section id="view-promotions" class="hidden space-y-5">
+        <div class="flex items-center justify-between">
+          <div>
+            <h2 class="text-xl font-bold text-slate-900 dark:text-white">Promotions & Marketing Coupons</h2>
+            <p class="text-xs text-slate-600 dark:text-slate-400">Configure discount codes, % off deals, and validity periods.</p>
+          </div>
+          <button onclick="openCreateCouponModal()" class="rbac-promo-write px-4 py-2 bg-brand-600 hover:bg-brand-700 text-white rounded-xl text-xs font-bold flex items-center gap-2">
+            <i data-lucide="plus" class="w-4 h-4"></i> Create Campaign
+          </button>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4" id="promotions-grid">
+          <!-- Injected via JS -->
+        </div>
+      </section>
+
+      <!-- ============================================================ -->
+      <!-- 8. USERS & ROLE-BASED ACCESS CONTROL (RBAC) VIEW -->
+      <!-- ============================================================ -->
+      <section id="view-rbac" class="hidden space-y-5">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div>
+            <h2 class="text-xl font-bold text-slate-900 dark:text-white">Admin Users & Access Governance</h2>
+            <p class="text-xs text-slate-600 dark:text-slate-400">Manage administrator privileges. Note: Super Admin elevation is strictly protected.</p>
+          </div>
+          <button onclick="openCreateUserModal()" class="rbac-user-admin px-4 py-2 bg-brand-600 hover:bg-brand-700 text-white rounded-xl text-xs font-bold flex items-center gap-2">
+            <i data-lucide="user-plus" class="w-4 h-4"></i> Add System User
+          </button>
+        </div>
+
+        <!-- Security Notice Alert Box -->
+        <div class="p-4 bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-900/50 rounded-2xl flex items-start gap-3">
+          <i data-lucide="shield-alert" class="w-5 h-5 text-amber-600 dark:text-amber-400 shrink-0 mt-0.5"></i>
+          <div class="text-xs text-amber-800 dark:text-amber-300 leading-relaxed">
+            <strong>RBAC Security Policy Active:</strong> Non-SuperAdmin accounts cannot modify their own permissions, nor promote other accounts to Super Admin status without cryptographically signed master credentials.
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
+          <table class="w-full text-left text-xs">
+            <thead class="bg-slate-50 dark:bg-slate-800/70 text-slate-600 dark:text-slate-400 uppercase tracking-wider font-semibold">
+              <tr>
+                <th class="py-3.5 px-4">User</th>
+                <th class="py-3.5 px-4">Role Assigned</th>
+                <th class="py-3.5 px-4">Status</th>
+                <th class="py-3.5 px-4">Permissions Scope</th>
+                <th class="py-3.5 px-4 text-right">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="rbac-users-tbody" class="divide-y divide-slate-100 dark:divide-slate-800">
+              <!-- Injected via renderRbacUsers() -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ============================================================ -->
+      <!-- 9. AUDIT & ACTIVITY LOGS VIEW -->
+      <!-- ============================================================ -->
+      <section id="view-logs" class="hidden space-y-5">
+        <div>
+          <h2 class="text-xl font-bold text-slate-900 dark:text-white">Immutable Security & Audit Trail</h2>
+          <p class="text-xs text-slate-600 dark:text-slate-400">Timestamped record of state modifications, logins, and destructive actions.</p>
+        </div>
+        <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm p-5">
+          <div class="space-y-4 font-mono text-xs" id="audit-log-container">
+            <!-- Injected via JS -->
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================ -->
+      <!-- 10. STORE SETTINGS VIEW -->
+      <!-- ============================================================ -->
+      <section id="view-settings" class="hidden space-y-6">
+        <div>
+          <h2 class="text-xl font-bold text-slate-900 dark:text-white">Store & Global Configuration</h2>
+          <p class="text-xs text-slate-600 dark:text-slate-400">Configure multi-currency, Stripe/PayPal webhooks, and tax nexus rules.</p>
+        </div>
+
+        <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm p-6 space-y-6">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">Legal Store Name</label>
+              <input type="text" value="ApexCommerce Global Ltd" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-2.5 text-xs text-slate-900 dark:text-white" />
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">Support Contact Email</label>
+              <input type="email" value="support@apexcommerce.io" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-2.5 text-xs text-slate-900 dark:text-white" />
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">Default Base Currency</label>
+              <select class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-2.5 text-xs text-slate-900 dark:text-white">
+                <option selected>USD ($) — United States Dollar</option>
+                <option>EUR (€) — Euro</option>
+                <option>GBP (£) — British Pound</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">Payment Gateway Engine</label>
+              <select class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-2.5 text-xs text-slate-900 dark:text-white">
+                <option selected>Stripe Connect + Apple Pay (Active)</option>
+                <option>PayPal Complete Commerce</option>
+                <option>Authorize.Net</option>
+              </select>
+            </div>
+          </div>
+          <div class="pt-4 border-t border-slate-100 dark:border-slate-800 flex justify-end">
+            <button onclick="saveStoreSettings()" class="px-5 py-2.5 bg-brand-600 hover:bg-brand-700 text-white rounded-xl text-xs font-bold shadow transition">
+              Save Global Configurations
+            </button>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- ==================== GLOBAL SEARCH MODAL (CMD + K) ==================== -->
+  <div id="search-modal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs hidden flex items-start justify-center pt-20 p-4">
+    <div class="bg-white dark:bg-slate-900 w-full max-w-2xl rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 overflow-hidden">
+      <div class="p-4 border-b border-slate-200 dark:border-slate-800 flex items-center gap-3">
+        <i data-lucide="search" class="w-5 h-5 text-brand-600"></i>
+        <input type="text" id="global-search-input" onkeyup="handleGlobalSearch(this.value)" placeholder="Search anything (e.g. 'Pro Wireless', 'ORD-8921', 'Liam', 'SUMMER25')..." class="w-full bg-transparent border-none text-sm text-slate-900 dark:text-white focus:outline-hidden" />
+        <button onclick="closeGlobalSearch()" class="text-xs bg-slate-100 dark:bg-slate-800 px-2 py-1 rounded text-slate-500">ESC</button>
+      </div>
+      <div id="global-search-results" class="max-h-96 overflow-y-auto custom-scrollbar p-3 space-y-2 text-xs">
+        <div class="text-slate-600 dark:text-slate-400 p-4 text-center">Type at least 2 characters to search across products, orders, customers, and discount coupons...</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== PRODUCT ADD/EDIT MODAL ==================== -->
+  <div id="product-modal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs hidden flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-slate-900 w-full max-w-xl rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 overflow-hidden flex flex-col max-h-[90vh]">
+      <div class="p-4 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
+        <h3 id="product-modal-title" class="font-bold text-sm text-slate-900 dark:text-white">Add New Product</h3>
+        <button onclick="closeProductModal()" class="text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-5 h-5"></i></button>
+      </div>
+      <form id="product-form" onsubmit="handleProductFormSubmit(event)" class="p-5 overflow-y-auto custom-scrollbar space-y-4 text-xs">
+        <input type="hidden" id="pm-id" />
+        <div>
+          <label class="block font-semibold mb-1">Product Title *</label>
+          <input type="text" id="pm-title" required class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-2.5 text-xs text-slate-900 dark:text-white" placeholder="e.g. Ultra-Fit Running Shoes" />
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block font-semibold mb-1">SKU *</label>
+            <input type="text" id="pm-sku" required class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-2.5 text-xs text-slate-900 dark:text-white" placeholder="e.g. SHOE-ULTRA-01" />
+          </div>
+          <div>
+            <label class="block font-semibold mb-1">Category *</label>
+            <select id="pm-category" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-2.5 text-xs text-slate-900 dark:text-white">
+              <option>Electronics</option>
+              <option>Apparel</option>
+              <option>Footwear</option>
+              <option>Audio</option>
+              <option>Accessories</option>
+            </select>
+          </div>
+        </div>
+        <div class="grid grid-cols-3 gap-3">
+          <div>
+            <label class="block font-semibold mb-1">Price ($) *</label>
+            <input type="number" step="0.01" id="pm-price" required class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-2.5 text-xs text-slate-900 dark:text-white" placeholder="99.99" />
+          </div>
+          <div>
+            <label class="block font-semibold mb-1">Stock Units *</label>
+            <input type="number" id="pm-stock" required class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-2.5 text-xs text-slate-900 dark:text-white" placeholder="50" />
+          </div>
+          <div>
+            <label class="block font-semibold mb-1">Status</label>
+            <select id="pm-status" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-2.5 text-xs text-slate-900 dark:text-white">
+              <option>Active</option>
+              <option>Draft</option>
+              <option>Out of Stock</option>
+            </select>
+          </div>
+        </div>
+        <div>
+          <label class="block font-semibold mb-1">Product Image URL</label>
+          <input type="url" id="pm-image" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-2.5 text-xs text-slate-900 dark:text-white" placeholder="https://images.unsplash.com/..." />
+        </div>
+        <div class="pt-4 border-t border-slate-100 dark:border-slate-800 flex justify-end gap-2">
+          <button type="button" onclick="closeProductModal()" class="px-4 py-2 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-600 dark:text-slate-400">Cancel</button>
+          <button type="submit" class="px-4 py-2 bg-brand-600 hover:bg-brand-700 text-white rounded-xl font-bold">Save Product</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==================== ORDER DETAILS SLIDE-OVER DRAWER ==================== -->
+  <div id="order-drawer" class="fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-xs hidden flex justify-end">
+    <div class="bg-white dark:bg-slate-900 w-full max-w-lg h-full shadow-2xl border-l border-slate-200 dark:border-slate-800 flex flex-col p-6 overflow-y-auto custom-scrollbar">
+      <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-4">
+        <div>
+          <span class="text-[10px] font-bold uppercase text-brand-600 dark:text-brand-400 tracking-wider">Order Inspector</span>
+          <h3 id="drawer-order-id" class="text-lg font-bold text-slate-900 dark:text-white">#ORD-0000</h3>
+        </div>
+        <button onclick="closeOrderDrawer()" class="text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-5 h-5"></i></button>
+      </div>
+      <div id="drawer-order-body" class="py-4 space-y-6 text-xs flex-1">
+        <!-- Injected via inspectOrder() -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== TOAST NOTIFICATION CONTAINER ==================== -->
+  <div id="toast-container" class="fixed bottom-5 right-5 z-50 space-y-2 pointer-events-none"></div>
+
+  <!-- ==================== CONFIRMATION MODAL ==================== -->
+  <div id="confirm-modal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs hidden flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-slate-900 w-full max-w-sm rounded-2xl p-5 shadow-2xl border border-slate-200 dark:border-slate-800 text-center space-y-4">
+      <div class="w-12 h-12 rounded-full bg-rose-100 dark:bg-rose-950/50 text-rose-600 dark:text-rose-400 flex items-center justify-center mx-auto">
+        <i data-lucide="alert-circle" class="w-6 h-6"></i>
+      </div>
+      <div>
+        <h4 id="confirm-modal-title" class="font-bold text-sm text-slate-900 dark:text-white">Confirm Destructive Action</h4>
+        <p id="confirm-modal-desc" class="text-xs text-slate-600 dark:text-slate-400 mt-1">This operation is irreversible.</p>
+      </div>
+      <div class="flex gap-2 justify-center pt-2">
+        <button onclick="closeConfirmModal(false)" class="px-4 py-2 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 rounded-xl text-xs font-semibold">Cancel</button>
+        <button id="confirm-modal-btn" onclick="executeConfirmedAction()" class="px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white rounded-xl text-xs font-bold shadow">Proceed</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================================================================= -->
+  <!-- APPLICATION DATA ENGINE & LOGIC -->
+  <!-- ================================================================= -->
+  <script>
+    // ---------- DATA STORE INITIALIZATION ----------
+    const AppState = {
+      currentUser: {
+        name: "Elena Rostova",
+        email: "elena@apexcommerce.io",
+        role: "Super Admin" // Options: "Super Admin", "Admin", "Manager", "Staff"
+      },
+      products: [
+        { id: 1, title: "AeroPro Wireless Noise-Cancelling Headphones", sku: "AP-NC-09", category: "Audio", price: 289.00, stock: 18, status: "Active", image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=100&h=100&fit=crop" },
+        { id: 2, title: "Velocity Ultra Running Shoes Gen-2", sku: "VRS-BLK-42", category: "Footwear", price: 145.50, stock: 3, status: "Active", image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=100&h=100&fit=crop" },
+        { id: 3, title: "Minimalist Ergonomic Aluminum Laptop Stand", sku: "ACC-LST-01", category: "Accessories", price: 69.00, stock: 45, status: "Active", image: "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?w=100&h=100&fit=crop" },
+        { id: 4, title: "Chronos Titanium Smartwatch V3", sku: "WTC-CH-33", category: "Electronics", price: 349.99, stock: 2, status: "Active", image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=100&h=100&fit=crop" },
+        { id: 5, title: "Waterproof Organic Cotton Commuter Backpack", sku: "BAG-ORG-15", category: "Apparel", price: 95.00, stock: 0, status: "Out of Stock", image: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=100&h=100&fit=crop" }
+      ],
+      orders: [
+        { id: "ORD-9841", customer: "Sophia Martinez", email: "sophia.m@gmail.com", items: "1x AeroPro Wireless", total: 289.00, payment: "Paid (Stripe)", status: "Pending", date: "10 mins ago" },
+        { id: "ORD-9840", customer: "Liam Vance", email: "liam.v@outlook.com", items: "2x Velocity Running Shoes", total: 291.00, payment: "Paid (ApplePay)", status: "Processing", date: "45 mins ago" },
+        { id: "ORD-9839", customer: "Marcus Chen", email: "m.chen@techcorp.io", items: "1x Chronos Titanium Watch", total: 349.99, payment: "Paid (Stripe)", status: "Shipped", date: "3 hours ago" },
+        { id: "ORD-9838", customer: "Emma Watson", email: "emma.w@domain.com", items: "1x Laptop Stand", total: 69.00, payment: "Paid (PayPal)", status: "Delivered", date: "Yesterday" },
+        { id: "ORD-9837", customer: "David Miller", email: "david.m@yahoo.com", items: "1x Commuter Backpack", total: 95.00, payment: "Refunded", status: "Refunded", date: "2 days ago" }
+      ],
+      customers: [
+        { id: 1, name: "Sophia Martinez", email: "sophia.m@gmail.com", location: "San Francisco, CA", orders: 4, spend: "$1,120.00", status: "Active" },
+        { id: 2, name: "Liam Vance", email: "liam.v@outlook.com", location: "London, UK", orders: 12, spend: "$3,420.50", status: "Active" },
+        { id: 3, name: "Marcus Chen", email: "m.chen@techcorp.io", location: "Singapore", orders: 1, spend: "$349.99", status: "Active" },
+        { id: 4, name: "David Miller", email: "david.m@yahoo.com", location: "Austin, TX", orders: 2, spend: "$190.00", status: "Suspended" }
+      ],
+      reviews: [
+        { id: 1, product: "AeroPro Wireless Noise-Cancelling Headphones", reviewer: "Liam Vance", rating: 5, comment: "Exceptional build quality and battery endurance. Outperformed my studio monitors.", status: "Approved" },
+        { id: 2, product: "Chronos Titanium Smartwatch V3", reviewer: "Sarah Jenkins", rating: 2, comment: "Battery died after 14 hours with GPS mode on. Would expect better for $349.", status: "Pending" }
+      ],
+      promotions: [
+        { id: 1, code: "SUMMER25", discount: "25% OFF", type: "Percentage", uses: "412 / 1000", expires: "Aug 31, 2026", active: true },
+        { id: 2, code: "WELCOME50", discount: "$50.00 Flat", type: "Fixed Amount", uses: "1,290 / Unlimited", expires: "Dec 31, 2026", active: true },
+        { id: 3, code: "FLASH10", discount: "10% OFF", type: "Percentage", uses: "500 / 500", expires: "Expired", active: false }
+      ],
+      users: [
+        { id: 1, name: "Elena Rostova", email: "elena@apexcommerce.io", role: "Super Admin", status: "Active", permissions: "Full Master Access" },
+        { id: 2, name: "Alexander Wright", email: "alex.w@apexcommerce.io", role: "Admin", status: "Active", permissions: "Product, Orders, CRM" },
+        { id: 3, name: "Kavita Patel", email: "kavita.p@apexcommerce.io", role: "Manager", status: "Active", permissions: "Inventory, Order Dispatch" },
+        { id: 4, name: "Tobias Vance", email: "tobias.v@apexcommerce.io", role: "Staff", status: "Active", permissions: "Support Ticket Read-Only" }
+      ],
+      auditLogs: [
+        { time: "Just now", user: "Elena Rostova", action: "PRICE_OVERRIDE", detail: "Updated SKU AP-NC-09 base price to $289.00" },
+        { time: "12m ago", user: "Alexander Wright", action: "ORDER_REFUND", detail: "Authorized $95.00 refund for #ORD-9837" },
+        { time: "1h ago", user: "Kavita Patel", action: "STOCK_UPDATE", detail: "Restocked 50 units for ACC-LST-01" }
+      ],
+      selectedProductIds: new Set(),
+      pendingAction: null
+    };
+
+    // ---------- INITIALIZATION & VIEW ROUTING ----------
+    document.addEventListener("DOMContentLoaded", () => {
+      lucide.createIcons();
+      initCharts();
+      renderDashboard();
+      renderProducts();
+      renderOrders();
+      renderCustomers();
+      renderReviews();
+      renderPromotions();
+      renderRbacUsers();
+      renderAuditLogs();
+      applyRBACRules();
+
+      // Keyboard Shortcut ⌘K / Ctrl+K for Global Search
+      window.addEventListener("keydown", (e) => {
+        if ((e.metaKey || e.ctrlKey) && e.key === "k") {
+          e.preventDefault();
+          openGlobalSearch();
+        }
+        if (e.key === "Escape") {
+          closeGlobalSearch();
+          closeProductModal();
+          closeOrderDrawer();
+          closeConfirmModal(false);
+        }
+      });
+    });
+
+    function switchView(viewName) {
+      // Role protection test for sensitive tabs
+      if (viewName === 'rbac' && AppState.currentUser.role === 'Staff') {
+        showToast("Access Denied: Support staff cannot view RBAC settings.", "error");
+        return;
+      }
+
+      document.querySelectorAll("main > section").forEach(el => el.classList.add("hidden"));
+      const target = document.getElementById(`view-${viewName}`);
+      if (target) target.classList.remove("hidden");
+
+      document.querySelectorAll(".nav-btn").forEach(btn => {
+        if (btn.getAttribute("data-page") === viewName) {
+          btn.className = "nav-btn w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-sm font-medium transition text-brand-600 bg-brand-50 dark:bg-brand-900/20 dark:text-brand-400";
+        } else {
+          btn.className = "nav-btn w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800/60 transition";
+        }
+      });
+      lucide.createIcons();
+    }
+
+    // ---------- RBAC & PERMISSION GUARD ENGINE ----------
+    function simulateRoleChange(newRole) {
+      AppState.currentUser.role = newRole;
+      applyRBACRules();
+      showToast(`Switched active context to role: ${newRole}`, "info");
+      addAuditLog(`ROLE_SIMULATED`, `Elena switched session context to ${newRole}`);
+    }
+
+    function applyRBACRules() {
+      const role = AppState.currentUser.role;
+      const isSuper = role === "Super Admin";
+      const isAdmin = role === "Admin" || isSuper;
+      const isManager = role === "Manager" || isAdmin;
+
+      // Product Management Buttons
+      document.querySelectorAll(".rbac-product-write").forEach(el => {
+        el.style.display = isManager ? "flex" : "none";
+      });
+
+      // Promotions Management
+      document.querySelectorAll(".rbac-promo-write").forEach(el => {
+        el.style.display = isAdmin ? "flex" : "none";
+      });
+
+      // RBAC User Admin
+      document.querySelectorAll(".rbac-user-admin").forEach(el => {
+        el.style.display = isAdmin ? "flex" : "none";
+      });
+
+      renderRbacUsers();
+    }
+
+    // ---------- RENDER FUNCTIONS ----------
+    function renderDashboard() {
+      const recentTbody = document.getElementById("dash-recent-orders-tbody");
+      recentTbody.innerHTML = AppState.orders.slice(0, 4).map(o => `
+        <tr class="hover:bg-slate-50/50 dark:hover:bg-slate-800/40 transition">
+          <td class="px-5 py-3 font-semibold text-brand-600">${o.id}</td>
+          <td class="px-5 py-3 font-medium text-slate-800 dark:text-slate-200">${o.customer}</td>
+          <td class="px-5 py-3">${getStatusBadge(o.status)}</td>
+          <td class="px-5 py-3 font-mono font-bold">$${o.total.toFixed(2)}</td>
+          <td class="px-5 py-3 text-right">
+            <button onclick="inspectOrder('${o.id}')" class="text-brand-600 hover:text-brand-700 font-semibold text-xs">Inspect</button>
+          </td>
+        </tr>
+      `).join("");
+
+      const lowStockList = document.getElementById("dash-low-stock-list");
+      const lowItems = AppState.products.filter(p => p.stock < 5);
+      lowStockList.innerHTML = lowItems.map(p => `
+        <div class="flex items-center justify-between p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+          <div class="flex items-center gap-3">
+            <img src="${p.image}" class="w-8 h-8 rounded-lg object-cover" />
+            <div>
+              <p class="font-bold text-xs truncate max-w-[140px] text-slate-800 dark:text-slate-100">${p.title}</p>
+              <p class="text-[10px] text-slate-600 dark:text-slate-400 font-mono">SKU: ${p.sku}</p>
+            </div>
+          </div>
+          <span class="px-2 py-1 bg-rose-50 text-rose-600 dark:bg-rose-950/60 dark:text-rose-400 rounded-lg text-xs font-bold font-mono">${p.stock} left</span>
+        </div>
+      `).join("");
+      lucide.createIcons();
+    }
+
+    function renderProducts() {
+      const tbody = document.getElementById("products-table-body");
+      const countEl = document.getElementById("product-filtered-count");
+      countEl.innerText = AppState.products.length;
+      document.getElementById("nav-product-count").innerText = AppState.products.length;
+
+      tbody.innerHTML = AppState.products.map(p => `
+        <tr class="hover:bg-slate-50/50 dark:hover:bg-slate-800/40 transition">
+          <td class="p-4">
+            <input type="checkbox" onchange="toggleSelectProduct(${p.id}, this)" class="product-checkbox rounded border-slate-300 text-brand-600 focus:ring-brand-500" ${AppState.selectedProductIds.has(p.id) ? 'checked' : ''} />
+          </td>
+          <td class="py-3.5 px-4">
+            <div class="flex items-center gap-3">
+              <img src="${p.image}" class="w-9 h-9 rounded-xl object-cover ring-1 ring-slate-200 dark:ring-slate-700" alt="Thumb" />
+              <div>
+                <p class="font-semibold text-slate-900 dark:text-white">${p.title}</p>
+                <p class="text-[11px] text-slate-600 dark:text-slate-400">${p.category}</p>
+              </div>
+            </div>
+          </td>
+          <td class="py-3.5 px-4 font-mono font-medium text-slate-600 dark:text-slate-400">${p.sku}</td>
+          <td class="py-3.5 px-4 text-slate-700 dark:text-slate-300 font-medium">${p.category}</td>
+          <td class="py-3.5 px-4 font-mono font-bold text-slate-900 dark:text-white">$${p.price.toFixed(2)}</td>
+          <td class="py-3.5 px-4">
+            <span class="font-mono ${p.stock < 5 ? 'text-rose-600 font-bold' : 'text-slate-700 dark:text-slate-300'}">${p.stock} units</span>
+          </td>
+          <td class="py-3.5 px-4">${getStatusBadge(p.status)}</td>
+          <td class="py-3.5 px-4 text-right">
+            <div class="flex items-center justify-end gap-1">
+              <button onclick="editProduct(${p.id})" class="p-1.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg text-slate-500 hover:text-brand-600"><i data-lucide="edit-2" class="w-4 h-4"></i></button>
+              <button onclick="promptDeleteProduct(${p.id})" class="p-1.5 hover:bg-rose-50 dark:hover:bg-rose-950/40 rounded-lg text-slate-500 hover:text-rose-600"><i data-lucide="trash" class="w-4 h-4"></i></button>
+            </div>
+          </td>
+        </tr>
+      `).join("");
+      lucide.createIcons();
+    }
+
+    function renderOrders() {
+      const tbody = document.getElementById("orders-table-body");
+      tbody.innerHTML = AppState.orders.map(o => `
+        <tr class="hover:bg-slate-50/50 dark:hover:bg-slate-800/40 transition">
+          <td class="py-3.5 px-4 font-bold text-brand-600 dark:text-brand-400 cursor-pointer" onclick="inspectOrder('${o.id}')">${o.id}</td>
+          <td class="py-3.5 px-4">
+            <div class="font-semibold text-slate-900 dark:text-white">${o.customer}</div>
+            <div class="text-[10px] text-slate-600 dark:text-slate-400">${o.email}</div>
+          </td>
+          <td class="py-3.5 px-4 text-slate-600 dark:text-slate-300">${o.items}</td>
+          <td class="py-3.5 px-4">
+            <span class="px-2 py-0.5 rounded-full text-[10px] font-semibold ${o.payment.includes('Paid') ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300' : 'bg-rose-100 text-rose-700'}">${o.payment}</span>
+          </td>
+          <td class="py-3.5 px-4">${getStatusBadge(o.status)}</td>
+          <td class="py-3.5 px-4 font-mono font-bold text-slate-900 dark:text-white">$${o.total.toFixed(2)}</td>
+          <td class="py-3.5 px-4 text-right">
+            <button onclick="inspectOrder('${o.id}')" class="px-2.5 py-1 bg-slate-100 dark:bg-slate-800 hover:bg-brand-50 hover:text-brand-600 rounded-lg text-xs font-semibold">Inspect</button>
+          </td>
+        </tr>
+      `).join("");
+      lucide.createIcons();
+    }
+
+    function renderCustomers() {
+      const tbody = document.getElementById("customers-table-body");
+      tbody.innerHTML = AppState.customers.map(c => `
+        <tr class="hover:bg-slate-50/50 dark:hover:bg-slate-800/40 transition">
+          <td class="py-3.5 px-4 font-semibold text-slate-900 dark:text-white">${c.name}<br/><span class="text-[10px] text-slate-600 dark:text-slate-400 font-normal">${c.email}</span></td>
+          <td class="py-3.5 px-4 text-slate-600 dark:text-slate-300">${c.location}</td>
+          <td class="py-3.5 px-4 font-mono">${c.orders} orders</td>
+          <td class="py-3.5 px-4 font-mono font-bold text-emerald-600">${c.spend}</td>
+          <td class="py-3.5 px-4">${getStatusBadge(c.status)}</td>
+          <td class="py-3.5 px-4 text-right">
+            <button onclick="showToast('Customer CRM Dossier opened for ${c.name}', 'info')" class="text-xs text-brand-600 font-semibold">View History</button>
+          </td>
+        </tr>
+      `).join("");
+      lucide.createIcons();
+    }
+
+    function renderReviews() {
+      const c = document.getElementById("reviews-container");
+      c.innerHTML = AppState.reviews.map(r => `
+        <div class="p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div class="space-y-1">
+            <div class="flex items-center gap-2">
+              <span class="font-bold text-slate-900 dark:text-white">${r.reviewer}</span>
+              <span class="text-amber-500 flex items-center gap-0.5 text-xs font-bold">★ ${r.rating}.0</span>
+              <span class="text-xs text-slate-600 dark:text-slate-400">on <strong class="text-slate-800 dark:text-slate-200">${r.product}</strong></span>
+            </div>
+            <p class="text-xs text-slate-600 dark:text-slate-400 italic">"${r.comment}"</p>
+          </div>
+          <div class="flex items-center gap-2">
+            ${r.status === 'Pending' ? `
+              <button onclick="approveReview(${r.id})" class="px-3 py-1.5 bg-emerald-600 text-white rounded-xl text-xs font-bold hover:bg-emerald-700">Approve</button>
+              <button onclick="rejectReview(${r.id})" class="px-3 py-1.5 border border-rose-200 text-rose-600 rounded-xl text-xs font-bold hover:bg-rose-50">Reject</button>
+            ` : '<span class="text-xs text-emerald-600 font-bold bg-emerald-50 dark:bg-emerald-950 px-2 py-1 rounded-lg">Approved & Visible</span>'}
+          </div>
+        </div>
+      `).join("");
+      lucide.createIcons();
+    }
+
+    function renderPromotions() {
+      const grid = document.getElementById("promotions-grid");
+      grid.innerHTML = AppState.promotions.map(p => `
+        <div class="p-5 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-2">
+              <span class="font-mono font-bold text-base text-brand-600 dark:text-brand-400">${p.code}</span>
+              ${p.active ? '<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-700">Active</span>' : '<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-100 text-slate-600">Disabled</span>'}
+            </div>
+            <p class="text-lg font-bold text-slate-900 dark:text-white">${p.discount}</p>
+            <p class="text-xs text-slate-600 dark:text-slate-400 mt-1">Redemptions: ${p.uses}</p>
+          </div>
+          <div class="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs text-slate-600 dark:text-slate-400">
+            <span>Exp: ${p.expires}</span>
+            <button onclick="toggleCouponStatus(${p.id})" class="text-brand-600 font-bold hover:underline">${p.active ? 'Disable' : 'Enable'}</button>
+          </div>
+        </div>
+      `).join("");
+    }
+
+    function renderRbacUsers() {
+      const tbody = document.getElementById("rbac-users-tbody");
+      const isSuper = AppState.currentUser.role === "Super Admin";
+
+      tbody.innerHTML = AppState.users.map(u => `
+        <tr class="hover:bg-slate-50/50 dark:hover:bg-slate-800/40 transition">
+          <td class="py-3.5 px-4">
+            <div class="font-semibold text-slate-900 dark:text-white">${u.name}</div>
+            <div class="text-[10px] text-slate-600 dark:text-slate-400">${u.email}</div>
+          </td>
+          <td class="py-3.5 px-4 font-semibold">
+            <span class="px-2.5 py-1 rounded-full text-xs ${u.role === 'Super Admin' ? 'bg-purple-100 text-purple-800 dark:bg-purple-950 dark:text-purple-300 font-bold' : 'bg-slate-100 dark:bg-slate-800'}">
+              ${u.role}
+            </span>
+          </td>
+          <td class="py-3.5 px-4">${getStatusBadge(u.status)}</td>
+          <td class="py-3.5 px-4 text-slate-600 dark:text-slate-300">${u.permissions}</td>
+          <td class="py-3.5 px-4 text-right">
+            ${u.role === 'Super Admin' && !isSuper ? `
+              <span class="text-[11px] text-slate-600 dark:text-slate-400 italic">Protected</span>
+            ` : `
+              <button onclick="promptEditUser(${u.id})" class="text-xs text-brand-600 font-semibold hover:underline">Edit Privileges</button>
+            `}
+          </td>
+        </tr>
+      `).join("");
+      lucide.createIcons();
+    }
+
+    function renderAuditLogs() {
+      const container = document.getElementById("audit-log-container");
+      container.innerHTML = AppState.auditLogs.map(l => `
+        <div class="flex items-start justify-between p-3 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-800">
+          <div class="space-y-0.5">
+            <div class="flex items-center gap-2">
+              <span class="px-2 py-0.5 rounded bg-brand-100 text-brand-700 dark:bg-brand-950 dark:text-brand-300 font-bold text-[10px]">${l.action}</span>
+              <span class="font-semibold text-slate-900 dark:text-white">${l.user}</span>
+            </div>
+            <p class="text-slate-600 dark:text-slate-400">${l.detail}</p>
+          </div>
+          <span class="text-[10px] text-slate-600 dark:text-slate-400 whitespace-nowrap">${l.time}</span>
+        </div>
+      `).join("");
+    }
+
+    // ---------- HELPERS & BADGES ----------
+    function getStatusBadge(status) {
+      switch(status) {
+        case 'Active':
+        case 'Delivered':
+        case 'Approved':
+          return `<span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300">${status}</span>`;
+        case 'Pending':
+        case 'Draft':
+          return `<span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-amber-100 text-amber-700 dark:bg-amber-950/60 dark:text-amber-300">${status}</span>`;
+        case 'Processing':
+        case 'Shipped':
+          return `<span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-blue-100 text-blue-700 dark:bg-blue-950/60 dark:text-blue-300">${status}</span>`;
+        case 'Out of Stock':
+        case 'Refunded':
+        case 'Suspended':
+          return `<span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-rose-100 text-rose-700 dark:bg-rose-950/60 dark:text-rose-300">${status}</span>`;
+        default:
+          return `<span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-slate-100 text-slate-700">${status}</span>`;
+      }
+    }
+
+    function addAuditLog(action, detail) {
+      AppState.auditLogs.unshift({
+        time: "Just now",
+        user: AppState.currentUser.name,
+        action: action,
+        detail: detail
+      });
+      renderAuditLogs();
+    }
+
+    // ---------- GLOBAL SEARCH IMPLEMENTATION ----------
+    function openGlobalSearch() {
+      document.getElementById("search-modal").classList.remove("hidden");
+      setTimeout(() => document.getElementById("global-search-input").focus(), 50);
+    }
+    function closeGlobalSearch() {
+      document.getElementById("search-modal").classList.add("hidden");
+    }
+
+    function handleGlobalSearch(query) {
+      const q = query.trim().toLowerCase();
+      const resultsBox = document.getElementById("global-search-results");
+      if (q.length < 2) {
+        resultsBox.innerHTML = `<div class="text-slate-600 dark:text-slate-400 p-4 text-center">Type at least 2 characters to query products, orders, customers, or coupons...</div>`;
+        return;
+      }
+
+      let matches = [];
+      // Search Products
+      AppState.products.forEach(p => {
+        if (p.title.toLowerCase().includes(q) || p.sku.toLowerCase().includes(q)) {
+          matches.push({ type: 'Product', label: p.title, meta: `SKU: ${p.sku} • $${p.price.toFixed(2)}`, action: () => { closeGlobalSearch(); switchView('products'); } });
+        }
+      });
+      // Search Orders
+      AppState.orders.forEach(o => {
+        if (o.id.toLowerCase().includes(q) || o.customer.toLowerCase().includes(q)) {
+          matches.push({ type: 'Order', label: `${o.id} — ${o.customer}`, meta: `${o.status} • $${o.total.toFixed(2)}`, action: () => { closeGlobalSearch(); inspectOrder(o.id); } });
+        }
+      });
+      // Search Customers
+      AppState.customers.forEach(c => {
+        if (c.name.toLowerCase().includes(q) || c.email.toLowerCase().includes(q)) {
+          matches.push({ type: 'Customer', label: c.name, meta: `${c.email} • ${c.spend}`, action: () => { closeGlobalSearch(); switchView('customers'); } });
+        }
+      });
+
+      if (matches.length === 0) {
+        resultsBox.innerHTML = `<div class="p-6 text-center text-slate-600 dark:text-slate-400">No matching indexed entities for "<strong>${query}</strong>"</div>`;
+        return;
+      }
+
+      resultsBox.innerHTML = matches.map((m, idx) => `
+        <div onclick="executeSearchResult(${idx})" class="p-3 bg-slate-50 dark:bg-slate-800 hover:bg-brand-50 dark:hover:bg-brand-900/30 rounded-xl cursor-pointer flex items-center justify-between transition">
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="px-2 py-0.5 text-[9px] font-bold rounded bg-slate-200 dark:bg-slate-700 uppercase">${m.type}</span>
+              <span class="font-bold text-slate-900 dark:text-white">${m.label}</span>
+            </div>
+            <p class="text-[11px] text-slate-600 dark:text-slate-400 mt-0.5">${m.meta}</p>
+          </div>
+          <i data-lucide="chevron-right" class="w-4 h-4 text-slate-400"></i>
+        </div>
+      `).join("");
+      window._activeSearchMatches = matches;
+      lucide.createIcons();
+    }
+
+    function executeSearchResult(idx) {
+      if (window._activeSearchMatches && window._activeSearchMatches[idx]) {
+        window._activeSearchMatches[idx].action();
+      }
+    }
+
+    // ---------- PRODUCT CRUD & MODALS ----------
+    function openAddProductModal() {
+      document.getElementById("product-modal-title").innerText = "Add New Product";
+      document.getElementById("product-form").reset();
+      document.getElementById("pm-id").value = "";
+      document.getElementById("product-modal").classList.remove("hidden");
+    }
+
+    function closeProductModal() {
+      document.getElementById("product-modal").classList.add("hidden");
+    }
+
+    function editProduct(id) {
+      const p = AppState.products.find(item => item.id === id);
+      if (!p) return;
+      document.getElementById("product-modal-title").innerText = `Edit Product: ${p.sku}`;
+      document.getElementById("pm-id").value = p.id;
+      document.getElementById("pm-title").value = p.title;
+      document.getElementById("pm-sku").value = p.sku;
+      document.getElementById("pm-category").value = p.category;
+      document.getElementById("pm-price").value = p.price;
+      document.getElementById("pm-stock").value = p.stock;
+      document.getElementById("pm-status").value = p.status;
+      document.getElementById("pm-image").value = p.image;
+      document.getElementById("product-modal").classList.remove("hidden");
+    }
+
+    function handleProductFormSubmit(e) {
+      e.preventDefault();
+      const id = document.getElementById("pm-id").value;
+      const title = document.getElementById("pm-title").value;
+      const sku = document.getElementById("pm-sku").value;
+      const category = document.getElementById("pm-category").value;
+      const price = parseFloat(document.getElementById("pm-price").value);
+      const stock = parseInt(document.getElementById("pm-stock").value);
+      const status = document.getElementById("pm-status").value;
+      const image = document.getElementById("pm-image").value || "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=100&h=100&fit=crop";
+
+      if (id) {
+        // Edit existing
+        const pIndex = AppState.products.findIndex(x => x.id == id);
+        if (pIndex !== -1) {
+          AppState.products[pIndex] = { ...AppState.products[pIndex], title, sku, category, price, stock, status, image };
+          showToast(`Product ${sku} updated successfully`, "success");
+          addAuditLog("PRODUCT_UPDATE", `Updated product ${sku}`);
+        }
+      } else {
+        // Create new
+        const newProduct = { id: Date.now(), title, sku, category, price, stock, status, image };
+        AppState.products.unshift(newProduct);
+        showToast(`Product ${sku} created successfully`, "success");
+        addAuditLog("PRODUCT_CREATE", `Created new SKU ${sku}`);
+      }
+      closeProductModal();
+      renderProducts();
+      renderDashboard();
+    }
+
+    function promptDeleteProduct(id) {
+      const p = AppState.products.find(x => x.id === id);
+      if (!p) return;
+      openConfirmModal(
+        "Delete Product SKU",
+        `Are you sure you want to remove "${p.title}"? This cannot be undone.`,
+        () => {
+          AppState.products = AppState.products.filter(x => x.id !== id);
+          renderProducts();
+          renderDashboard();
+          showToast(`Product SKU ${p.sku} was permanently deleted`, "info");
+          addAuditLog("PRODUCT_DELETE", `Deleted SKU ${p.sku}`);
+        }
+      );
+    }
+
+    function filterProductsTable() {
+      const q = document.getElementById("product-search-input").value.toLowerCase();
+      const cat = document.getElementById("product-category-filter").value;
+      const stat = document.getElementById("product-status-filter").value;
+
+      const filtered = AppState.products.filter(p => {
+        const matchesQ = p.title.toLowerCase().includes(q) || p.sku.toLowerCase().includes(q);
+        const matchesCat = cat === "All" || p.category === cat;
+        const matchesStat = stat === "All" || p.status === stat;
+        return matchesQ && matchesCat && matchesStat;
+      });
+
+      document.getElementById("product-filtered-count").innerText = filtered.length;
+      const tbody = document.getElementById("products-table-body");
+      tbody.innerHTML = filtered.map(p => `
+        <tr class="hover:bg-slate-50/50 dark:hover:bg-slate-800/40 transition">
+          <td class="p-4"><input type="checkbox" class="product-checkbox rounded border-slate-300 text-brand-600" /></td>
+          <td class="py-3.5 px-4 flex items-center gap-3">
+            <img src="${p.image}" class="w-9 h-9 rounded-xl object-cover ring-1 ring-slate-200 dark:ring-slate-700" alt="Thumb" />
+            <div>
+              <p class="font-semibold text-slate-900 dark:text-white">${p.title}</p>
+              <p class="text-[11px] text-slate-600 dark:text-slate-400">${p.category}</p>
+            </div>
+          </td>
+          <td class="py-3.5 px-4 font-mono text-slate-600 dark:text-slate-400">${p.sku}</td>
+          <td class="py-3.5 px-4 font-medium text-slate-700 dark:text-slate-300">${p.category}</td>
+          <td class="py-3.5 px-4 font-mono font-bold">$${p.price.toFixed(2)}</td>
+          <td class="py-3.5 px-4 font-mono">${p.stock} units</td>
+          <td class="py-3.5 px-4">${getStatusBadge(p.status)}</td>
+          <td class="py-3.5 px-4 text-right">
+            <div class="flex items-center justify-end gap-1">
+              <button onclick="editProduct(${p.id})" class="p-1.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg"><i data-lucide="edit-2" class="w-4 h-4"></i></button>
+              <button onclick="promptDeleteProduct(${p.id})" class="p-1.5 hover:bg-rose-50 rounded-lg text-rose-600"><i data-lucide="trash" class="w-4 h-4"></i></button>
+            </div>
+          </td>
+        </tr>
+      `).join("");
+      lucide.createIcons();
+    }
+
+    // ---------- ORDER INSPECTOR DRAWER ----------
+    function inspectOrder(orderId) {
+      const order = AppState.orders.find(o => o.id === orderId);
+      if (!order) return;
+
+      document.getElementById("drawer-order-id").innerText = order.id;
+      const body = document.getElementById("drawer-order-body");
+      body.innerHTML = `
+        <div class="p-4 bg-slate-50 dark:bg-slate-800 rounded-2xl space-y-2 border border-slate-200 dark:border-slate-700">
+          <div class="flex justify-between">
+            <span class="text-slate-600 dark:text-slate-400">Customer Name:</span>
+            <strong class="text-slate-900 dark:text-white">${order.customer}</strong>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-slate-600 dark:text-slate-400">Email Address:</span>
+            <span class="text-slate-800 dark:text-slate-200">${order.email}</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-slate-600 dark:text-slate-400">Fulfillment Status:</span>
+            <span>${getStatusBadge(order.status)}</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-slate-600 dark:text-slate-400">Payment Gateway:</span>
+            <span class="font-semibold text-emerald-600">${order.payment}</span>
+          </div>
+        </div>
+
+        <div>
+          <h4 class="font-bold text-slate-900 dark:text-white mb-2">Order Line Items</h4>
+          <div class="p-3 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl flex items-center justify-between">
+            <span>${order.items}</span>
+            <strong class="font-mono text-slate-900 dark:text-white">$${order.total.toFixed(2)}</strong>
+          </div>
+        </div>
+
+        <div class="space-y-2 pt-4 border-t border-slate-100 dark:border-slate-800">
+          <label class="block font-semibold text-slate-800 dark:text-slate-200">Update Order State</label>
+          <div class="grid grid-cols-2 gap-2">
+            <button onclick="updateOrderStatus('${order.id}', 'Processing')" class="p-2 border rounded-xl font-semibold hover:bg-slate-50 dark:hover:bg-slate-800">Mark Processing</button>
+            <button onclick="updateOrderStatus('${order.id}', 'Shipped')" class="p-2 bg-brand-600 text-white rounded-xl font-semibold hover:bg-brand-700">Mark Shipped</button>
+          </div>
+          <button onclick="promptRefundOrder('${order.id}')" class="w-full mt-2 p-2 border border-rose-200 text-rose-600 dark:border-rose-800 dark:text-rose-400 rounded-xl font-bold hover:bg-rose-50 dark:hover:bg-rose-950/40">Authorize Full Refund</button>
+        </div>
+      `;
+      document.getElementById("order-drawer").classList.remove("hidden");
+    }
+
+    function closeOrderDrawer() {
+      document.getElementById("order-drawer").classList.add("hidden");
+    }
+
+    function updateOrderStatus(id, newStatus) {
+      const ord = AppState.orders.find(o => o.id === id);
+      if (ord) {
+        ord.status = newStatus;
+        renderOrders();
+        renderDashboard();
+        closeOrderDrawer();
+        showToast(`Order ${id} marked as ${newStatus}`, "success");
+        addAuditLog("ORDER_STATUS", `Updated order ${id} to ${newStatus}`);
+      }
+    }
+
+    function promptRefundOrder(id) {
+      openConfirmModal(
+        "Issue Order Refund",
+        `Are you certain you wish to issue a full refund for ${id}? This reverses the Stripe transfer immediately.`,
+        () => {
+          const ord = AppState.orders.find(o => o.id === id);
+          if (ord) {
+            ord.status = "Refunded";
+            ord.payment = "Refunded";
+            renderOrders();
+            renderDashboard();
+            closeOrderDrawer();
+            showToast(`Order ${id} successfully refunded`, "info");
+            addAuditLog("ORDER_REFUND", `Processed full refund for ${id}`);
+          }
+        }
+      );
+    }
+
+    // ---------- CONFIRMATION MODAL SYSTEM ----------
+    function openConfirmModal(title, desc, onConfirmCallback) {
+      document.getElementById("confirm-modal-title").innerText = title;
+      document.getElementById("confirm-modal-desc").innerText = desc;
+      AppState.pendingAction = onConfirmCallback;
+      document.getElementById("confirm-modal").classList.remove("hidden");
+    }
+    function closeConfirmModal() {
+      document.getElementById("confirm-modal").classList.add("hidden");
+      AppState.pendingAction = null;
+    }
+    function executeConfirmedAction() {
+      if (typeof AppState.pendingAction === "function") {
+        AppState.pendingAction();
+      }
+      closeConfirmModal();
+    }
+
+    // ---------- TOAST SYSTEM ----------
+    function showToast(msg, type = "info") {
+      const container = document.getElementById("toast-container");
+      const el = document.createElement("div");
+      let bg = "bg-slate-900 text-white dark:bg-white dark:text-slate-900";
+      if (type === "success") bg = "bg-emerald-600 text-white";
+      if (type === "error") bg = "bg-rose-600 text-white";
+
+      el.className = `${bg} px-4 py-3 rounded-2xl shadow-xl text-xs font-semibold flex items-center gap-2 transform transition-all duration-300 translate-y-2 opacity-0 pointer-events-auto`;
+      el.innerHTML = `<span>${msg}</span>`;
+      container.appendChild(el);
+
+      setTimeout(() => { el.classList.remove("translate-y-2", "opacity-0"); }, 10);
+      setTimeout(() => {
+        el.classList.add("opacity-0", "translate-y-2");
+        setTimeout(() => el.remove(), 300);
+      }, 3500);
+    }
+
+    // ---------- CHART.JS TELEMETRY INITIALIZATION ----------
+    function initCharts() {
+      // 1. Dashboard Revenue Line Chart
+      const revCtx = document.getElementById("revenueChart").getContext("2d");
+      new Chart(revCtx, {
+        type: 'line',
+        data: {
+          labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+          datasets: [{
+            label: 'Current Week ($)',
+            data: [14200, 18500, 16900, 24000, 21500, 31200, 28400],
+            borderColor: '#6366f1',
+            backgroundColor: 'rgba(99, 102, 241, 0.1)',
+            fill: true,
+            tension: 0.35,
+            borderWidth: 2.5
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { display: false } },
+          scales: {
+            y: { grid: { color: 'rgba(156, 163, 175, 0.1)' } },
+            x: { grid: { display: false } }
+          }
+        }
+      });
+
+      // 2. Category Doughnut Chart
+      const catCtx = document.getElementById("categoryChart").getContext("2d");
+      new Chart(catCtx, {
+        type: 'doughnut',
+        data: {
+          labels: ['Electronics', 'Apparel', 'Accessories', 'Home'],
+          datasets: [{
+            data: [42, 28, 18, 12],
+            backgroundColor: ['#6366f1', '#10b981', '#f59e0b', '#ef4444'],
+            borderWidth: 0
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { display: false } },
+          cutout: '72%'
+        }
+      });
+
+      // 3. Deep Analytics Bar Chart
+      const deepCtx = document.getElementById("deepAnalyticsChart").getContext("2d");
+      new Chart(deepCtx, {
+        type: 'bar',
+        data: {
+          labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug'],
+          datasets: [
+            { label: '2026 (Current)', data: [65000, 72000, 89000, 94000, 112000, 128000, 134000, 142000], backgroundColor: '#6366f1', borderRadius: 6 },
+            { label: '2025 (Prior Year)', data: [48000, 52000, 61000, 68000, 80000, 89000, 94000, 102000], backgroundColor: 'rgba(156, 163, 175, 0.3)', borderRadius: 6 }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            y: { grid: { color: 'rgba(156, 163, 175, 0.1)' } },
+            x: { grid: { display: false } }
+          }
+        }
+      });
+    }
+
+    // ---------- THEME TOGGLER ----------
+    function toggleTheme() {
+      document.documentElement.classList.toggle("dark");
+    }
+
+    function toggleSidebar() {
+      const sidebar = document.getElementById("sidebar");
+      sidebar.classList.toggle("-translate-x-full");
+    }
+
+    function saveStoreSettings() {
+      showToast("Store configurations committed to production cloud", "success");
+      addAuditLog("SETTINGS_UPDATED", "Updated global payment & store configurations");
+    }
+  </script>
+</body>
+</html>

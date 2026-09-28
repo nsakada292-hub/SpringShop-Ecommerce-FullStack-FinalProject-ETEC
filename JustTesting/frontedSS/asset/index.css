@@ -1,0 +1,69 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --color-primary-green: #C1E899;
+    --color-dark-brown: #9A6735;
+    --color-light-green: #E6F0DC;
+    --color-dark-green: #55883B;
+  }
+}
+
+/* Custom Spring Colors */
+.bg-spring-dark-green { background-color: #55883B; }
+.text-spring-dark-green { color: #55883B; }
+.border-spring-dark-green { border-color: #55883B; }
+
+.bg-spring-primary-green { background-color: #C1E899; }
+.text-spring-primary-green { color: #55883B; }
+.border-spring-primary-green { border-color: #C1E899; }
+
+.bg-spring-light-green { background-color: #E6F0DC; }
+.text-spring-light-green { color: #E6F0DC; }
+.border-spring-light-green { border-color: #E6F0DC; }
+
+.bg-spring-dark-brown { background-color: #9A6735; }
+.text-spring-dark-brown { color: #9A6735; }
+.border-spring-dark-brown { border-color: #9A6735; }
+
+/* Custom Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideInRight {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-slide-in-right {
+  animation: slideInRight 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.skeleton-shimmer {
+  background: linear-gradient(90deg, rgba(220, 225, 215, 0.4) 25%, rgba(240, 245, 235, 0.8) 50%, rgba(220, 225, 215, 0.4) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+.dark .skeleton-shimmer {
+  background: linear-gradient(90deg, rgba(45, 55, 50, 0.6) 25%, rgba(65, 75, 70, 0.9) 50%, rgba(45, 55, 50, 0.6) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 9999px; }
+.dark ::-webkit-scrollbar-thumb { background: #475569; }

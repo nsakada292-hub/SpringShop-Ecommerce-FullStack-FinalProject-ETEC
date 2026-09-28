@@ -1,0 +1,10 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --color-primary-green: #C1E899;
+    --color-dark-brown: #9A6735;
+    --color-light-green: #E6F0DC;
+    --color-dark-green: #55883B;
+  }
+}

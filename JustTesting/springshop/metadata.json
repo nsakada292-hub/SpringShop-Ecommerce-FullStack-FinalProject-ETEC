@@ -1,0 +1,6 @@
+{
+  "name": "SpringShop",
+  "description": "Production-ready fashion e-commerce storefront and administrator dashboard integrated with Spring Boot REST API backend.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

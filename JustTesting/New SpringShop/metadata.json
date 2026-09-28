@@ -1,0 +1,6 @@
+{
+  "name": "SpringShop",
+  "description": "Full-stack customer storefront and admin dashboard with Spring Boot REST API integration, Lexend and Kantumruy Pro design system, cart, wishlist, and live admin management.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

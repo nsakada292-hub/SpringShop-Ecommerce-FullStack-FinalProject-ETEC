@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tonlé Admin — Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: { extend: {
+      colors: {
+        ink:'#12211D', sidebar:'#0E1C18', paper:'#F1EAD6', panel:'#FAF6EB',
+        gold:'#B8862B', goldbright:'#D9A53C', clay:'#B33F3F', moss:'#3F5C50', greenok:'#4C7A5E'
+      },
+      fontFamily: {
+        display:['Fraunces','serif'], sans:['Inter','sans-serif'], mono:['"IBM Plex Mono"','monospace']
+      }
+    }}
+  }
+</script>
+<style>
+  dialog::backdrop{background:rgba(18,33,29,0.5);}
+  .sb-thread{background-image:repeating-linear-gradient(115deg,#D9A53C 0 3px,transparent 3px 9px);}
+  [hidden]{display:none !important;}
+</style>
+</head>
+<body class="bg-paper text-ink font-sans antialiased">
+
+<main id="loginScreen" class="min-h-screen flex items-center justify-center p-5 bg-sidebar">
+  <div class="bg-panel rounded-2xl w-[400px] max-w-full p-9 shadow-xl">
+    <h1 class="font-display text-2xl font-bold mb-1.5">Tonlé<span class="text-clay"> Admin</span></h1>
+    <p class="text-[13px] opacity-60 mb-6">Sign in with an admin account to manage products and orders.</p>
+    <p id="loginError" hidden class="bg-clay/10 text-clay text-[12.5px] font-semibold px-3.5 py-2.5 rounded-lg mb-4"></p>
+    <form id="loginForm" onsubmit="attemptLogin(); return false;">
+      <div class="mb-4">
+        <label class="block text-[11px] font-bold uppercase tracking-wide opacity-60 mb-1.5" for="loginUser">Username</label>
+        <input id="loginUser" class="w-full px-3.5 py-3 rounded-lg border border-ink/15 bg-paper text-sm" type="text" placeholder="admin" autocomplete="username">
+      </div>
+      <div class="mb-2">
+        <label class="block text-[11px] font-bold uppercase tracking-wide opacity-60 mb-1.5" for="loginPass">Password</label>
+        <input id="loginPass" class="w-full px-3.5 py-3 rounded-lg border border-ink/15 bg-paper text-sm" type="password" placeholder="••••••••" autocomplete="current-password">
+      </div>
+      <button class="w-full bg-ink text-paper py-3.5 rounded-full font-bold text-sm mt-3" type="submit">Sign in</button>
+    </form>
+    <p class="text-[11.5px] opacity-50 mt-5 pt-4 border-t border-ink/10 leading-relaxed">
+      Demo accounts — <code class="bg-paper px-1.5 py-0.5 rounded font-mono">admin / admin123</code> (admin role, gets in) and
+      <code class="bg-paper px-1.5 py-0.5 rounded font-mono">user / user123</code> (regular user, gets blocked — try it).
+      Try <code class="bg-paper px-1.5 py-0.5 rounded font-mono">user2 / admin123</code> too — same password as admin, but still blocked, because the role belongs to the account, not the password.
+      In a real app this screen posts to your Spring Boot backend, which checks the password and role server-side — the frontend never decides who's an admin.
+    </p>
+  </div>
+</main>
+
+<div class="grid grid-cols-[250px_1fr] min-h-screen" id="dashboardApp" hidden>
+  <nav class="bg-sidebar text-paper p-5 flex flex-col" aria-label="Admin sections">
+    <div class="font-display text-xl font-bold px-2.5 pb-1">Tonlé<span class="text-goldbright"> Admin</span></div>
+    <div class="sb-thread h-1 my-3"></div>
+    <ul class="flex flex-col gap-1 flex-1">
+      <li><button class="sb-item w-full flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-sm font-semibold bg-goldbright text-ink" data-view="overview" onclick="showView('overview')" aria-current="page"><span aria-hidden="true">◈</span> Overview</button></li>
+      <li><button class="sb-item w-full flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-sm font-medium text-paper/65 hover:bg-paper/5" data-view="products" onclick="showView('products')"><span aria-hidden="true">▤</span> Products</button></li>
+      <li><button class="sb-item w-full flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-sm font-medium text-paper/65 hover:bg-paper/5" data-view="orders" onclick="showView('orders')"><span aria-hidden="true">▥</span> Orders</button></li>
+      <li><button class="sb-item w-full flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-sm font-medium text-paper/65 hover:bg-paper/5" data-view="customers" onclick="showView('customers')"><span aria-hidden="true">◍</span> Customers</button></li>
+    </ul>
+    <div class="border-t border-paper/10 pt-4 mt-4 text-[12.5px] flex flex-col gap-2">
+      <a href="index.html" class="text-paper/60 underline">← Back to storefront</a>
+      <a href="#" onclick="logout(); return false;" class="text-paper/60 underline">Sign out</a>
+    </div>
+  </nav>
+
+  <main class="p-8 pb-16">
+    <header class="flex items-center justify-between mb-7">
+      <div>
+        <h1 id="viewTitle" class="font-display text-2xl">Overview</h1>
+        <p id="viewSub" class="text-[13px] opacity-60 mt-0.5">Today at a glance</p>
+      </div>
+      <div class="flex items-center gap-2.5 bg-panel border border-ink/10 pl-2 pr-3.5 py-2 rounded-full">
+        <div class="avatar w-[30px] h-[30px] rounded-full bg-clay text-white flex items-center justify-center text-[13px] font-bold" aria-hidden="true">AD</div>
+        <span class="admin-pill-name text-[13px] font-semibold">Admin</span>
+      </div>
+    </header>
+
+    <section class="view" id="view-overview" aria-labelledby="viewTitle">
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-4.5 mb-7" id="statsGrid"></div>
+      <div class="grid lg:grid-cols-[1.4fr_1fr] gap-5">
+        <div class="bg-panel border border-ink/10 rounded-2xl p-6">
+          <div class="mb-5"><h2 class="text-lg font-medium">Revenue, last 7 days</h2><p class="text-[12.5px] opacity-55">Demo data · resets on page reload</p></div>
+          <div class="flex items-end gap-3.5 h-[180px] pt-2.5" id="chart" role="img" aria-label="Bar chart of revenue for the last 7 days"></div>
+        </div>
+        <div class="bg-panel border border-ink/10 rounded-2xl p-6">
+          <div class="mb-5"><h2 class="text-lg font-medium">Low stock</h2><p class="text-[12.5px] opacity-55">Restock before the next batch ships</p></div>
+          <ul id="lowStockList"></ul>
+        </div>
+      </div>
+      <div class="bg-panel border border-ink/10 rounded-2xl p-6 mt-5">
+        <div class="mb-5"><h2 class="text-lg font-medium">Recent orders</h2><p class="text-[12.5px] opacity-55">Latest activity across the storefront</p></div>
+        <table class="w-full border-collapse">
+          <caption class="sr-only">Five most recent orders</caption>
+          <thead><tr class="text-left text-[11.5px] uppercase tracking-wide opacity-55 font-semibold border-b border-ink/10">
+            <th class="pb-3 pr-3" scope="col">Order</th><th class="pb-3 pr-3" scope="col">Customer</th><th class="pb-3 pr-3" scope="col">Items</th><th class="pb-3 pr-3" scope="col">Total</th><th class="pb-3" scope="col">Status</th>
+          </tr></thead>
+          <tbody id="recentOrdersBody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="view" id="view-products" hidden aria-labelledby="viewTitle">
+      <div class="flex justify-between items-center gap-3.5 mb-5 flex-wrap">
+        <label class="sr-only" for="productSearch">Search products</label>
+        <input id="productSearch" class="flex-1 max-w-[280px] px-3.5 py-2.5 rounded-lg border border-ink/15 bg-paper text-sm" placeholder="Search products…" oninput="renderProducts()">
+        <button class="bg-ink text-paper px-5 py-2.5 rounded-full font-semibold text-sm" onclick="openProductModal()">+ Add product</button>
+      </div>
+      <div class="bg-panel border border-ink/10 rounded-2xl px-6 pb-5 pt-2">
+        <table class="w-full border-collapse">
+          <caption class="sr-only">Product catalog</caption>
+          <thead><tr class="text-left text-[11.5px] uppercase tracking-wide opacity-55 font-semibold border-b border-ink/10">
+            <th class="pb-3 pr-3" scope="col">Product</th><th class="pb-3 pr-3" scope="col">Category</th><th class="pb-3 pr-3" scope="col">Price</th><th class="pb-3 pr-3" scope="col">Stock</th><th class="pb-3 pr-3" scope="col">Status</th><th class="pb-3" scope="col"><span class="sr-only">Actions</span></th>
+          </tr></thead>
+          <tbody id="productsBody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="view" id="view-orders" hidden aria-labelledby="viewTitle">
+      <div class="bg-panel border border-ink/10 rounded-2xl px-6 pb-5 pt-2">
+        <table class="w-full border-collapse">
+          <caption class="sr-only">All orders</caption>
+          <thead><tr class="text-left text-[11.5px] uppercase tracking-wide opacity-55 font-semibold border-b border-ink/10">
+            <th class="pb-3 pr-3" scope="col">Order</th><th class="pb-3 pr-3" scope="col">Customer</th><th class="pb-3 pr-3" scope="col">Date</th><th class="pb-3 pr-3" scope="col">Items</th><th class="pb-3 pr-3" scope="col">Total</th><th class="pb-3" scope="col">Status</th>
+          </tr></thead>
+          <tbody id="ordersBody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="view" id="view-customers" hidden aria-labelledby="viewTitle">
+      <div class="bg-panel border border-ink/10 rounded-2xl p-6">
+        <p class="text-center opacity-50 text-[13.5px] py-12">Customer profiles aren't wired up in this demo yet.<br>This is a natural next screen once orders are backed by a real database.</p>
+      </div>
+    </section>
+  </main>
+</div>
+
+<dialog id="productDialog" class="rounded-2xl p-0 w-[440px] max-w-[92vw] bg-panel">
+  <form id="productForm" method="dialog" class="p-7" onsubmit="return false;"></form>
+</dialog>
+
+<script>
+  const DEMO_ACCOUNTS = [
+    {username:"admin", password:"admin123", role:"admin"},
+    {username:"user", password:"user123", role:"user"},
+    {username:"user2", password:"admin123", role:"user"},
+    {username:"staff", password:"staff123", role:"staff"},
+  ];
+
+  function attemptLogin(){
+    const u = document.getElementById('loginUser').value.trim();
+    const p = document.getElementById('loginPass').value;
+    const errEl = document.getElementById('loginError');
+    const account = DEMO_ACCOUNTS.find(a=>a.username===u && a.password===p);
+
+    if(!account){ errEl.textContent = "Username or password is incorrect."; errEl.hidden = false; return; }
+    if(account.role !== 'admin'){ errEl.textContent = "That account doesn't have admin access."; errEl.hidden = false; return; }
+    errEl.hidden = true;
+    showDashboard(account.username);
+  }
+
+  function showDashboard(username){
+    document.getElementById('loginScreen').hidden = true;
+    document.getElementById('dashboardApp').hidden = false;
+    document.querySelector('.avatar').textContent = username.slice(0,2).toUpperCase();
+    document.querySelector('.admin-pill-name')?.replaceChildren(username);
+  }
+
+  function logout(){
+    document.getElementById('dashboardApp').hidden = true;
+    document.getElementById('loginScreen').hidden = false;
+    document.getElementById('loginForm').reset();
+    document.getElementById('loginError').hidden = true;
+  }
+
+  const SWATCH_COLORS = ["#B33F3F","#B8862B","#3F5C50","#8B8B8B","#2E2A22","#D9A53C"];
+
+  let products = [
+    {id:1, name:"Krama Scarf — Clay Red", cat:"Textiles", price:24, stock:42, color:"#B33F3F"},
+    {id:2, name:"Krama Scarf — Riverstone", cat:"Textiles", price:24, stock:6, color:"#3F5C50"},
+    {id:3, name:"Glazed Rice Bowl, set of 4", cat:"Ceramics", price:38, stock:18, color:"#B8862B"},
+    {id:4, name:"Palm-Leaf Table Runner", cat:"Home", price:19, stock:0, color:"#D9A53C"},
+    {id:5, name:"Silver Filigree Earrings", cat:"Jewelry", price:32, stock:24, color:"#8B8B8B"},
+    {id:6, name:"Lacquered Storage Basket", cat:"Home", price:46, stock:4, color:"#2E2A22"},
+    {id:7, name:"Krama Scarf — Golden Hour", cat:"Textiles", price:26, stock:31, color:"#B8862B"},
+    {id:8, name:"Hand-thrown Vase, small", cat:"Ceramics", price:29, stock:9, color:"#3F5C50"},
+  ];
+  let nextProductId = 9;
+
+  let orders = [
+    {id:"TN-1042", customer:"Lina Ouk", date:"Aug 5", items:3, total:88, status:"pending"},
+    {id:"TN-1041", customer:"Marc Dubois", date:"Aug 5", items:1, total:24, status:"shipped"},
+    {id:"TN-1040", customer:"Sreymom Heng", date:"Aug 4", items:2, total:64, status:"delivered"},
+    {id:"TN-1039", customer:"Amara Sok", date:"Aug 4", items:5, total:143, status:"delivered"},
+    {id:"TN-1038", customer:"James Whitfield", date:"Aug 3", items:1, total:46, status:"cancelled"},
+    {id:"TN-1037", customer:"Chan Sopheak", date:"Aug 3", items:2, total:52, status:"shipped"},
+  ];
+
+  const revenueByDay = [
+    {label:"Mon", value:420}, {label:"Tue", value:610}, {label:"Wed", value:390},
+    {label:"Thu", value:740}, {label:"Fri", value:860}, {label:"Sat", value:1020}, {label:"Sun", value:680},
+  ];
+
+  const BADGE_CLASSES = {
+    pending:"bg-gold/15 text-gold", shipped:"bg-moss/15 text-moss",
+    delivered:"bg-greenok/15 text-greenok", cancelled:"bg-clay/15 text-clay",
+  };
+  function badge(status, labelOverride){
+    return `<span class="px-2.5 py-1 rounded-full text-[11.5px] font-bold capitalize ${BADGE_CLASSES[status]}">${labelOverride||status}</span>`;
+  }
+
+  function showView(name){
+    document.querySelectorAll('.view').forEach(v=>v.hidden = true);
+    document.getElementById('view-'+name).hidden = false;
+    document.querySelectorAll('.sb-item').forEach(b=>{
+      const active = b.dataset.view===name;
+      b.classList.toggle('bg-goldbright', active);
+      b.classList.toggle('text-ink', active);
+      b.classList.toggle('text-paper/65', !active);
+      if(active) b.setAttribute('aria-current','page'); else b.removeAttribute('aria-current');
+    });
+    const titles = {
+      overview:["Overview","Today at a glance"],
+      products:["Products","Manage what's for sale"],
+      orders:["Orders","Track and update fulfillment"],
+      customers:["Customers","Everyone who's ordered from Tonlé"],
+    };
+    document.getElementById('viewTitle').textContent = titles[name][0];
+    document.getElementById('viewSub').textContent = titles[name][1];
+    if(name==='products') renderProducts();
+    if(name==='orders') renderOrders();
+  }
+
+  function renderStats(){
+    const revenue = orders.reduce((s,o)=>s+o.total,0);
+    const avg = revenue/orders.length;
+    const stats = [
+      {label:"Revenue (7d)", value:`$${revenue.toLocaleString()}`, delta:"+12.4%", up:true},
+      {label:"Orders", value:orders.length, delta:"+3 today", up:true},
+      {label:"Avg. order value", value:`$${avg.toFixed(0)}`, delta:"-2.1%", up:false},
+      {label:"Low stock items", value:products.filter(p=>p.stock<10).length, delta:"needs attention", up:false},
+    ];
+    document.getElementById('statsGrid').innerHTML = stats.map(s=>`
+      <div class="bg-panel border border-ink/10 rounded-2xl p-5 relative overflow-hidden">
+        <div class="absolute top-0 left-0 right-0 h-[3px] bg-goldbright" aria-hidden="true"></div>
+        <div class="text-xs uppercase tracking-wide opacity-60 font-semibold mb-2.5">${s.label}</div>
+        <div class="font-display text-[30px] font-semibold">${s.value}</div>
+        <span class="font-mono text-xs mt-2 inline-block px-2 py-0.5 rounded-full ${s.up ? 'bg-greenok/15 text-greenok' : 'bg-clay/15 text-clay'}">${s.delta}</span>
+      </div>`).join('');
+  }
+
+  function renderChart(){
+    const max = Math.max(...revenueByDay.map(d=>d.value));
+    document.getElementById('chart').innerHTML = revenueByDay.map(d=>`
+      <div class="flex-1 flex flex-col items-center gap-2 h-full justify-end">
+        <div class="w-full max-w-[34px] rounded-t rounded-b-sm" style="height:${(d.value/max*140).toFixed(0)}px; background:linear-gradient(180deg,#D9A53C,#B8862B)" title="$${d.value}"></div>
+        <div class="text-[11px] opacity-55 font-mono">${d.label}</div>
+      </div>`).join('');
+  }
+
+  function renderLowStock(){
+    const low = products.filter(p=>p.stock<10).sort((a,b)=>a.stock-b.stock);
+    const el = document.getElementById('lowStockList');
+    if(low.length===0){ el.innerHTML = `<p class="text-center opacity-50 text-[13.5px] py-10">Everything is well stocked.</p>`; return; }
+    el.innerHTML = low.map(p=>`
+      <li class="flex items-center gap-3 py-2.5 border-b border-ink/10">
+        <div class="w-9 h-9 rounded-lg flex-shrink-0" style="background:${p.color}" aria-hidden="true"></div>
+        <div class="flex-1"><div class="text-sm font-semibold">${p.name}</div><div class="text-[11.5px] opacity-55">${p.cat}</div></div>
+        <div class="font-mono text-sm ${p.stock===0 ? 'text-clay font-bold' : ''}">${p.stock===0?'Out':p.stock+' left'}</div>
+      </li>`).join('');
+  }
+
+  function renderRecentOrders(){
+    document.getElementById('recentOrdersBody').innerHTML = orders.slice(0,5).map(o=>`
+      <tr class="border-b border-ink/10 last:border-0">
+        <td class="py-3.5 pr-3 font-mono text-[13.5px]">${o.id}</td>
+        <td class="py-3.5 pr-3 text-[13.5px]">${o.customer}</td>
+        <td class="py-3.5 pr-3 font-mono text-[13.5px]">${o.items}</td>
+        <td class="py-3.5 pr-3 font-mono text-[13.5px]">$${o.total}</td>
+        <td class="py-3.5">${badge(o.status)}</td>
+      </tr>`).join('');
+  }
+
+  function renderProducts(){
+    const q = (document.getElementById('productSearch')?.value || '').toLowerCase();
+    const list = products.filter(p=>p.name.toLowerCase().includes(q) || p.cat.toLowerCase().includes(q));
+    const body = document.getElementById('productsBody');
+    if(list.length===0){ body.innerHTML = `<tr><td colspan="6" class="text-center opacity-50 text-[13.5px] py-10">No products match "${q}".</td></tr>`; return; }
+    body.innerHTML = list.map(p=>`
+      <tr class="border-b border-ink/10 last:border-0">
+        <td class="py-3.5 pr-3"><div class="flex items-center gap-3"><div class="w-9 h-9 rounded-lg flex-shrink-0" style="background:${p.color}" aria-hidden="true"></div><span class="font-semibold text-[13.5px]">${p.name}</span></div></td>
+        <td class="py-3.5 pr-3 text-[13.5px]">${p.cat}</td>
+        <td class="py-3.5 pr-3 font-mono text-[13.5px]">$${p.price.toFixed(2)}</td>
+        <td class="py-3.5 pr-3 font-mono text-[13.5px] ${p.stock===0 ? 'text-clay font-bold' : ''}">${p.stock===0?'Out of stock':p.stock}</td>
+        <td class="py-3.5 pr-3">${p.stock===0?badge('cancelled','out of stock'):(p.stock<10?badge('pending','low stock'):badge('delivered','in stock'))}</td>
+        <td class="py-3.5">
+          <div class="flex gap-2">
+            <button class="w-[30px] h-[30px] rounded-lg border border-ink/15 text-[13px] opacity-75 hover:opacity-100" onclick="openProductModal(${p.id})" aria-label="Edit ${p.name}">✎</button>
+            <button class="w-[30px] h-[30px] rounded-lg border border-ink/15 text-[13px] opacity-75 hover:opacity-100 hover:border-clay hover:text-clay" onclick="deleteProduct(${p.id})" aria-label="Delete ${p.name}">✕</button>
+          </div>
+        </td>
+      </tr>`).join('');
+  }
+
+  function renderOrders(){
+    document.getElementById('ordersBody').innerHTML = orders.map(o=>`
+      <tr class="border-b border-ink/10 last:border-0">
+        <td class="py-3.5 pr-3 font-mono text-[13.5px]">${o.id}</td>
+        <td class="py-3.5 pr-3 text-[13.5px]">${o.customer}</td>
+        <td class="py-3.5 pr-3 text-[13.5px]">${o.date}</td>
+        <td class="py-3.5 pr-3 font-mono text-[13.5px]">${o.items}</td>
+        <td class="py-3.5 pr-3 font-mono text-[13.5px]">$${o.total}</td>
+        <td class="py-3.5">
+          <label class="sr-only" for="status-${o.id}">Status for order ${o.id}</label>
+          <select id="status-${o.id}" class="border border-ink/15 bg-paper rounded-lg px-2 py-1.5 text-[12.5px]" onchange="updateOrderStatus('${o.id}', this.value)">
+            ${["pending","shipped","delivered","cancelled"].map(s=>`<option value="${s}" ${s===o.status?'selected':''}>${s[0].toUpperCase()+s.slice(1)}</option>`).join('')}
+          </select>
+        </td>
+      </tr>`).join('');
+  }
+
+  function updateOrderStatus(id, status){
+    const o = orders.find(o=>o.id===id);
+    if(o){ o.status = status; renderRecentOrders(); }
+  }
+
+  function deleteProduct(id){
+    const p = products.find(p=>p.id===id);
+    if(!p) return;
+    if(confirm(`Remove "${p.name}" from the catalog?`)){
+      products = products.filter(p=>p.id!==id);
+      renderProducts(); renderStats(); renderLowStock();
+    }
+  }
+
+  function openProductModal(id){
+    const editing = id != null;
+    const p = editing ? products.find(p=>p.id===id) : {name:"", cat:"Textiles", price:"", stock:"", color:SWATCH_COLORS[0]};
+    document.getElementById('productForm').innerHTML = `
+      <h2 class="font-display text-xl mb-5">${editing?'Edit product':'Add product'}</h2>
+      <div class="mb-4"><label class="block text-[11.5px] font-bold uppercase tracking-wide opacity-60 mb-1.5" for="f-name">Product name</label>
+        <input id="f-name" class="w-full px-3.5 py-2.5 rounded-lg border border-ink/15 bg-paper text-[13.5px]" type="text" value="${p.name}" placeholder="Krama Scarf — Sunset"></div>
+      <div class="grid grid-cols-2 gap-3 mb-4">
+        <div><label class="block text-[11.5px] font-bold uppercase tracking-wide opacity-60 mb-1.5" for="f-cat">Category</label>
+          <select id="f-cat" class="w-full px-3.5 py-2.5 rounded-lg border border-ink/15 bg-paper text-[13.5px]">
+            ${["Textiles","Ceramics","Home","Jewelry"].map(c=>`<option ${c===p.cat?'selected':''}>${c}</option>`).join('')}
+          </select></div>
+        <div><label class="block text-[11.5px] font-bold uppercase tracking-wide opacity-60 mb-1.5" for="f-price">Price (USD)</label>
+          <input id="f-price" class="w-full px-3.5 py-2.5 rounded-lg border border-ink/15 bg-paper text-[13.5px]" type="number" min="0" step="0.5" value="${p.price}" placeholder="24"></div>
+      </div>
+      <div class="mb-4"><label class="block text-[11.5px] font-bold uppercase tracking-wide opacity-60 mb-1.5" for="f-stock">Stock quantity</label>
+        <input id="f-stock" class="w-full px-3.5 py-2.5 rounded-lg border border-ink/15 bg-paper text-[13.5px]" type="number" min="0" value="${p.stock}" placeholder="20"></div>
+      <fieldset class="mb-5">
+        <legend class="text-[11.5px] font-bold uppercase tracking-wide opacity-60 mb-1.5">Swatch color</legend>
+        <div class="flex gap-2 flex-wrap" id="swatchPick">
+          ${SWATCH_COLORS.map(c=>`<button type="button" class="swatch-opt w-8 h-8 rounded-lg border-2 ${c===p.color?'border-ink':'border-transparent'}" style="background:${c}" onclick="pickSwatch('${c}')" aria-label="Choose color ${c}"></button>`).join('')}
+        </div>
+      </fieldset>
+      <div class="flex gap-2.5">
+        <button type="button" class="flex-1 border border-ink/15 py-3 rounded-full font-semibold text-[13.5px]" onclick="document.getElementById('productDialog').close()">Cancel</button>
+        <button type="button" class="flex-1 bg-ink text-paper py-3 rounded-full font-bold text-[13.5px]" onclick="saveProduct(${editing?id:'null'})">${editing?'Save changes':'Add product'}</button>
+      </div>
+    `;
+    document.getElementById('productForm').dataset.color = p.color;
+    document.getElementById('productDialog').showModal();
+  }
+  function pickSwatch(c){
+    document.getElementById('productForm').dataset.color = c;
+    document.querySelectorAll('.swatch-opt').forEach(el=>{
+      el.classList.toggle('border-ink', el.getAttribute('style').includes(c));
+      el.classList.toggle('border-transparent', !el.getAttribute('style').includes(c));
+    });
+  }
+
+  function saveProduct(id){
+    const name = document.getElementById('f-name').value.trim();
+    const cat = document.getElementById('f-cat').value;
+    const price = parseFloat(document.getElementById('f-price').value) || 0;
+    const stock = parseInt(document.getElementById('f-stock').value) || 0;
+    const color = document.getElementById('productForm').dataset.color;
+    if(!name){ alert("Give the product a name first."); return; }
+
+    if(id != null){
+      const p = products.find(p=>p.id===id);
+      Object.assign(p, {name, cat, price, stock, color});
+    } else {
+      products.push({id:nextProductId++, name, cat, price, stock, color});
+    }
+    document.getElementById('productDialog').close();
+    renderProducts(); renderStats(); renderLowStock();
+  }
+
+  renderStats();
+  renderChart();
+  renderLowStock();
+  renderRecentOrders();
+  renderProducts();
+  renderOrders();
+</script>
+</body>
+</html>

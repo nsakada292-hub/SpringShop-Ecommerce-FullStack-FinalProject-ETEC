@@ -1,0 +1,176 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --primary-green: #C1E899;
+    --dark-brown: #9A6735;
+    --light-green: #E6F0DC;
+    --dark-green: #55883B;
+    --dark-green-hover: #456f30;
+    --bg-surface: #ffffff;
+    --bg-muted: #f8faf6;
+    --text-main: #1f2937;
+    --text-muted: #6b7280;
+    --border-color: #e5e7eb;
+  }
+
+  .dark {
+    --primary-green: #55883B;
+    --dark-brown: #c8905a;
+    --light-green: #1a2a16;
+    --dark-green: #79bf54;
+    --dark-green-hover: #90d36b;
+    --bg-surface: #131713;
+    --bg-muted: #1a211a;
+    --text-main: #f3f4f6;
+    --text-muted: #9ca3af;
+    --border-color: #273427;
+  }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    color: var(--text-main);
+    background-color: var(--bg-surface);
+    transition: background-color 0.25s ease, color 0.25s ease;
+  }
+}
+
+/* Brand Utility Classes */
+.bg-spring-primary { background-color: #C1E899; }
+.bg-spring-light { background-color: #E6F0DC; }
+.bg-spring-dark { background-color: #55883B; }
+.bg-spring-dark:hover { background-color: #456f30; }
+.bg-spring-brown { background-color: #9A6735; }
+
+.text-spring-dark { color: #55883B; }
+.text-spring-brown { color: #9A6735; }
+.text-spring-primary { color: #84b752; }
+
+.border-spring-dark { border-color: #55883B; }
+.border-spring-light { border-color: #E6F0DC; }
+.border-spring-primary { border-color: #C1E899; }
+
+/* Focus & Button utilities */
+.btn-primary {
+  background-color: #55883B;
+  color: #ffffff;
+  font-weight: 500;
+  padding: 0.55rem 1.25rem;
+  border-radius: 0.5rem;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+.btn-primary:hover {
+  background-color: #456f30;
+  box-shadow: 0 4px 12px rgba(85, 136, 59, 0.25);
+}
+
+.btn-secondary {
+  background-color: #E6F0DC;
+  color: #315220;
+  font-weight: 500;
+  padding: 0.55rem 1.25rem;
+  border-radius: 0.5rem;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+.btn-secondary:hover {
+  background-color: #d7e7c8;
+}
+
+.btn-outline {
+  border: 1px solid #55883B;
+  color: #55883B;
+  font-weight: 500;
+  padding: 0.55rem 1.25rem;
+  border-radius: 0.5rem;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: transparent;
+}
+.btn-outline:hover {
+  background-color: #55883B;
+  color: #ffffff;
+}
+
+/* Form input styling */
+.form-input {
+  width: 100%;
+  border: 1px solid #d1d5db;
+  border-radius: 0.5rem;
+  padding: 0.6rem 0.85rem;
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  background-color: #ffffff;
+  color: #1f2937;
+}
+.dark .form-input {
+  background-color: #1f291f;
+  border-color: #374737;
+  color: #f3f4f6;
+}
+.form-input:focus {
+  border-color: #55883B;
+  box-shadow: 0 0 0 3px rgba(85, 136, 59, 0.2);
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-in {
+  animation: fadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes slideInRight {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}
+.animate-slide-in-right {
+  animation: slideInRight 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Skeleton Loading */
+.skeleton {
+  background: linear-gradient(90deg, #f0f3ed 25%, #e2e8dd 50%, #f0f3ed 75%);
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.5s infinite;
+}
+.dark .skeleton {
+  background: linear-gradient(90deg, #1f2a1e 25%, #2a3829 50%, #1f2a1e 75%);
+  background-size: 200% 100%;
+}
+@keyframes skeleton-loading {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #f1f5f0;
+}
+.dark ::-webkit-scrollbar-track {
+  background: #141b14;
+}
+::-webkit-scrollbar-thumb {
+  background: #b5cca5;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #84a86f;
+}

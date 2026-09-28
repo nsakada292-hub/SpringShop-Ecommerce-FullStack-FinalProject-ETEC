@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Analytics - Dashboard</title>
+<meta name="description" content="Analytics dashboard">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style type="text/tailwindcss">
+  @theme inline {
+    --color-primary: var(--primary);
+    --color-primary-hover: var(--primary-hover);
+    --color-foreground: var(--foreground);
+    --color-muted: var(--muted);
+    --color-border: var(--border);
+    --color-accent-lime: var(--accent-lime);
+    --color-accent-teal: var(--accent-teal);
+    --color-accent-peach: var(--accent-peach);
+    --color-success: var(--success);
+    --color-success-light: var(--success-light);
+    --color-success-dark: var(--success-dark);
+    --color-error: var(--error);
+    --color-error-light: var(--error-light);
+    --color-error-dark: var(--error-dark);
+    --color-warning: var(--warning);
+    --color-warning-light: var(--warning-light);
+    --color-warning-dark: var(--warning-dark);
+    --color-info: var(--info);
+    --color-info-light: var(--info-light);
+    --color-info-dark: var(--info-dark);
+    --color-alert: var(--alert);
+    --color-alert-light: var(--alert-light);
+    --color-alert-dark: var(--alert-dark);
+    --color-gray-50: var(--gray-50);
+    --color-gray-100: var(--gray-100);
+    --color-gray-200: var(--gray-200);
+    --color-gray-500: var(--gray-500);
+    --color-gray-600: var(--gray-600);
+    --color-gray-700: var(--gray-700);
+    --font-sans: var(--font-sans);
+    --radius-card: 20px;
+    --radius-button: 16px;
+    --radius-icon: 22px;
+  }
+  :root {
+    --primary: #EF3F09;
+    --primary-hover: #d63608;
+    --foreground: #0C1C3C;
+    --muted: #F7F7F7;
+    --border: #DCDEDD;
+    --accent-lime: #C5E151;
+    --accent-teal: #82D9D7;
+    --accent-peach: #FAAC7B;
+    --success: #22C55E;
+    --success-light: #DCFCE7;
+    --success-dark: #166534;
+    --error: #EF4444;
+    --error-light: #FEE2E2;
+    --error-dark: #991B1B;
+    --warning: #EAB308;
+    --warning-light: #FEF9C3;
+    --warning-dark: #854D0E;
+    --info: #3B82F6;
+    --info-light: #DBEAFE;
+    --info-dark: #1E40AF;
+    --alert: #F97316;
+    --alert-light: #FFEDD5;
+    --alert-dark: #9A3412;
+    --gray-50: #F9FAFB;
+    --gray-100: #F3F4F6;
+    --gray-200: #E5E7EB;
+    --gray-500: #6B7280;
+    --gray-600: #4B5563;
+    --gray-700: #374151;
+    --font-sans: 'Plus Jakarta Sans', sans-serif;
+  }
+  select {
+    @apply appearance-none bg-no-repeat cursor-pointer;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%236B7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+    background-position: right 10px center;
+    padding-right: 40px;
+  }
+  .scrollbar-hide::-webkit-scrollbar { display: none; }
+  .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+</style>
+</head>
+<body class="font-sans bg-white min-h-screen overflow-x-hidden">
+
+<!-- Mobile Overlay -->
+<div id="sidebar-overlay" class="fixed inset-0 bg-black/50 z-40 lg:hidden hidden" onclick="toggleSidebar()"></div>
+
+<div class="flex min-h-screen">
+  <!-- SIDEBAR - BANDUNG THEME -->
+  <aside id="sidebar" class="w-64 bg-muted fixed inset-y-0 left-0 flex flex-col z-50 transform -translate-x-full lg:translate-x-0 transition-transform duration-300">
+    <!-- Logo Section -->
+    <div class="px-6 py-4">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-4">
+          <div class="w-14 h-14 bg-primary rounded-full flex items-center justify-center">
+            <i data-lucide="bar-chart-3" class="w-7 h-7 text-white"></i>
+          </div>
+          <div>
+            <h1 class="text-foreground text-lg font-bold">Analytics Hub</h1>
+            <p class="text-foreground text-xs font-normal">Data Insights</p>
+          </div>
+        </div>
+        <button onclick="toggleSidebar()" aria-label="Close sidebar" class="lg:hidden p-2 rounded-lg hover:bg-gray-200 cursor-pointer transition-all duration-200">
+          <i data-lucide="x" class="w-5 h-5 text-gray-600"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Navigation Menu - BANDUNG STYLE -->
+    <nav class="flex-1 px-6 py-4 space-y-6 overflow-y-auto">
+      <!-- Section with header -->
+      <div>
+        <h3 class="text-foreground text-xs font-semibold uppercase tracking-wider mb-3">Analytics</h3>
+        <div class="space-y-1">
+          <!-- ACTIVE: bg-[#276874] text-white -->
+          <a href="#" class="cursor-pointer">
+            <div class="flex items-center gap-2.5 px-4 py-3 rounded-card bg-[#276874] text-white">
+              <i data-lucide="trending-up" class="w-5 h-5"></i>
+              <span>Overview</span>
+            </div>
+          </a>
+          <!-- INACTIVE: hover:bg-gray-100 -->
+          <a href="#" class="group cursor-pointer">
+            <div class="flex items-center gap-2.5 px-4 py-3 rounded-card hover:bg-gray-100">
+              <i data-lucide="users" class="w-5 h-5 text-gray-600 group-hover:text-primary"></i>
+              <span class="text-foreground group-hover:text-primary">User Analytics</span>
+            </div>
+          </a>
+          <a href="#" class="group cursor-pointer">
+            <div class="flex items-center gap-2.5 px-4 py-3 rounded-card hover:bg-gray-100">
+              <i data-lucide="dollar-sign" class="w-5 h-5 text-gray-600 group-hover:text-primary"></i>
+              <span class="text-foreground group-hover:text-primary">Revenue</span>
+            </div>
+          </a>
+          <a href="#" class="group cursor-pointer">
+            <div class="flex items-center gap-2.5 px-4 py-3 rounded-card hover:bg-gray-100">
+              <i data-lucide="globe" class="w-5 h-5 text-gray-600 group-hover:text-primary"></i>
+              <span class="text-foreground group-hover:text-primary">Traffic</span>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <!-- Reports Section -->
+      <div>
+        <h3 class="text-foreground text-xs font-semibold uppercase tracking-wider mb-3">Reports</h3>
+        <div class="space-y-1">
+          <a href="#" class="group cursor-pointer">
+            <div class="flex items-center gap-2.5 px-4 py-3 rounded-card hover:bg-gray-100">
+              <i data-lucide="file-text" class="w-5 h-5 text-gray-600 group-hover:text-primary"></i>
+              <span class="text-foreground group-hover:text-primary">Custom Reports</span>
+            </div>
+          </a>
+          <a href="#" class="group cursor-pointer">
+            <div class="flex items-center gap-2.5 px-4 py-3 rounded-card hover:bg-gray-100">
+              <i data-lucide="calendar" class="w-5 h-5 text-gray-600 group-hover:text-primary"></i>
+              <span class="text-foreground group-hover:text-primary">Scheduled Reports</span>
+            </div>
+          </a>
+        </div>
+      </div>
+    </nav>
+
+    <!-- User Profile at Bottom - NO bg-white wrapper! -->
+    <div class="px-6 pb-6 mt-auto">
+      <div class="flex items-center gap-3">
+        <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop" alt="Data Analyst profile photo" class="w-12 h-12 rounded-full object-cover flex-shrink-0">
+        <div class="min-w-0 flex-1">
+          <p class="text-foreground text-base font-semibold truncate">Data Analyst</p>
+          <p class="text-foreground text-sm font-normal truncate">analyst@company.com</p>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="flex-1 lg:ml-64 p-4 md:p-5 bg-white min-h-screen overflow-x-hidden">
+    <!-- Mobile Header -->
+    <div class="lg:hidden flex items-center justify-between mb-6 bg-muted rounded-card p-4">
+      <button onclick="toggleSidebar()" aria-label="Open menu" class="p-2 rounded-lg hover:bg-gray-200 cursor-pointer transition-all duration-200">
+        <i data-lucide="menu" class="w-6 h-6 text-foreground"></i>
+      </button>
+      <h1 class="text-foreground text-lg font-bold">Analytics Hub</h1>
+      <div class="w-10"></div>
+    </div>
+
+    <!-- Page Header -->
+    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6 md:mb-8">
+      <div>
+        <h1 class="text-foreground text-2xl md:text-3xl font-bold mb-1">Analytics Dashboard</h1>
+        <p class="text-gray-500 text-sm md:text-base">Comprehensive data insights and performance metrics</p>
+      </div>
+      <div class="grid grid-cols-2 gap-2 w-full md:w-auto md:flex md:items-center md:gap-3">
+        <button onclick="exportData()" class="flex items-center justify-center gap-2 px-4 py-2.5 border border-border rounded-button text-foreground font-medium hover:border-primary transition-all duration-200 cursor-pointer">
+          <i data-lucide="download" class="w-4 h-4"></i>
+          <span>Export</span>
+        </button>
+        <button onclick="generateReport()" class="flex items-center justify-center gap-2 px-4 py-2.5 bg-primary text-white rounded-button font-medium hover:bg-primary-hover transition-all duration-200 cursor-pointer">
+          <i data-lucide="file-text" class="w-4 h-4"></i>
+          <span>Generate Report</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Date Range Picker -->
+    <div class="bg-muted rounded-card pt-5 px-3 pb-3 mb-6 md:mb-8">
+      <h3 class="text-foreground text-lg font-bold ml-3 mb-4">Date Range & Filters</h3>
+      <div class="bg-white rounded-card p-4 md:p-5">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <div class="space-y-2">
+            <label class="block text-foreground text-sm font-medium">Start Date</label>
+            <input type="date" id="startDate" value="2024-01-01" class="w-full px-4 py-3 border border-border rounded-button text-foreground focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none transition-all duration-200">
+          </div>
+          <div class="space-y-2">
+            <label class="block text-foreground text-sm font-medium">End Date</label>
+            <input type="date" id="endDate" value="2024-12-31" class="w-full px-4 py-3 border border-border rounded-button text-foreground focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none transition-all duration-200">
+          </div>
+          <div class="space-y-2">
+            <label class="block text-foreground text-sm font-medium">Quick Range</label>
+            <select id="quickRange" onchange="applyQuickRange()" class="w-full px-4 py-3 border border-border rounded-button text-foreground focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none transition-all duration-200">
+              <option value="custom">Custom Range</option>
+              <option value="7d">Last 7 Days</option>
+              <option value="30d">Last 30 Days</option>
+              <option value="90d">Last 90 Days</option>
+              <option value="1y">Last Year</option>
+            </select>
+          </div>
+          <div class="space-y-2">
+            <label class="block text-foreground text-sm font-medium">Metric</label>
+            <select id="metricFilter" onchange="updateCharts()" class="w-full px-4 py-3 border border-border rounded-button text-foreground focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none transition-all duration-200">
+              <option value="all">All Metrics</option>
+              <option value="revenue">Revenue</option>
+              <option value="users">Users</option>
+              <option value="sessions">Sessions</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-6 md:mb-8">
+      <div class="bg-muted rounded-card pt-5 px-3 pb-3">
+        <h3 class="text-foreground text-lg font-bold ml-3 mb-4">Total Revenue</h3>
+        <div class="bg-white rounded-card p-5">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-foreground text-4xl font-extrabold mb-1">$127K</p>
+              <p class="text-green-600 text-sm font-medium">+23% vs last month</p>
+            </div>
+            <div class="w-16 h-16 bg-accent-lime rounded-icon flex items-center justify-center">
+              <i data-lucide="dollar-sign" class="w-7 h-7 text-foreground"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-muted rounded-card pt-5 px-3 pb-3">
+        <h3 class="text-foreground text-lg font-bold ml-3 mb-4">Active Users</h3>
+        <div class="bg-white rounded-card p-5">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-foreground text-4xl font-extrabold mb-1">24.7K</p>
+              <p class="text-green-600 text-sm font-medium">+12% this week</p>
+            </div>
+            <div class="w-16 h-16 bg-accent-teal rounded-icon flex items-center justify-center">
+              <i data-lucide="users" class="w-7 h-7 text-foreground"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-muted rounded-card pt-5 px-3 pb-3">
+        <h3 class="text-foreground text-lg font-bold ml-3 mb-4">Page Views</h3>
+        <div class="bg-white rounded-card p-5">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-foreground text-4xl font-extrabold mb-1">89.2K</p>
+              <p class="text-blue-600 text-sm font-medium">+5% today</p>
+            </div>
+            <div class="w-16 h-16 bg-accent-peach rounded-icon flex items-center justify-center">
+              <i data-lucide="eye" class="w-7 h-7 text-foreground"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-muted rounded-card pt-5 px-3 pb-3">
+        <h3 class="text-foreground text-lg font-bold ml-3 mb-4">Conversion Rate</h3>
+        <div class="bg-white rounded-card p-5">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-foreground text-4xl font-extrabold mb-1">3.8%</p>
+              <p class="text-red-600 text-sm font-medium">-2% vs target</p>
+            </div>
+            <div class="w-16 h-16 bg-accent-lime rounded-icon flex items-center justify-center">
+              <i data-lucide="trending-up" class="w-7 h-7 text-foreground"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Charts Row 1 -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6 md:mb-8">
+      <!-- Revenue Trend Chart (Line) -->
+      <div class="bg-muted rounded-card pt-5 px-3 pb-3">
+        <h3 class="text-foreground text-lg font-bold ml-3 mb-4">Revenue Trend</h3>
+        <div class="bg-white rounded-card p-4 md:p-5">
+          <div class="w-full overflow-x-auto">
+            <div class="min-w-96 h-80">
+              <canvas id="revenueChart"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- User Activity Chart (Bar) -->
+      <div class="bg-muted rounded-card pt-5 px-3 pb-3">
+        <h3 class="text-foreground text-lg font-bold ml-3 mb-4">User Activity</h3>
+        <div class="bg-white rounded-card p-4 md:p-5">
+          <div class="w-full overflow-x-auto">
+            <div class="min-w-96 h-80">
+              <canvas id="activityChart"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Charts Row 2 -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6 md:mb-8">
+      <!-- Traffic Sources (Pie) -->
+      <div class="bg-muted rounded-card pt-5 px-3 pb-3">
+        <h3 class="text-foreground text-lg font-bold ml-3 mb-4">Traffic Sources</h3>
+        <div class="bg-white rounded-card p-4 md:p-5">
+          <div class="w-full">
+            <div class="h-64">
+              <canvas id="trafficChart"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Device Types (Doughnut) -->
+      <div class="bg-muted rounded-card pt-5 px-3 pb-3">
+        <h3 class="text-foreground text-lg font-bold ml-3 mb-4">Device Types</h3>
+        <div class="bg-white rounded-card p-4 md:p-5">
+          <div class="w-full">
+            <div class="h-64">
+              <canvas id="deviceChart"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Top Performing Pages -->
+      <div class="bg-muted rounded-card pt-5 px-3 pb-3">
+        <h3 class="text-foreground text-lg font-bold ml-3 mb-4">Top Pages</h3>
+        <div class="bg-white rounded-card p-4 md:p-5">
+          <div class="space-y-4">
+            <div class="flex items-center justify-between pb-3 border-b border-gray-100">
+              <div class="flex-1 min-w-0">
+                <p class="text-foreground font-semibold text-sm truncate">/dashboard</p>
+                <p class="text-gray-500 text-xs">Homepage</p>
+              </div>
+              <div class="text-right">
+                <p class="text-foreground font-bold text-sm">12.4K</p>
+                <p class="text-green-600 text-xs">+8%</p>
+              </div>
+            </div>
+            <div class="flex items-center justify-between pb-3 border-b border-gray-100">
+              <div class="flex-1 min-w-0">
+                <p class="text-foreground font-semibold text-sm truncate">/products</p>
+                <p class="text-gray-500 text-xs">Product catalog</p>
+              </div>
+              <div class="text-right">
+                <p class="text-foreground font-bold text-sm">9.2K</p>
+                <p class="text-green-600 text-xs">+15%</p>
+              </div>
+            </div>
+            <div class="flex items-center justify-between pb-3 border-b border-gray-100">
+              <div class="flex-1 min-w-0">
+                <p class="text-foreground font-semibold text-sm truncate">/checkout</p>
+                <p class="text-gray-500 text-xs">Checkout page</p>
+              </div>
+              <div class="text-right">
+                <p class="text-foreground font-bold text-sm">6.8K</p>
+                <p class="text-blue-600 text-xs">+3%</p>
+              </div>
+            </div>
+            <div class="flex items-center justify-between">
+              <div class="flex-1 min-w-0">
+                <p class="text-foreground font-semibold text-sm truncate">/about</p>
+                <p class="text-gray-500 text-xs">About us</p>
+              </div>
+              <div class="text-right">
+                <p class="text-foreground font-bold text-sm">4.1K</p>
+                <p class="text-red-600 text-xs">-2%</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Exportable Reports Section -->
+    <div class="bg-muted rounded-card pt-5 px-3 pb-3">
+      <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3 mb-4 px-3">
+        <h3 class="text-foreground text-lg font-bold">Exportable Reports</h3>
+        <a href="#" class="cursor-pointer"><span class="text-sm text-primary hover:underline">Manage Templates</span></a>
+      </div>
+      <div class="bg-white rounded-card p-4 md:p-5">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <!-- Revenue Report -->
+          <div class="border border-border rounded-button p-4 hover:border-primary transition-all duration-200">
+            <div class="flex items-start gap-3">
+              <div class="w-12 h-12 bg-success-light rounded-lg flex items-center justify-center flex-shrink-0">
+                <i data-lucide="dollar-sign" class="w-6 h-6 text-success-dark"></i>
+              </div>
+              <div class="flex-1 min-w-0">
+                <h4 class="text-foreground font-bold text-sm mb-1">Revenue Report</h4>
+                <p class="text-gray-500 text-xs mb-3 line-clamp-2">Comprehensive revenue analysis with trends, forecasts, and comparisons</p>
+                <div class="flex items-center gap-2">
+                  <button onclick="exportReport('revenue')" class="text-primary text-xs font-medium hover:underline cursor-pointer">Export PDF</button>
+                  <span class="text-gray-300">•</span>
+                  <button onclick="exportReport('revenue-excel')" class="text-primary text-xs font-medium hover:underline cursor-pointer">Export Excel</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- User Analytics Report -->
+          <div class="border border-border rounded-button p-4 hover:border-primary transition-all duration-200">
+            <div class="flex items-start gap-3">
+              <div class="w-12 h-12 bg-info-light rounded-lg flex items-center justify-center flex-shrink-0">
+                <i data-lucide="users" class="w-6 h-6 text-info-dark"></i>
+              </div>
+              <div class="flex-1 min-w-0">
+                <h4 class="text-foreground font-bold text-sm mb-1">User Analytics</h4>
+                <p class="text-gray-500 text-xs mb-3 line-clamp-2">Detailed user behavior, demographics, and engagement metrics</p>
+                <div class="flex items-center gap-2">
+                  <button onclick="exportReport('users')" class="text-primary text-xs font-medium hover:underline cursor-pointer">Export PDF</button>
+                  <span class="text-gray-300">•</span>
+                  <button onclick="exportReport('users-excel')" class="text-primary text-xs font-medium hover:underline cursor-pointer">Export Excel</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Traffic Report -->
+          <div class="border border-border rounded-button p-4 hover:border-primary transition-all duration-200">
+            <div class="flex items-start gap-3">
+              <div class="w-12 h-12 bg-warning-light rounded-lg flex items-center justify-center flex-shrink-0">
+                <i data-lucide="globe" class="w-6 h-6 text-warning-dark"></i>
+              </div>
+              <div class="flex-1 min-w-0">
+                <h4 class="text-foreground font-bold text-sm mb-1">Traffic Analysis</h4>
+                <p class="text-gray-500 text-xs mb-3 line-clamp-2">Website traffic sources, page performance, and visitor insights</p>
+                <div class="flex items-center gap-2">
+                  <button onclick="exportReport('traffic')" class="text-primary text-xs font-medium hover:underline cursor-pointer">Export PDF</button>
+                  <span class="text-gray-300">•</span>
+                  <button onclick="exportReport('traffic-excel')" class="text-primary text-xs font-medium hover:underline cursor-pointer">Export Excel</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Performance Report -->
+          <div class="border border-border rounded-button p-4 hover:border-primary transition-all duration-200">
+            <div class="flex items-start gap-3">
+              <div class="w-12 h-12 bg-alert-light rounded-lg flex items-center justify-center flex-shrink-0">
+                <i data-lucide="trending-up" class="w-6 h-6 text-alert-dark"></i>
+              </div>
+              <div class="flex-1 min-w-0">
+                <h4 class="text-foreground font-bold text-sm mb-1">Performance Report</h4>
+                <p class="text-gray-500 text-xs mb-3 line-clamp-2">KPI tracking, goal completion, and performance benchmarks</p>
+                <div class="flex items-center gap-2">
+                  <button onclick="exportReport('performance')" class="text-primary text-xs font-medium hover:underline cursor-pointer">Export PDF</button>
+                  <span class="text-gray-300">•</span>
+                  <button onclick="exportReport('performance-excel')" class="text-primary text-xs font-medium hover:underline cursor-pointer">Export Excel</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Custom Report -->
+          <div class="border border-border rounded-button p-4 hover:border-primary transition-all duration-200">
+            <div class="flex items-start gap-3">
+              <div class="w-12 h-12 bg-error-light rounded-lg flex items-center justify-center flex-shrink-0">
+                <i data-lucide="settings" class="w-6 h-6 text-error-dark"></i>
+              </div>
+              <div class="flex-1 min-w-0">
+                <h4 class="text-foreground font-bold text-sm mb-1">Custom Report</h4>
+                <p class="text-gray-500 text-xs mb-3 line-clamp-2">Build your own report with custom metrics and date ranges</p>
+                <div class="flex items-center gap-2">
+                  <button onclick="openCustomReport()" class="text-primary text-xs font-medium hover:underline cursor-pointer">Create Report</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Scheduled Reports -->
+          <div class="border border-border rounded-button p-4 hover:border-primary transition-all duration-200">
+            <div class="flex items-start gap-3">
+              <div class="w-12 h-12 bg-accent-teal/20 rounded-lg flex items-center justify-center flex-shrink-0">
+                <i data-lucide="calendar" class="w-6 h-6 text-foreground"></i>
+              </div>
+              <div class="flex-1 min-w-0">
+                <h4 class="text-foreground font-bold text-sm mb-1">Scheduled Reports</h4>
+                <p class="text-gray-500 text-xs mb-3 line-clamp-2">Automatically generated reports delivered to your inbox</p>
+                <div class="flex items-center gap-2">
+                  <button onclick="manageScheduled()" class="text-primary text-xs font-medium hover:underline cursor-pointer">Manage Schedule</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- Export Progress Modal -->
+<div id="exportModal" class="fixed inset-0 bg-black/50 z-[100] hidden flex items-center justify-center p-4">
+  <div class="bg-white rounded-card p-6 max-w-sm w-full text-center">
+    <div class="w-16 h-16 bg-info-light rounded-full flex items-center justify-center mx-auto mb-4">
+      <i data-lucide="download" class="w-8 h-8 text-info-dark"></i>
+    </div>
+    <h3 class="text-foreground text-xl font-bold mb-2">Exporting Report</h3>
+    <p class="text-gray-500 text-sm mb-6">Please wait while we prepare your report...</p>
+    <div class="w-full bg-gray-200 rounded-full h-3 mb-4">
+      <div id="exportProgress" class="bg-primary h-3 rounded-full transition-all duration-300" style="width: 0%"></div>
+    </div>
+    <button onclick="closeExportModal()" class="w-full px-4 py-2.5 border border-border rounded-button text-foreground font-medium hover:border-primary transition-all duration-200 cursor-pointer">
+      Cancel
+    </button>
+  </div>
+</div>
+
+<!-- Page Not Found Modal -->
+<div id="page-not-found-modal" class="fixed inset-0 bg-black/50 z-[100] hidden flex items-center justify-center p-4">
+  <div class="bg-white rounded-card p-6 max-w-sm w-full text-center">
+    <div class="w-16 h-16 bg-warning-light rounded-full flex items-center justify-center mx-auto mb-4">
+      <i data-lucide="alert-triangle" class="w-8 h-8 text-warning-dark"></i>
+    </div>
+    <h3 class="text-foreground text-xl font-bold mb-2">Feature Not Available</h3>
+    <p class="text-gray-500 text-sm mb-6">This feature is currently under development.</p>
+    <button onclick="closePageNotFoundModal()" class="w-full px-4 py-2.5 bg-primary text-white rounded-button font-medium hover:bg-primary-hover transition-all duration-200 cursor-pointer">
+      Got it
+    </button>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  lucide.createIcons();
+  initializeCharts();
+
+  document.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', function(e) {
+      e.preventDefault();
+      document.getElementById('page-not-found-modal').classList.remove('hidden');
+    });
+  });
+});
+
+function closePageNotFoundModal() {
+  document.getElementById('page-not-found-modal').classList.add('hidden');
+}
+
+function toggleSidebar() {
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.getElementById('sidebar-overlay');
+  sidebar.classList.toggle('-translate-x-full');
+  overlay.classList.toggle('hidden');
+  document.body.classList.toggle('overflow-hidden');
+}
+
+// Chart initialization
+function initializeCharts() {
+  // Revenue Trend Chart (Line)
+  new Chart(document.getElementById('revenueChart'), {
+    type: 'line',
+    data: {
+      labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+      datasets: [{
+        label: 'Revenue ($K)',
+        data: [42, 55, 48, 67, 58, 72],
+        borderColor: '#EF3F09',
+        backgroundColor: 'rgba(239, 63, 9, 0.1)',
+        fill: true,
+        tension: 0.4,
+        pointBackgroundColor: '#EF3F09',
+        pointBorderColor: '#fff',
+        pointBorderWidth: 2
+      }]
+    },
+    options: {
+      animation: false,
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          position: 'bottom',
+          labels: {
+            usePointStyle: true,
+            padding: 20
+          }
+        }
+      },
+      scales: {
+        y: {
+          beginAtZero: true,
+          ticks: {
+            callback: function(value) { return '$' + value + 'K'; }
+          },
+          grid: {
+            color: 'rgba(0,0,0,0.1)'
+          }
+        },
+        x: {
+          grid: {
+            display: false
+          }
+        }
+      }
+    }
+  });
+
+  // User Activity Chart (Bar)
+  new Chart(document.getElementById('activityChart'), {
+    type: 'bar',
+    data: {
+      labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+      datasets: [{
+        label: 'Active Users',
+        data: [28, 34, 45, 52, 48, 35, 29],
+        backgroundColor: '#82D9D7',
+        borderColor: '#5BCCCA',
+        borderWidth: 1,
+        borderRadius: 8
+      }]
+    },
+    options: {
+      animation: false,
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          position: 'bottom',
+          labels: {
+            usePointStyle: true,
+            padding: 20
+          }
+        }
+      },
+      scales: {
+        y: {
+          beginAtZero: true,
+          ticks: {
+            callback: function(value) { return value + 'K'; }
+          },
+          grid: {
+            color: 'rgba(0,0,0,0.1)'
+          }
+        },
+        x: {
+          grid: {
+            display: false
+          }
+        }
+      }
+    }
+  });
+
+  // Traffic Sources Chart (Pie)
+  new Chart(document.getElementById('trafficChart'), {
+    type: 'pie',
+    data: {
+      labels: ['Organic Search', 'Direct', 'Social Media', 'Email', 'Referral'],
+      datasets: [{
+        data: [35, 25, 20, 12, 8],
+        backgroundColor: [
+          '#EF3F09',
+          '#82D9D7',
+          '#FAAC7B',
+          '#C5E151',
+          '#A855F7'
+        ],
+        borderWidth: 2,
+        borderColor: '#fff'
+      }]
+    },
+    options: {
+      animation: false,
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          position: 'bottom',
+          labels: {
+            usePointStyle: true,
+            padding: 15,
+            font: {
+              size: 12
+            }
+          }
+        }
+      }
+    }
+  });
+
+  // Device Types Chart (Doughnut)
+  new Chart(document.getElementById('deviceChart'), {
+    type: 'doughnut',
+    data: {
+      labels: ['Desktop', 'Mobile', 'Tablet'],
+      datasets: [{
+        data: [45, 40, 15],
+        backgroundColor: [
+          '#C5E151',
+          '#82D9D7',
+          '#FAAC7B'
+        ],
+        borderWidth: 3,
+        borderColor: '#fff'
+      }]
+    },
+    options: {
+      animation: false,
+      responsive: true,
+      maintainAspectRatio: false,
+      cutout: '60%',
+      plugins: {
+        legend: {
+          position: 'bottom',
+          labels: {
+            usePointStyle: true,
+            padding: 15,
+            font: {
+              size: 12
+            }
+          }
+        }
+      }
+    }
+  });
+}
+
+// Date range functions
+function applyQuickRange() {
+  const quickRange = document.getElementById('quickRange').value;
+  const endDate = new Date();
+  const startDate = new Date();
+  
+  const endInput = document.getElementById('endDate');
+  const startInput = document.getElementById('startDate');
+  
+  endInput.value = endDate.toISOString().split('T')[0];
+  
+  switch(quickRange) {
+    case '7d':
+      startDate.setDate(endDate.getDate() - 7);
+      break;
+    case '30d':
+      startDate.setDate(endDate.getDate() - 30);
+      break;
+    case '90d':
+      startDate.setDate(endDate.getDate() - 90);
+      break;
+    case '1y':
+      startDate.setFullYear(endDate.getFullYear() - 1);
+      break;
+    default:
+      return;
+  }
+  
+  startInput.value = startDate.toISOString().split('T')[0];
+  updateCharts();
+}
+
+function updateCharts() {
+  // Simulate chart data update based on filters
+  console.log('Updating charts with new filters...');
+}
+
+// Export functions
+function exportData() {
+  showExportModal('general');
+}
+
+function generateReport() {
+  showExportModal('report');
+}
+
+function exportReport(type) {
+  showExportModal(type);
+}
+
+function openCustomReport() {
+  document.getElementById('page-not-found-modal').classList.remove('hidden');
+}
+
+function manageScheduled() {
+  document.getElementById('page-not-found-modal').classList.remove('hidden');
+}
+
+function showExportModal(type) {
+  document.getElementById('exportModal').classList.remove('hidden');
+  simulateExport();
+}
+
+function closeExportModal() {
+  document.getElementById('exportModal').classList.add('hidden');
+  document.getElementById('exportProgress').style.width = '0%';
+}
+
+function simulateExport() {
+  let progress = 0;
+  const progressBar = document.getElementById('exportProgress');
+  
+  const interval = setInterval(() => {
+    progress += Math.random() * 30;
+    if (progress >= 100) {
+      progress = 100;
+      clearInterval(interval);
+      setTimeout(() => {
+        closeExportModal();
+      }, 500);
+    }
+    progressBar.style.width = progress + '%';
+  }, 200);
+}
+</script>
+</body>
+</html>

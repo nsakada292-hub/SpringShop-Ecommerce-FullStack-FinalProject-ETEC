@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sign in — Spring Shop</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<!--
+  This page did not exist anywhere in the uploaded project — AuthController
+  (POST /api/auth/register, POST /api/auth/login) had no frontend UI at all,
+  even though cart, checkout, and the admin dashboard all depend on a signed
+  -in session. Built to match the existing site's look (same fonts, same
+  Tailwind color tokens as index.html/menu.html/aboutUs.html) rather than
+  introducing a new visual style. If you already have a sign-in page
+  elsewhere in your project that wasn't part of this upload, use that one
+  instead and delete this file.
+-->
+<script>
+  tailwind.config = {
+    theme: { extend: {
+      colors: {
+        ink:'#12211D', sidebar:'#0E1C18', paper:'#DCFCE7', paperdim:'#c6e7c7',
+        gold:'#B8862B', goldbright:'#D9A53C', clay:'#B33F3F', moss:'#3F5C50'
+      },
+      fontFamily: {
+        display:['Inter','sans-serif'], sans:['Inter','sans-serif'], mono:['"IBM Plex Mono"','monospace']
+      }
+    }}
+  }
+</script>
+<style>
+  html{scroll-behavior:smooth;}
+  .tab-btn.active{ background:#12211D; color:#DCFCE7; }
+</style>
+</head>
+<body class="bg-paper text-ink font-sans min-h-screen flex flex-col">
+
+  <header class="px-8 py-5">
+    <a href="../index.html" class="font-display text-2xl font-bold flex items-center gap-2 w-fit">
+      <img src="../../asset/Spring_Shop_logo-removebg.png" alt="Spring Shop Logo" class="w-9 h-9 object-contain">
+      <strong style="color: green;">Spring</strong> <strong style="color: rgb(57, 109, 222);">Shop</strong>
+    </a>
+  </header>
+
+  <main class="flex-1 flex items-center justify-center px-4 pb-20">
+    <div class="w-full max-w-[420px] bg-white border border-ink/10 rounded-3xl shadow-xl shadow-green-900/5 p-8">
+
+      <div class="flex gap-2 mb-7 bg-paperdim rounded-full p-1" role="tablist">
+        <button id="tab-login" class="tab-btn active flex-1 py-2.5 rounded-full text-sm font-semibold transition-colors" onclick="switchTab('login')">Sign in</button>
+        <button id="tab-register" class="tab-btn flex-1 py-2.5 rounded-full text-sm font-semibold transition-colors" onclick="switchTab('register')">Create account</button>
+      </div>
+
+      <p id="formError" class="hidden mb-4 text-sm text-clay bg-clay/10 border border-clay/20 rounded-lg px-3.5 py-2.5"></p>
+      <p id="formNotice" class="hidden mb-4 text-sm text-moss bg-moss/10 border border-moss/20 rounded-lg px-3.5 py-2.5"></p>
+
+      <!-- Sign in -->
+      <form id="loginForm" class="space-y-4" onsubmit="return false;">
+        <div>
+          <label class="block text-[11px] font-bold uppercase tracking-wide opacity-70 mb-1.5" for="li-email">Email</label>
+          <input id="li-email" type="email" required autocomplete="username" class="w-full px-3.5 py-3 rounded-lg border border-ink/15 bg-paperdim text-sm" placeholder="you@example.com">
+        </div>
+        <div>
+          <label class="block text-[11px] font-bold uppercase tracking-wide opacity-70 mb-1.5" for="li-password">Password</label>
+          <input id="li-password" type="password" required autocomplete="current-password" class="w-full px-3.5 py-3 rounded-lg border border-ink/15 bg-paperdim text-sm" placeholder="••••••••">
+        </div>
+        <button type="submit" id="loginSubmitBtn" onclick="handleLogin()" class="w-full bg-ink text-paper py-3.5 rounded-full font-bold text-sm hover:bg-green-900 transition-colors">Sign in</button>
+      </form>
+
+      <!-- Create account -->
+      <form id="registerForm" class="space-y-4 hidden" onsubmit="return false;">
+        <div>
+          <label class="block text-[11px] font-bold uppercase tracking-wide opacity-70 mb-1.5" for="re-name">Full name</label>
+          <input id="re-name" type="text" required autocomplete="name" class="w-full px-3.5 py-3 rounded-lg border border-ink/15 bg-paperdim text-sm" placeholder="Sokha Chan">
+        </div>
+        <div>
+          <label class="block text-[11px] font-bold uppercase tracking-wide opacity-70 mb-1.5" for="re-email">Email</label>
+          <input id="re-email" type="email" required autocomplete="username" class="w-full px-3.5 py-3 rounded-lg border border-ink/15 bg-paperdim text-sm" placeholder="you@example.com">
+        </div>
+        <div>
+          <label class="block text-[11px] font-bold uppercase tracking-wide opacity-70 mb-1.5" for="re-password">Password</label>
+          <input id="re-password" type="password" required autocomplete="new-password" class="w-full px-3.5 py-3 rounded-lg border border-ink/15 bg-paperdim text-sm" placeholder="At least 8 characters">
+        </div>
+        <button type="submit" id="registerSubmitBtn" onclick="handleRegister()" class="w-full bg-ink text-paper py-3.5 rounded-full font-bold text-sm hover:bg-green-900 transition-colors">Create account</button>
+      </form>
+
+      <p class="text-center text-xs opacity-55 mt-6">
+        <a href="../index.html" class="underline underline-offset-2 hover:opacity-100">← Back to shop</a>
+      </p>
+    </div>
+  </main>
+
+  <script type="module">
+    import { login, register, isAdmin } from '../js/api/authApi.js';
+    import { isLoggedIn } from '../js/api/apiClient.js';
+
+    // Where to send the shopper after a successful sign-in/registration.
+    // ?redirect=./menu.html (relative to this page) lets other pages send
+    // people here and get them back to where they were.
+    const params = new URLSearchParams(location.search);
+    const redirectTo = params.get('redirect') || '../index.html';
+
+    // Admins are routed to the dashboard whether or not a redirect was given,
+    // unless the redirect itself points at an admin area.
+    function resolveDestination() {
+      if (isAdmin() && !redirectTo.includes('admin')) {
+        return '../admin.html';
+      }
+      return redirectTo;
+    }
+
+    if (isLoggedIn()) {
+      location.href = resolveDestination();
+    }
+
+    window.switchTab = function (tab) {
+      const isLogin = tab === 'login';
+      document.getElementById('tab-login').classList.toggle('active', isLogin);
+      document.getElementById('tab-register').classList.toggle('active', !isLogin);
+      document.getElementById('loginForm').classList.toggle('hidden', !isLogin);
+      document.getElementById('registerForm').classList.toggle('hidden', isLogin);
+      hideMessages();
+    };
+
+    function hideMessages() {
+      document.getElementById('formError').classList.add('hidden');
+      document.getElementById('formNotice').classList.add('hidden');
+    }
+    function showError(msg) {
+      const el = document.getElementById('formError');
+      el.textContent = msg;
+      el.classList.remove('hidden');
+    }
+    function showNotice(msg) {
+      const el = document.getElementById('formNotice');
+      el.textContent = msg;
+      el.classList.remove('hidden');
+    }
+    function setBusy(btn, busy, label) {
+      btn.disabled = busy;
+      btn.textContent = busy ? 'Please wait…' : label;
+    }
+
+    window.handleLogin = async function () {
+      hideMessages();
+      const email = document.getElementById('li-email').value.trim();
+      const password = document.getElementById('li-password').value;
+      if (!email || !password) { showError('Enter your email and password.'); return; }
+
+      const btn = document.getElementById('loginSubmitBtn');
+      setBusy(btn, true, 'Sign in');
+      try {
+        await login({ email, password });
+        showNotice('Signed in — redirecting…');
+        setTimeout(() => { location.href = resolveDestination(); }, 400);
+      } catch (e) {
+        showError(e.message || 'Could not sign in. Check your email and password.');
+      } finally {
+        setBusy(btn, false, 'Sign in');
+      }
+    };
+
+    window.handleRegister = async function () {
+      hideMessages();
+      const name = document.getElementById('re-name').value.trim();
+      const email = document.getElementById('re-email').value.trim();
+      const password = document.getElementById('re-password').value;
+      if (!name || !email || !password) { showError('Fill in every field to create an account.'); return; }
+
+      const btn = document.getElementById('registerSubmitBtn');
+      setBusy(btn, true, 'Create account');
+      try {
+        await register({ name, email, password });
+        showNotice('Account created — redirecting…');
+        setTimeout(() => { location.href = redirectTo; }, 400);
+      } catch (e) {
+        showError(e.message || 'Could not create your account. That email may already be registered.');
+      } finally {
+        setBusy(btn, false, 'Create account');
+      }
+    };
+  </script>
+</body>
+</html>

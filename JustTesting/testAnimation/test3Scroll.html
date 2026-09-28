@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FRAMES — Supercharge your design workflow with AI</title>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            body: ['Inter', 'sans-serif'],
+          },
+          animation: {
+            'scroll-up-slow': 'scrollUp 38s linear infinite',
+            'scroll-up-fast': 'scrollUp 28s linear infinite',
+            'scroll-down-slow': 'scrollDown 36s linear infinite',
+            'scroll-down-fast': 'scrollDown 30s linear infinite',
+          },
+          keyframes: {
+            scrollUp: {
+              '0%': { transform: 'translateY(0)' },
+              '100%': { transform: 'translateY(-50%)' },
+            },
+            scrollDown: {
+              '0%': { transform: 'translateY(-50%)' },
+              '100%': { transform: 'translateY(0)' },
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Radial backdrop mask so center hero text pops clearly */
+    .hero-vignette {
+      background: radial-gradient(
+        circle at 50% 50%,
+        rgba(8, 8, 10, 0.72) 0%,
+        rgba(8, 8, 10, 0.85) 45%,
+        rgba(8, 8, 10, 0.94) 80%,
+        rgba(8, 8, 10, 1) 100%
+      );
+    }
+
+    /* Top & bottom subtle fade */
+    .vertical-fade {
+      mask-image: linear-gradient(to bottom, transparent 0%, black 10%, black 90%, transparent 100%);
+      -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 10%, black 90%, transparent 100%);
+    }
+
+    /* Pause animation on hover if user wants to inspect */
+    .gallery-container:hover .marquee-col {
+      animation-play-state: paused;
+    }
+  </style>
+</head>
+
+<body class="bg-[#08080a] text-white min-h-screen relative overflow-hidden font-sans select-none">
+
+  <!-- ================= BACKGROUND ANIMATED COLUMNS ================= -->
+  <div class="gallery-container absolute inset-0 w-full h-full vertical-fade overflow-hidden pointer-events-none z-0">
+    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 sm:gap-6 w-[120%] -left-[10%] relative h-full">
+      
+      <!-- Column 1 (Scrolls Down) -->
+      <div class="marquee-col animate-scroll-down-slow flex flex-col gap-4 sm:gap-6" id="col-1"></div>
+
+      <!-- Column 2 (Scrolls Up) -->
+      <div class="marquee-col animate-scroll-up-fast flex flex-col gap-4 sm:gap-6" id="col-2"></div>
+
+      <!-- Column 3 (Scrolls Down) -->
+      <div class="marquee-col animate-scroll-down-fast flex flex-col gap-4 sm:gap-6" id="col-3"></div>
+
+      <!-- Column 4 (Scrolls Up) -->
+      <div class="marquee-col animate-scroll-up-slow flex flex-col gap-4 sm:gap-6 hidden md:flex" id="col-4"></div>
+
+      <!-- Column 5 (Scrolls Down) -->
+      <div class="marquee-col animate-scroll-down-fast flex flex-col gap-4 sm:gap-6 hidden lg:flex" id="col-5"></div>
+
+    </div>
+  </div>
+
+  <!-- Dark Radial Overlay for Contrast -->
+  <div class="absolute inset-0 hero-vignette pointer-events-none z-10"></div>
+
+  <!-- ================= TOP NAVIGATION ================= -->
+  <header class="relative z-20 w-full max-w-7xl mx-auto px-6 py-6 sm:py-8 flex items-center justify-between">
+    <!-- Brand Logo -->
+    <div class="flex items-center gap-2">
+      <span class="font-extrabold tracking-widest text-lg sm:text-xl text-white uppercase font-sans">
+        FRAMES
+      </span>
+    </div>
+
+    <!-- Get Started CTA -->
+    <a href="#" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white hover:bg-neutral-200 text-black text-sm font-semibold tracking-tight transition-all duration-200 shadow-lg hover:scale-105 active:scale-95">
+      <span>Get started</span>
+      <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="5" y1="12" x2="19" y2="12"></line>
+        <polyline points="12 5 19 12 12 19"></polyline>
+      </svg>
+    </a>
+  </header>
+
+  <!-- ================= CENTER HERO CONTENT ================= -->
+  <main class="relative z-20 flex flex-col items-center justify-center text-center px-4 sm:px-6 min-h-[calc(100vh-140px)] -mt-10">
+    <div class="max-w-3xl mx-auto space-y-6 sm:space-y-8">
+      
+      <!-- Headline -->
+      <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-white leading-[1.12]">
+        Supercharge <span class="bg-gradient-to-r from-cyan-400 via-teal-300 to-emerald-400 bg-clip-text text-transparent">your design</span> workflow with AI
+      </h1>
+
+      <!-- Subtitle -->
+      <p class="text-base sm:text-lg md:text-xl text-neutral-400 max-w-xl mx-auto font-normal font-body">
+        All the models, all your generations, one platform.
+      </p>
+
+      <!-- Center Action Button -->
+      <div class="pt-2">
+        <a href="#" class="inline-flex items-center gap-2.5 px-6 sm:px-7 py-3 sm:py-3.5 rounded-xl bg-white hover:bg-neutral-100 text-black text-sm sm:text-base font-semibold tracking-tight transition-all duration-200 shadow-[0_0_35px_rgba(255,255,255,0.25)] hover:scale-105 active:scale-95">
+          <span>Start for free</span>
+          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <polyline points="12 5 19 12 12 19"></polyline>
+          </svg>
+        </a>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- ================= POPULATE COLUMN ITEMS ================= -->
+  <script>
+    // Curated art pieces matching the video (gradients, classical frames, 3D chars, dark portraits, vector art)
+    const columnData = {
+      1: [
+        { img: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?q=80&w=600&auto=format&fit=crop', title: 'Purple Sunset Peak' },
+        { img: 'https://images.unsplash.com/photo-1578632767115-351597cf2477?q=80&w=600&auto=format&fit=crop', title: 'Classical Anime Portrait' },
+        { img: 'https://images.unsplash.com/photo-1541701494587-cb58502866ab?q=80&w=600&auto=format&fit=crop', title: 'Vibrant Wave Abstract' },
+      ],
+      2: [
+        { img: 'https://images.unsplash.com/photo-1579783902614-a3fb3927b675?q=80&w=600&auto=format&fit=crop', title: 'Golden Frame Oil' },
+        { img: 'https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=600&auto=format&fit=crop', title: 'Winter Landscape' },
+        { img: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=600&auto=format&fit=crop', title: 'Minimalist Fluid' },
+      ],
+      3: [
+        { img: 'https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=600&auto=format&fit=crop', title: 'Chromatic Gradient Aura' },
+        { img: 'https://images.unsplash.com/photo-1534447677768-be436bb09401?q=80&w=600&auto=format&fit=crop', title: '3D Character Mascot' },
+        { img: 'https://images.unsplash.com/photo-1634017839464-5c339ebe3cb4?q=80&w=600&auto=format&fit=crop', title: 'Holographic Sculpture' },
+      ],
+      4: [
+        { img: 'https://images.unsplash.com/photo-1509198397868-475647b2a1e5?q=80&w=600&auto=format&fit=crop', title: 'Crimson Cyber Noir' },
+        { img: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=600&auto=format&fit=crop', title: 'Warm Spatial Design' },
+        { img: 'https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?q=80&w=600&auto=format&fit=crop', title: 'Impressionist Floral' },
+      ],
+      5: [
+        { img: 'https://images.unsplash.com/photo-1507679799987-c73779587ccf?q=80&w=600&auto=format&fit=crop', title: 'Illustration Letters' },
+        { img: 'https://images.unsplash.com/photo-1563089145-599997674d42?q=80&w=600&auto=format&fit=crop', title: 'Neon Ambient Glow' },
+        { img: 'https://images.unsplash.com/photo-1513519245088-0e12902e5a38?q=80&w=600&auto=format&fit=crop', title: 'Studio Still Life' },
+      ]
+    };
+
+    function renderColumn(colId, items) {
+      const colEl = document.getElementById(`col-${colId}`);
+      if (!colEl) return;
+
+      // Duplicate the array to create seamless infinite loop effect (-50% translation)
+      const fullList = [...items, ...items, ...items, ...items];
+
+      colEl.innerHTML = fullList.map(item => `
+        <div class="relative w-full aspect-[4/5] rounded-2xl sm:rounded-3xl overflow-hidden bg-neutral-900 border border-white/[0.08] shadow-2xl transition-transform duration-300">
+          <img 
+            src="${item.img}" 
+            alt="${item.title}" 
+            class="w-full h-full object-cover select-none"
+            loading="lazy"
+          />
+        </div>
+      `).join('');
+    }
+
+    // Populate all 5 columns
+    Object.keys(columnData).forEach(colId => {
+      renderColumn(colId, columnData[colId]);
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="id" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistem Informasi Peminjaman Lab TI - UNG</title>
+    
+    <!-- Fonts: Plus Jakarta Sans for Modern SaaS Look -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Tailwind Config -->
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: {
+                            DEFAULT: '#000B58',
+                            light: '#001a8d',
+                            dark: '#000630'
+                        },
+                        secondary: '#64748b',
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.5s ease-out',
+                        'slide-up': 'slideUp 0.5s ease-out',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' },
+                        },
+                        slideUp: {
+                            '0%': { transform: 'translateY(20px)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom Scrollbar for sleek look */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8; 
+        }
+        .dark ::-webkit-scrollbar-thumb {
+            background: #334155;
+        }
+        
+        /* Glassmorphism utilities */
+        .glass {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+        .dark .glass {
+            background: rgba(15, 23, 42, 0.7);
+        }
+        
+        /* Blob Animation */
+        .blob {
+            position: absolute;
+            filter: blur(40px);
+            z-index: 0;
+            opacity: 0.4;
+            animation: move 10s infinite alternate;
+        }
+        @keyframes move {
+            from { transform: translate(0, 0) scale(1); }
+            to { transform: translate(20px, -20px) scale(1.1); }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-slate-800 dark:bg-slate-900 dark:text-slate-100 transition-colors duration-300 font-sans overflow-x-hidden">
+
+    <!-- Mobile Overlay (Backdrop) -->
+    <div id="mobile-overlay" onclick="toggleSidebarState()" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-40 hidden lg:hidden transition-opacity opacity-0"></div>
+
+    <div class="flex h-screen overflow-hidden">
+
+        <!-- SIDEBAR -->
+        <!-- Added z-50 to ensure it's on top of everything on mobile -->
+        <aside id="sidebar" class="fixed inset-y-0 left-0 z-50 w-64 bg-white dark:bg-[#000B58] border-r border-gray-200 dark:border-blue-900 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 shadow-2xl lg:shadow-none flex flex-col">
+            <!-- Sidebar Header -->
+            <div class="h-20 flex-shrink-0 flex items-center px-6 border-b border-gray-100 dark:border-blue-800/50 bg-white dark:bg-[#000B58]">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-primary rounded-xl flex items-center justify-center text-white font-bold shadow-lg shadow-blue-900/20">
+                        TI
+                    </div>
+                    <div>
+                        <h1 class="text-sm font-bold text-primary dark:text-white leading-tight">SIP-LAB</h1>
+                        <p class="text-[10px] text-gray-500 dark:text-blue-200">Teknik Informatika UNG</p>
+                    </div>
+                </div>
+                <button id="closeSidebar" class="lg:hidden ml-auto p-2 text-gray-500 hover:text-primary transition-colors">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+
+            <!-- Navigation -->
+            <nav class="flex-1 px-4 py-6 space-y-1 overflow-y-auto scrollbar-hide">
+                <p class="px-4 text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Menu Utama</p>
+                
+                <a href="#" onclick="showPage('dashboard')" class="nav-item active flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 group bg-primary/5 text-primary dark:bg-white/10 dark:text-white">
+                    <i data-lucide="layout-dashboard" class="w-5 h-5 group-hover:scale-110 transition-transform"></i>
+                    Dashboard
+                </a>
+                
+                <a href="#" onclick="showPage('peminjaman')" class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-600 dark:text-blue-100 hover:bg-gray-50 dark:hover:bg-white/5 hover:text-primary dark:hover:text-white transition-all duration-200 group">
+                    <i data-lucide="calendar-clock" class="w-5 h-5 group-hover:scale-110 transition-transform"></i>
+                    Peminjaman
+                </a>
+                
+                <a href="#" onclick="showPage('laboratorium')" class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-600 dark:text-blue-100 hover:bg-gray-50 dark:hover:bg-white/5 hover:text-primary dark:hover:text-white transition-all duration-200 group">
+                    <i data-lucide="microscope" class="w-5 h-5 group-hover:scale-110 transition-transform"></i>
+                    Daftar Lab
+                </a>
+
+                <p class="px-4 text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2 mt-6">Admin Area</p>
+
+                <a href="#" onclick="showPage('riwayat')" class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-600 dark:text-blue-100 hover:bg-gray-50 dark:hover:bg-white/5 hover:text-primary dark:hover:text-white transition-all duration-200 group">
+                    <i data-lucide="history" class="w-5 h-5 group-hover:scale-110 transition-transform"></i>
+                    Riwayat
+                </a>
+
+                <a href="#" onclick="showPage('users')" class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-600 dark:text-blue-100 hover:bg-gray-50 dark:hover:bg-white/5 hover:text-primary dark:hover:text-white transition-all duration-200 group">
+                    <i data-lucide="users" class="w-5 h-5 group-hover:scale-110 transition-transform"></i>
+                    Pengguna
+                </a>
+            </nav>
+
+            <!-- User Profile Snippet Sidebar -->
+            <div class="p-4 border-t border-gray-100 dark:border-blue-800/50 mt-auto bg-white dark:bg-[#000B58]">
+                <div class="flex items-center gap-3 p-3 rounded-xl bg-gray-50 dark:bg-blue-900/30">
+                    <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" alt="User" class="w-10 h-10 rounded-full border border-gray-200">
+                    <div class="flex-1 min-w-0">
+                        <p class="text-sm font-semibold text-gray-900 dark:text-white truncate">Admin Lab</p>
+                        <p class="text-xs text-gray-500 dark:text-blue-200 truncate">admin@ung.ac.id</p>
+                    </div>
+                    <button class="text-gray-400 hover:text-red-500 transition-colors">
+                        <i data-lucide="log-out" class="w-4 h-4"></i>
+                    </button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- MAIN CONTENT WRAPPER -->
+        <!-- Added lg:ml-64 to push content to the right on desktop so sidebar doesn't cover it -->
+        <div class="flex-1 flex flex-col h-screen overflow-hidden relative lg:ml-64 transition-all duration-300">
+            
+            <!-- TOPBAR -->
+            <!-- Reduced z-index to 30 so sidebar (z-50) covers it on mobile -->
+            <header class="h-20 flex-shrink-0 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-gray-200 dark:border-slate-800 flex items-center justify-between px-6 z-30 sticky top-0">
+                <div class="flex items-center gap-4">
+                    <button id="toggleSidebar" class="p-2 -ml-2 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-slate-800 lg:hidden focus:ring-2 focus:ring-primary/20">
+                        <i data-lucide="menu" class="w-6 h-6"></i>
+                    </button>
+                    <!-- Search Bar -->
+                    <div class="hidden md:flex items-center gap-2 px-4 py-2 bg-gray-100 dark:bg-slate-800 rounded-full w-64 focus-within:ring-2 focus-within:ring-primary/20 transition-all">
+                        <i data-lucide="search" class="w-4 h-4 text-gray-400"></i>
+                        <input type="text" placeholder="Cari data..." class="bg-transparent border-none outline-none text-sm w-full dark:text-white placeholder-gray-400">
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-4">
+                    <!-- Notifications -->
+                    <button class="relative p-2 rounded-full text-gray-500 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-slate-800 transition-colors">
+                        <i data-lucide="bell" class="w-5 h-5"></i>
+                        <span class="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full border-2 border-white dark:border-slate-900"></span>
+                    </button>
+
+                    <!-- Dark Mode Toggle -->
+                    <button id="themeToggle" class="p-2 rounded-full text-gray-500 dark:text-yellow-400 hover:bg-gray-100 dark:hover:bg-slate-800 transition-colors">
+                        <i data-lucide="moon" class="w-5 h-5 dark:hidden"></i>
+                        <i data-lucide="sun" class="w-5 h-5 hidden dark:block"></i>
+                    </button>
+                    
+                    <div class="h-8 w-[1px] bg-gray-200 dark:bg-slate-700 mx-2 hidden sm:block"></div>
+
+                    <div class="hidden sm:flex items-center gap-2">
+                         <span class="text-sm font-medium text-gray-700 dark:text-gray-200">Teknik Informatika</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- SCROLLABLE CONTENT AREA -->
+            <main class="flex-1 overflow-y-auto p-4 md:p-8 scroll-smooth" id="main-scroll">
+                
+                <!-- 1. DASHBOARD OVERVIEW PAGE -->
+                <section id="dashboard-page" class="page-section animate-fade-in space-y-8 pb-20">
+                    
+                    <!-- Hero Section -->
+                    <div class="relative w-full rounded-3xl overflow-hidden bg-primary shadow-2xl shadow-blue-900/30">
+                        <!-- Decorative Blobs -->
+                        <div class="absolute top-0 right-0 w-64 h-64 bg-blue-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob"></div>
+                        <div class="absolute -bottom-8 left-20 w-72 h-72 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000"></div>
+                        
+                        <div class="relative z-10 px-8 py-10 sm:px-12 sm:py-12 flex flex-col md:flex-row items-center justify-between gap-8">
+                            <div class="text-left space-y-4 max-w-2xl">
+                                <span class="inline-block px-3 py-1 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full text-xs font-medium text-blue-100">
+                                    Selamat Datang, Admin
+                                </span>
+                                <h2 class="text-3xl md:text-4xl font-bold text-white leading-tight">
+                                    Sistem Informasi Peminjaman <br>
+                                    <span class="text-blue-200">Laboratorium TI – UNG</span>
+                                </h2>
+                                <p class="text-blue-100/80 text-sm md:text-base max-w-lg">
+                                    Kelola jadwal praktikum, peminjaman alat, dan ketersediaan ruangan laboratorium dengan mudah, transparan, dan efisien.
+                                </p>
+                                <div class="pt-4 flex gap-4">
+                                    <button onclick="showPage('peminjaman')" class="px-6 py-3 bg-white text-primary font-semibold rounded-xl hover:bg-blue-50 hover:shadow-lg hover:shadow-white/20 transition-all transform hover:-translate-y-1">
+                                        Ajukan Peminjaman
+                                    </button>
+                                    <button onclick="showPage('laboratorium')" class="px-6 py-3 bg-transparent border border-white/30 text-white font-medium rounded-xl hover:bg-white/10 transition-all">
+                                        Cek Jadwal
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="hidden md:block">
+                                <!-- Abstract Illustration -->
+                                <i data-lucide="monitor-smartphone" class="w-48 h-48 text-white/10 rotate-12"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Stats Cards -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                        <!-- Card 1 -->
+                        <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-slate-700 hover:shadow-md transition-shadow group">
+                            <div class="flex justify-between items-start mb-4">
+                                <div class="p-3 bg-blue-50 dark:bg-blue-900/20 rounded-xl text-primary dark:text-blue-300">
+                                    <i data-lucide="calendar-check" class="w-6 h-6"></i>
+                                </div>
+                                <span class="text-xs font-semibold px-2 py-1 bg-green-100 text-green-700 rounded-md">+12%</span>
+                            </div>
+                            <h3 class="text-3xl font-bold text-gray-800 dark:text-white">24</h3>
+                            <p class="text-sm text-gray-500 dark:text-gray-400">Peminjaman Hari Ini</p>
+                        </div>
+
+                        <!-- Card 2 -->
+                        <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-slate-700 hover:shadow-md transition-shadow group">
+                            <div class="flex justify-between items-start mb-4">
+                                <div class="p-3 bg-yellow-50 dark:bg-yellow-900/20 rounded-xl text-yellow-600 dark:text-yellow-300">
+                                    <i data-lucide="clock" class="w-6 h-6"></i>
+                                </div>
+                            </div>
+                            <h3 class="text-3xl font-bold text-gray-800 dark:text-white">8</h3>
+                            <p class="text-sm text-gray-500 dark:text-gray-400">Menunggu Persetujuan</p>
+                        </div>
+
+                        <!-- Card 3 -->
+                        <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-slate-700 hover:shadow-md transition-shadow group">
+                            <div class="flex justify-between items-start mb-4">
+                                <div class="p-3 bg-green-50 dark:bg-green-900/20 rounded-xl text-green-600 dark:text-green-300">
+                                    <i data-lucide="door-open" class="w-6 h-6"></i>
+                                </div>
+                            </div>
+                            <h3 class="text-3xl font-bold text-gray-800 dark:text-white">5/8</h3>
+                            <p class="text-sm text-gray-500 dark:text-gray-400">Lab Tersedia Sekarang</p>
+                        </div>
+
+                        <!-- Card 4 -->
+                        <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-slate-700 hover:shadow-md transition-shadow group">
+                            <div class="flex justify-between items-start mb-4">
+                                <div class="p-3 bg-purple-50 dark:bg-purple-900/20 rounded-xl text-purple-600 dark:text-purple-300">
+                                    <i data-lucide="users" class="w-6 h-6"></i>
+                                </div>
+                            </div>
+                            <h3 class="text-3xl font-bold text-gray-800 dark:text-white">1.2k</h3>
+                            <p class="text-sm text-gray-500 dark:text-gray-400">Mahasiswa Aktif</p>
+                        </div>
+                    </div>
+
+                    <!-- Recent Activity Section -->
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                        <!-- Chart / Main Table -->
+                        <div class="lg:col-span-2 bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-gray-100 dark:border-slate-700 p-6">
+                            <div class="flex justify-between items-center mb-6">
+                                <h3 class="font-bold text-lg text-gray-800 dark:text-white">Peminjaman Terbaru</h3>
+                                <button onclick="showPage('riwayat')" class="text-sm text-primary dark:text-blue-300 hover:underline">Lihat Semua</button>
+                            </div>
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-left border-collapse">
+                                    <thead>
+                                        <tr class="text-xs text-gray-400 uppercase border-b border-gray-100 dark:border-slate-700">
+                                            <th class="py-3 font-semibold">Mahasiswa</th>
+                                            <th class="py-3 font-semibold">Lab</th>
+                                            <th class="py-3 font-semibold">Waktu</th>
+                                            <th class="py-3 font-semibold">Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="text-sm">
+                                        <tr class="group hover:bg-gray-50 dark:hover:bg-slate-700/50 transition-colors">
+                                            <td class="py-4 flex items-center gap-3">
+                                                <div class="w-8 h-8 rounded-full bg-gray-200 dark:bg-slate-600 flex items-center justify-center text-xs font-bold">RF</div>
+                                                <div>
+                                                    <p class="font-medium text-gray-800 dark:text-white">Rizal Fakhri</p>
+                                                    <p class="text-xs text-gray-500">531420001</p>
+                                                </div>
+                                            </td>
+                                            <td class="py-4 text-gray-600 dark:text-gray-300">Lab RPL</td>
+                                            <td class="py-4 text-gray-600 dark:text-gray-300">08:00 - 10:00</td>
+                                            <td class="py-4">
+                                                <span class="px-2 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-300">Pending</span>
+                                            </td>
+                                        </tr>
+                                        <tr class="group hover:bg-gray-50 dark:hover:bg-slate-700/50 transition-colors">
+                                            <td class="py-4 flex items-center gap-3">
+                                                <div class="w-8 h-8 rounded-full bg-blue-100 dark:bg-blue-900 flex items-center justify-center text-xs font-bold text-blue-700">SA</div>
+                                                <div>
+                                                    <p class="font-medium text-gray-800 dark:text-white">Siti Aminah</p>
+                                                    <p class="text-xs text-gray-500">531420023</p>
+                                                </div>
+                                            </td>
+                                            <td class="py-4 text-gray-600 dark:text-gray-300">Lab Jaringan</td>
+                                            <td class="py-4 text-gray-600 dark:text-gray-300">13:00 - 15:30</td>
+                                            <td class="py-4">
+                                                <span class="px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300">Disetujui</span>
+                                            </td>
+                                        </tr>
+                                         <tr class="group hover:bg-gray-50 dark:hover:bg-slate-700/50 transition-colors">
+                                            <td class="py-4 flex items-center gap-3">
+                                                <div class="w-8 h-8 rounded-full bg-purple-100 dark:bg-purple-900 flex items-center justify-center text-xs font-bold text-purple-700">BU</div>
+                                                <div>
+                                                    <p class="font-medium text-gray-800 dark:text-white">Budi Utomo</p>
+                                                    <p class="text-xs text-gray-500">531420045</p>
+                                                </div>
+                                            </td>
+                                            <td class="py-4 text-gray-600 dark:text-gray-300">Lab Multimedia</td>
+                                            <td class="py-4 text-gray-600 dark:text-gray-300">09:00 - 11:00</td>
+                                            <td class="py-4">
+                                                <span class="px-2 py-1 rounded-full text-xs font-medium bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-300">Ditolak</span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Side Notifications -->
+                        <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-gray-100 dark:border-slate-700 p-6">
+                            <h3 class="font-bold text-lg text-gray-800 dark:text-white mb-6">Pemberitahuan</h3>
+                            <div class="space-y-6">
+                                <div class="flex gap-4">
+                                    <div class="w-2 h-2 mt-2 rounded-full bg-blue-500 flex-shrink-0"></div>
+                                    <div>
+                                        <p class="text-sm font-medium text-gray-800 dark:text-gray-200">Jadwal Maintenance Lab</p>
+                                        <p class="text-xs text-gray-500 mt-1">Lab Jaringan akan maintenance pada Sabtu, 12 Des 2024.</p>
+                                        <p class="text-[10px] text-gray-400 mt-2">2 jam yang lalu</p>
+                                    </div>
+                                </div>
+                                <div class="flex gap-4">
+                                    <div class="w-2 h-2 mt-2 rounded-full bg-yellow-500 flex-shrink-0"></div>
+                                    <div>
+                                        <p class="text-sm font-medium text-gray-800 dark:text-gray-200">Pengajuan Peminjaman Baru</p>
+                                        <p class="text-xs text-gray-500 mt-1">5 Mahasiswa mengajukan peminjaman alat hari ini.</p>
+                                        <p class="text-[10px] text-gray-400 mt-2">5 jam yang lalu</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 2. PEMINJAMAN PAGE (Hidden by default) -->
+                <section id="peminjaman-page" class="page-section hidden animate-slide-up">
+                    <div class="flex flex-col md:flex-row justify-between items-center mb-6">
+                        <h2 class="text-2xl font-bold text-gray-800 dark:text-white">Manajemen Peminjaman</h2>
+                        <button class="mt-4 md:mt-0 px-4 py-2 bg-primary hover:bg-blue-800 text-white rounded-lg flex items-center gap-2 shadow-lg shadow-blue-900/20 transition-all">
+                            <i data-lucide="plus" class="w-4 h-4"></i>
+                            Buat Peminjaman
+                        </button>
+                    </div>
+
+                    <!-- Filters -->
+                    <div class="bg-white dark:bg-slate-800 p-4 rounded-xl shadow-sm border border-gray-100 dark:border-slate-700 mb-6 flex flex-wrap gap-4 items-center">
+                        <div class="relative flex-1 min-w-[200px]">
+                            <i data-lucide="search" class="w-4 h-4 absolute left-3 top-3 text-gray-400"></i>
+                            <input type="text" placeholder="Cari Nama / NIM..." class="w-full pl-10 pr-4 py-2 rounded-lg bg-gray-50 dark:bg-slate-700 border border-gray-200 dark:border-slate-600 focus:outline-none focus:ring-2 focus:ring-primary/20 dark:text-white">
+                        </div>
+                        <select class="px-4 py-2 rounded-lg bg-gray-50 dark:bg-slate-700 border border-gray-200 dark:border-slate-600 text-gray-600 dark:text-gray-200 focus:outline-none">
+                            <option>Semua Status</option>
+                            <option>Pending</option>
+                            <option>Disetujui</option>
+                            <option>Ditolak</option>
+                        </select>
+                        <select class="px-4 py-2 rounded-lg bg-gray-50 dark:bg-slate-700 border border-gray-200 dark:border-slate-600 text-gray-600 dark:text-gray-200 focus:outline-none">
+                            <option>Semua Lab</option>
+                            <option>Lab RPL</option>
+                            <option>Lab Jaringan</option>
+                            <option>Lab AI</option>
+                        </select>
+                    </div>
+
+                    <!-- Table Container -->
+                    <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-gray-100 dark:border-slate-700 overflow-hidden">
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left">
+                                <thead class="bg-gray-50 dark:bg-slate-700/50 text-gray-600 dark:text-gray-300 text-xs uppercase font-semibold">
+                                    <tr>
+                                        <th class="px-6 py-4">Peminjam</th>
+                                        <th class="px-6 py-4">Laboratorium</th>
+                                        <th class="px-6 py-4">Keperluan</th>
+                                        <th class="px-6 py-4">Waktu & Durasi</th>
+                                        <th class="px-6 py-4">KTM</th>
+                                        <th class="px-6 py-4">Status</th>
+                                        <th class="px-6 py-4 text-center">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-gray-100 dark:divide-slate-700 text-sm">
+                                    <!-- Row 1 -->
+                                    <tr class="hover:bg-blue-50/50 dark:hover:bg-slate-700/30 transition-colors">
+                                        <td class="px-6 py-4">
+                                            <div class="font-medium text-gray-900 dark:text-white">Rahmat Gobel</div>
+                                            <div class="text-xs text-gray-500">531419022</div>
+                                        </td>
+                                        <td class="px-6 py-4 text-gray-600 dark:text-gray-300">Lab Rekayasa Perangkat Lunak</td>
+                                        <td class="px-6 py-4 text-gray-600 dark:text-gray-300">Mengerjakan Skripsi</td>
+                                        <td class="px-6 py-4 text-gray-600 dark:text-gray-300">
+                                            <div>12 Des 2024</div>
+                                            <div class="text-xs text-gray-400">08:00 - 11:00 (3 Jam)</div>
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <button class="flex items-center gap-1 text-xs text-blue-600 hover:underline">
+                                                <i data-lucide="file-image" class="w-3 h-3"></i> Lihat KTM
+                                            </button>
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <span class="px-2.5 py-1 rounded-full text-xs font-semibold bg-yellow-100 text-yellow-700 border border-yellow-200">Pending</span>
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <div class="flex justify-center gap-2">
+                                                <button class="p-1.5 rounded-lg bg-green-50 text-green-600 hover:bg-green-100"><i data-lucide="check" class="w-4 h-4"></i></button>
+                                                <button class="p-1.5 rounded-lg bg-red-50 text-red-600 hover:bg-red-100"><i data-lucide="x" class="w-4 h-4"></i></button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <!-- Row 2 -->
+                                    <tr class="hover:bg-blue-50/50 dark:hover:bg-slate-700/30 transition-colors">
+                                        <td class="px-6 py-4">
+                                            <div class="font-medium text-gray-900 dark:text-white">Ayu Lestari</div>
+                                            <div class="text-xs text-gray-500">531420011</div>
+                                        </td>
+                                        <td class="px-6 py-4 text-gray-600 dark:text-gray-300">Lab Komputasi Dasar</td>
+                                        <td class="px-6 py-4 text-gray-600 dark:text-gray-300">Praktikum Mandiri</td>
+                                        <td class="px-6 py-4 text-gray-600 dark:text-gray-300">
+                                            <div>12 Des 2024</div>
+                                            <div class="text-xs text-gray-400">13:00 - 15:00 (2 Jam)</div>
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <button class="flex items-center gap-1 text-xs text-blue-600 hover:underline">
+                                                <i data-lucide="file-image" class="w-3 h-3"></i> Lihat KTM
+                                            </button>
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <span class="px-2.5 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-700 border border-green-200">Disetujui</span>
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <div class="flex justify-center gap-2">
+                                                <button class="p-1.5 rounded-lg bg-gray-100 text-gray-600 hover:bg-gray-200"><i data-lucide="eye" class="w-4 h-4"></i></button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- Pagination -->
+                        <div class="px-6 py-4 border-t border-gray-100 dark:border-slate-700 flex justify-between items-center">
+                            <p class="text-xs text-gray-500">Menampilkan 1-10 dari 50 data</p>
+                            <div class="flex gap-2">
+                                <button class="px-3 py-1 rounded-md bg-gray-100 dark:bg-slate-700 text-gray-500 text-xs disabled:opacity-50" disabled>Prev</button>
+                                <button class="px-3 py-1 rounded-md bg-primary text-white text-xs">1</button>
+                                <button class="px-3 py-1 rounded-md bg-gray-100 dark:bg-slate-700 text-gray-500 text-xs">2</button>
+                                <button class="px-3 py-1 rounded-md bg-gray-100 dark:bg-slate-700 text-gray-500 text-xs">Next</button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 3. LABORATORIUM LIST PAGE (Hidden by default) -->
+                <section id="laboratorium-page" class="page-section hidden animate-slide-up">
+                    <div class="mb-8">
+                        <h2 class="text-2xl font-bold text-gray-800 dark:text-white">Daftar Laboratorium</h2>
+                        <p class="text-gray-500 dark:text-gray-400">Pilih laboratorium untuk melihat detail fasilitas dan jadwal.</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <!-- Lab Card 1 -->
+                        <div class="group bg-white dark:bg-slate-800 rounded-2xl overflow-hidden shadow-sm border border-gray-100 dark:border-slate-700 hover:shadow-xl transition-all duration-300">
+                            <div class="h-48 bg-gray-200 dark:bg-slate-700 relative overflow-hidden">
+                                <!-- Placeholder Image -->
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                                <img src="https://images.unsplash.com/photo-1517433456452-f9633a875f6f?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt="Lab RPL">
+                                <div class="absolute bottom-4 left-4 text-white">
+                                    <h3 class="font-bold text-lg">Lab RPL</h3>
+                                    <p class="text-xs opacity-90">Gedung A, Lantai 2</p>
+                                </div>
+                            </div>
+                            <div class="p-5">
+                                <div class="flex items-center gap-4 text-sm text-gray-500 dark:text-gray-400 mb-4">
+                                    <span class="flex items-center gap-1"><i data-lucide="users" class="w-4 h-4"></i> 30 Kapasitas</span>
+                                    <span class="flex items-center gap-1"><i data-lucide="wifi" class="w-4 h-4"></i> 100 Mbps</span>
+                                </div>
+                                <p class="text-sm text-gray-600 dark:text-gray-300 line-clamp-2 mb-4">
+                                    Laboratorium Rekayasa Perangkat Lunak dilengkapi dengan 30 PC High-End untuk pengembangan software dan mobile apps.
+                                </p>
+                                <button class="w-full py-2.5 rounded-xl border border-primary text-primary dark:border-blue-400 dark:text-blue-400 hover:bg-primary hover:text-white dark:hover:bg-blue-400 dark:hover:text-slate-900 font-medium transition-colors text-sm">
+                                    Cek Jadwal & Fasilitas
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Lab Card 2 -->
+                        <div class="group bg-white dark:bg-slate-800 rounded-2xl overflow-hidden shadow-sm border border-gray-100 dark:border-slate-700 hover:shadow-xl transition-all duration-300">
+                            <div class="h-48 bg-gray-200 dark:bg-slate-700 relative overflow-hidden">
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                                <img src="https://images.unsplash.com/photo-1558494949-efc535b5c4c1?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt="Lab Jaringan">
+                                <div class="absolute bottom-4 left-4 text-white">
+                                    <h3 class="font-bold text-lg">Lab Jaringan</h3>
+                                    <p class="text-xs opacity-90">Gedung B, Lantai 1</p>
+                                </div>
+                            </div>
+                            <div class="p-5">
+                                <div class="flex items-center gap-4 text-sm text-gray-500 dark:text-gray-400 mb-4">
+                                    <span class="flex items-center gap-1"><i data-lucide="users" class="w-4 h-4"></i> 25 Kapasitas</span>
+                                    <span class="flex items-center gap-1"><i data-lucide="server" class="w-4 h-4"></i> Cisco Rack</span>
+                                </div>
+                                <p class="text-sm text-gray-600 dark:text-gray-300 line-clamp-2 mb-4">
+                                    Fokus pada praktikum Jaringan Komputer, Keamanan Siber, dan Cloud Computing dengan perangkat keras router fisik.
+                                </p>
+                                <button class="w-full py-2.5 rounded-xl border border-primary text-primary dark:border-blue-400 dark:text-blue-400 hover:bg-primary hover:text-white dark:hover:bg-blue-400 dark:hover:text-slate-900 font-medium transition-colors text-sm">
+                                    Cek Jadwal & Fasilitas
+                                </button>
+                            </div>
+                        </div>
+
+                         <!-- Lab Card 3 -->
+                        <div class="group bg-white dark:bg-slate-800 rounded-2xl overflow-hidden shadow-sm border border-gray-100 dark:border-slate-700 hover:shadow-xl transition-all duration-300">
+                            <div class="h-48 bg-gray-200 dark:bg-slate-700 relative overflow-hidden">
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                                <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt="Lab Multimedia">
+                                <div class="absolute bottom-4 left-4 text-white">
+                                    <h3 class="font-bold text-lg">Lab Multimedia</h3>
+                                    <p class="text-xs opacity-90">Gedung A, Lantai 3</p>
+                                </div>
+                            </div>
+                            <div class="p-5">
+                                <div class="flex items-center gap-4 text-sm text-gray-500 dark:text-gray-400 mb-4">
+                                    <span class="flex items-center gap-1"><i data-lucide="users" class="w-4 h-4"></i> 20 Kapasitas</span>
+                                    <span class="flex items-center gap-1"><i data-lucide="camera" class="w-4 h-4"></i> Studio</span>
+                                </div>
+                                <p class="text-sm text-gray-600 dark:text-gray-300 line-clamp-2 mb-4">
+                                    Dilengkapi dengan Mac Studio dan Tablet Grafis untuk keperluan Desain Grafis, Video Editing, dan Animasi.
+                                </p>
+                                <button class="w-full py-2.5 rounded-xl border border-primary text-primary dark:border-blue-400 dark:text-blue-400 hover:bg-primary hover:text-white dark:hover:bg-blue-400 dark:hover:text-slate-900 font-medium transition-colors text-sm">
+                                    Cek Jadwal & Fasilitas
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                 <!-- PLACEHOLDERS FOR OTHER PAGES -->
+                <section id="riwayat-page" class="page-section hidden animate-slide-up">
+                    <div class="flex flex-col items-center justify-center h-96 text-center">
+                        <div class="p-4 bg-blue-50 dark:bg-slate-800 rounded-full mb-4">
+                            <i data-lucide="history" class="w-12 h-12 text-primary dark:text-blue-300"></i>
+                        </div>
+                        <h2 class="text-xl font-bold text-gray-800 dark:text-white">Riwayat Peminjaman</h2>
+                        <p class="text-gray-500 max-w-md mt-2">Halaman ini akan menampilkan log lengkap peminjaman yang sudah selesai atau dibatalkan.</p>
+                    </div>
+                </section>
+
+                <section id="users-page" class="page-section hidden animate-slide-up">
+                    <div class="flex flex-col items-center justify-center h-96 text-center">
+                        <div class="p-4 bg-purple-50 dark:bg-slate-800 rounded-full mb-4">
+                            <i data-lucide="users-round" class="w-12 h-12 text-purple-600 dark:text-purple-300"></i>
+                        </div>
+                        <h2 class="text-xl font-bold text-gray-800 dark:text-white">Manajemen Pengguna</h2>
+                        <p class="text-gray-500 max-w-md mt-2">Admin dapat mengelola data mahasiswa, dosen, dan asisten laboratorium di sini.</p>
+                    </div>
+                </section>
+
+                <!-- FOOTER -->
+                <footer class="mt-12 pt-8 border-t border-gray-200 dark:border-slate-800">
+                    <div class="flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-gray-500 dark:text-gray-400">
+                        <div class="flex items-center gap-2">
+                             <div class="w-6 h-6 bg-primary rounded-md flex items-center justify-center text-white text-[10px] font-bold">TI</div>
+                             <span>&copy; 2024 Teknik Informatika - Universitas Negeri Gorontalo</span>
+                        </div>
+                        <div class="flex gap-6">
+                            <a href="#" class="hover:text-primary transition-colors">Bantuan</a>
+                            <a href="#" class="hover:text-primary transition-colors">Kontak Admin</a>
+                            <a href="#" class="hover:text-primary transition-colors">Kebijakan Privasi</a>
+                        </div>
+                        <div class="flex gap-3">
+                            <a href="#" class="p-2 rounded-full bg-gray-100 dark:bg-slate-800 hover:text-primary transition-colors"><i data-lucide="instagram" class="w-4 h-4"></i></a>
+                            <a href="#" class="p-2 rounded-full bg-gray-100 dark:bg-slate-800 hover:text-primary transition-colors"><i data-lucide="globe" class="w-4 h-4"></i></a>
+                        </div>
+                    </div>
+                </footer>
+
+            </main>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // Initialize Lucide Icons
+        lucide.createIcons();
+
+        // --- Sidebar Logic ---
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('mobile-overlay');
+        const toggleBtn = document.getElementById('toggleSidebar');
+        const closeBtn = document.getElementById('closeSidebar');
+
+        function toggleSidebarState() {
+            const isClosed = sidebar.classList.contains('-translate-x-full');
+            
+            if (isClosed) {
+                // Open Sidebar
+                sidebar.classList.remove('-translate-x-full');
+                overlay.classList.remove('hidden');
+                // Small delay for fade effect
+                setTimeout(() => {
+                    overlay.classList.remove('opacity-0');
+                }, 10);
+            } else {
+                // Close Sidebar
+                sidebar.classList.add('-translate-x-full');
+                overlay.classList.add('opacity-0');
+                setTimeout(() => {
+                    overlay.classList.add('hidden');
+                }, 300); // Match transition duration
+            }
+        }
+
+        toggleBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            toggleSidebarState();
+        });
+        
+        closeBtn.addEventListener('click', toggleSidebarState);
+
+        // Click outside to close sidebar on mobile (handled by overlay onclick now, but keeping safe logic)
+        // Removed the previous document click listener in favor of the overlay approach which is cleaner
+
+        // --- Navigation / SPA Simulation Logic ---
+        const navItems = document.querySelectorAll('.nav-item');
+        const pages = {
+            'dashboard': document.getElementById('dashboard-page'),
+            'peminjaman': document.getElementById('peminjaman-page'),
+            'laboratorium': document.getElementById('laboratorium-page'),
+            'riwayat': document.getElementById('riwayat-page'),
+            'users': document.getElementById('users-page'),
+        };
+
+        function showPage(pageId) {
+            // Hide all pages
+            Object.values(pages).forEach(page => {
+                if(page) {
+                    page.classList.add('hidden');
+                    page.classList.remove('animate-slide-up', 'animate-fade-in'); // reset animation
+                }
+            });
+
+            // Show selected page
+            const targetPage = pages[pageId];
+            if (targetPage) {
+                targetPage.classList.remove('hidden');
+                // Small delay to trigger animation reflow
+                setTimeout(() => {
+                    targetPage.classList.add(pageId === 'dashboard' ? 'animate-fade-in' : 'animate-slide-up');
+                }, 10);
+            }
+
+            // Update Active Nav State
+            navItems.forEach(item => {
+                item.classList.remove('active', 'bg-primary/5', 'text-primary', 'dark:bg-white/10', 'dark:text-white');
+                item.classList.add('text-gray-600', 'dark:text-blue-100');
+                
+                // Check if onclick contains the pageId
+                if (item.getAttribute('onclick').includes(pageId)) {
+                    item.classList.add('active', 'bg-primary/5', 'text-primary', 'dark:bg-white/10', 'dark:text-white');
+                    item.classList.remove('text-gray-600', 'dark:text-blue-100');
+                }
+            });
+
+            // Close sidebar on mobile after selection
+            if (window.innerWidth < 1024) {
+                sidebar.classList.add('-translate-x-full');
+                overlay.classList.add('opacity-0');
+                setTimeout(() => {
+                    overlay.classList.add('hidden');
+                }, 300);
+            }
+            
+            // Scroll to top
+            document.getElementById('main-scroll').scrollTop = 0;
+        }
+
+        // --- Dark Mode Logic ---
+        const themeToggle = document.getElementById('themeToggle');
+        const html = document.documentElement;
+        
+        // Check local storage or preference
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            html.classList.add('dark');
+        } else {
+            html.classList.remove('dark');
+        }
+
+        themeToggle.addEventListener('click', () => {
+            html.classList.toggle('dark');
+            if (html.classList.contains('dark')) {
+                localStorage.theme = 'dark';
+            } else {
+                localStorage.theme = 'light';
+            }
+        });
+
+        // Initialize default page
+        showPage('dashboard');
+
+    </script>
+</body>
+</html>

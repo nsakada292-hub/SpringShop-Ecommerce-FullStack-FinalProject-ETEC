@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Luxe Dashboard</title>
+    
+    <!-- Fonts: Montserrat (Sans) & Playfair Display (Serif) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Iconify -->
+    <script src="https://cdn.jsdelivr.net/npm/iconify-icon@1.0.7/dist/iconify-icon.min.js"></script>
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#5802f7',
+                        secondary: '#f3f0ff',
+                        dark: '#1a1a1a',
+                        pastelBlue: '#eef2ff',
+                        pastelPurple: '#f5f3ff',
+                    },
+                    fontFamily: {
+                        sans: ['Montserrat', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
+        /* Glassmorphism Utilities */
+        .glass {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+        
+        .sidebar-transition {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Chart Tooltip Customization */
+        #chartjs-tooltip {
+            opacity: 1;
+            position: absolute;
+            background: rgba(255, 255, 255, 0.9);
+            color: black;
+            border-radius: 8px;
+            pointer-events: none;
+            transform: translate(-50%, 0);
+            transition: all .1s ease;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e5e7eb;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-600 font-sans antialiased overflow-x-hidden">
+
+    <div class="flex h-screen overflow-hidden">
+        
+        <!-- Sidebar -->
+        <aside id="sidebar" class="sidebar-transition fixed inset-y-0 left-0 z-50 w-64 bg-white/90 backdrop-blur-xl border-r border-slate-100 transform -translate-x-full md:relative md:translate-x-0 flex flex-col justify-between shadow-[4px_0_24px_rgba(0,0,0,0.02)]">
+            <!-- Logo Area -->
+            <div class="h-20 flex items-center px-8 border-b border-slate-50/50">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-lg bg-primary flex items-center justify-center text-white shadow-lg shadow-primary/30">
+                        <span class="text-lg font-semibold font-poppins">H</span>
+                    </div>
+                    <span class="text-dark text-xl font-extrabold tracking-tight font-poppins">HORIZON<span class="text-primary">.</span></span>
+                </div>
+            </div>
+
+            <!-- Navigation -->
+            <nav class="flex-1 px-4 py-6 space-y-1 overflow-y-auto">
+                <p class="px-4 text-xs font-semibold text-slate-400 uppercase tracking-wider mb-4">Overview</p>
+                
+                <a href="#" class="group flex items-center gap-3 text-primary transition-all duration-200 font-medium font-poppins rounded-xl pt-3 pr-4 pb-3 pl-4">
+                    <iconify-icon icon="solar:widget-5-linear" width="20" stroke-width="1.5"></iconify-icon>
+                    <span class="">Dashboard</span>
+                </a>
+
+                <a href="#" class="group flex items-center gap-3 px-4 py-3 rounded-xl text-slate-500 hover:bg-slate-50 hover:text-primary transition-all duration-200">
+                    <iconify-icon icon="solar:chart-square-linear" width="20" stroke-width="1.5" class=""></iconify-icon>
+                    <span>Analytics</span>
+                </a>
+
+                <a href="#" class="group flex items-center gap-3 px-4 py-3 rounded-xl text-slate-500 hover:bg-slate-50 hover:text-primary transition-all duration-200">
+                    <iconify-icon icon="solar:wallet-money-linear" width="20" stroke-width="1.5"></iconify-icon>
+                    <span>Transactions</span>
+                </a>
+
+                <p class="px-4 text-xs font-semibold text-slate-400 uppercase tracking-wider mb-4 mt-8">Management</p>
+
+                <a href="#" class="group flex items-center gap-3 px-4 py-3 rounded-xl text-slate-500 hover:bg-slate-50 hover:text-primary transition-all duration-200">
+                    <iconify-icon icon="solar:users-group-rounded-linear" width="20" stroke-width="1.5"></iconify-icon>
+                    <span>Users</span>
+                </a>
+                
+                <a href="#" class="group flex items-center gap-3 px-4 py-3 rounded-xl text-slate-500 hover:bg-slate-50 hover:text-primary transition-all duration-200">
+                    <iconify-icon icon="solar:box-minimalistic-linear" width="20" stroke-width="1.5"></iconify-icon>
+                    <span>Products</span>
+                </a>
+
+                <a href="#" class="group flex items-center gap-3 px-4 py-3 rounded-xl text-slate-500 hover:bg-slate-50 hover:text-primary transition-all duration-200">
+                    <iconify-icon icon="solar:bell-bing-linear" width="20" stroke-width="1.5"></iconify-icon>
+                    <div class="flex-1 flex justify-between items-center">
+                        <span>Notifications</span>
+                        <span class="bg-rose-100 text-rose-600 text-[10px] font-bold px-2 py-0.5 rounded-full">3</span>
+                    </div>
+                </a>
+            </nav>
+
+            <!-- Bottom Actions -->
+            <div class="p-4 border-t border-slate-50">
+                <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-500 hover:bg-slate-50 hover:text-primary transition-all duration-200">
+                    <iconify-icon icon="solar:settings-linear" width="20" stroke-width="1.5"></iconify-icon>
+                    <span>Settings</span>
+                </a>
+                <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-500 hover:bg-slate-50 hover:text-rose-500 transition-all duration-200 mt-1">
+                    <iconify-icon icon="solar:logout-2-linear" width="20" stroke-width="1.5"></iconify-icon>
+                    <span>Logout</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- Overlay for Mobile -->
+        <div id="sidebar-overlay" onclick="toggleSidebar()" class="fixed inset-0 bg-dark/20 backdrop-blur-sm z-40 hidden md:hidden transition-opacity opacity-0"></div>
+
+        <!-- Main Content -->
+        <main class="flex-1 flex flex-col relative overflow-y-auto overflow-x-hidden scroll-smooth">
+            
+            <!-- Header -->
+            <header class="sticky flex glass md:px-10 md:pt-3 md:pb-3 h-20 z-30 pt-3 pr-6 pb-3 pl-6 top-0 items-center justify-between">
+                <div class="flex items-center gap-4">
+                    <button onclick="toggleSidebar()" class="md:hidden text-slate-500 hover:text-primary transition-colors p-1">
+                        <iconify-icon icon="solar:hamburger-menu-linear" width="24" stroke-width="1.5"></iconify-icon>
+                    </button>
+                    <!-- Breadcrumbs -->
+                    <nav class="hidden sm:flex items-center text-sm font-medium text-slate-400">
+                        <span class="hover:text-primary cursor-pointer transition-colors">Dashboard</span>
+                        <iconify-icon icon="solar:alt-arrow-right-linear" class="mx-2 text-xs"></iconify-icon>
+                        <span class="text-primary">Overview</span>
+                    </nav>
+                </div>
+
+                <div class="flex items-center gap-4 md:gap-6">
+                    <!-- Search -->
+                    <div class="hidden md:flex focus-within:border-primary/20 focus-within:bg-white focus-within:shadow-sm transition-all duration-300 bg-slate-100/50 w-64 border-transparent border rounded-full pt-2 pr-4 pb-2 pl-4 items-center">
+                        <iconify-icon icon="solar:magnifer-linear" class="text-slate-400 mr-2" width="18"></iconify-icon>
+                        <input type="text" placeholder="Search..." class="bg-transparent border-none outline-none text-sm text-slate-600 w-full placeholder-slate-400">
+                    </div>
+
+                    <!-- Icons -->
+                    <button class="relative text-slate-400 hover:text-primary transition-colors p-1.5 rounded-full hover:bg-secondary">
+                        <iconify-icon icon="solar:bell-linear" width="22" stroke-width="1.5"></iconify-icon>
+                        <span class="absolute top-1.5 right-2 w-2 h-2 bg-red-500 rounded-full border-2 border-white"></span>
+                    </button>
+
+                    <!-- Profile Dropdown -->
+                    <div class="flex items-center gap-3 pl-4 border-l border-slate-200 cursor-pointer group">
+                        <div class="text-right hidden md:block">
+                            <p class="text-sm font-semibold text-dark group-hover:text-primary transition-colors">Alex Morgan</p>
+                            <p class="text-xs text-slate-400">Administrator</p>
+                        </div>
+                        <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-primary to-indigo-400 p-[2px]">
+                            <img src="https://avatars.githubusercontent.com/u/152723454?w=800&q=80" alt="Profile" class="w-full h-full object-cover border-white border-2 rounded-full">
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Content Container -->
+            <div class="md:p-10 w-full max-w-7xl mr-auto ml-auto pt-6 pr-6 pb-6 pl-6 space-y-8">
+                
+                <!-- Welcome Section -->
+                <div class="flex flex-col md:flex-row md:items-end gap-4 gap-x-4 gap-y-4 justify-between">
+                    <div class="">
+                        <h1 class="md:text-4xl text-dark text-3xl font-semibold tracking-tight font-poppins mb-2">Morning, Alex</h1>
+                        <p class="text-slate-500 font-poppins">Here's what's happening with your store today.</p>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <button class="flex items-center gap-2 px-4 py-2.5 rounded-lg border border-slate-200 text-sm font-medium text-slate-600 hover:bg-white hover:shadow-sm hover:border-primary/30 hover:text-primary transition-all">
+                            <iconify-icon icon="solar:calendar-date-linear" width="18" class="" height="18" style="color: rgb(88, 2, 247);"></iconify-icon>
+                            <span class="">Last 30 Days</span>
+                        </button>
+                        <button class="flex items-center gap-2 px-5 py-2.5 rounded-lg bg-primary text-white text-sm font-medium shadow-lg shadow-primary/30 hover:shadow-primary/50 hover:-translate-y-0.5 transition-all">
+                            <iconify-icon icon="solar:add-circle-linear" width="18"></iconify-icon>
+                            <span>New Report</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Stats Cards Grid -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <!-- Card 1 -->
+                    <div class="hover:shadow-[0_8px_30px_-4px_rgba(88,2,247,0.08)] transition-all duration-300 group bg-white border-slate-50 border rounded-2xl pt-6 pr-6 pb-6 pl-6 shadow-[0_2px_20px_-4px_rgba(0,0,0,0.04)]">
+                        <div class="flex justify-between items-start mb-4">
+                            <div class="w-12 h-12 rounded-xl bg-pastelPurple text-primary flex items-center justify-center group-hover:scale-110 transition-transform">
+                                <iconify-icon icon="solar:dollar-minimalistic-linear" width="24" stroke-width="1.5"></iconify-icon>
+                            </div>
+                            <span class="flex items-center text-xs font-semibold text-emerald-600 bg-emerald-50 px-2 py-1 rounded-full">
+                                +12.5% <iconify-icon icon="solar:arrow-right-up-linear" class="ml-1"></iconify-icon>
+                            </span>
+                        </div>
+                        <h3 class="text-slate-400 text-sm font-medium mb-1">Total Revenue</h3>
+                        <p class="text-dark text-2xl font-bold font-poppins">$84,254.00</p>
+                    </div>
+
+                    <!-- Card 2 -->
+                    <div class="bg-white rounded-2xl p-6 shadow-[0_2px_20px_-4px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_30px_-4px_rgba(88,2,247,0.08)] transition-all duration-300 border border-slate-50 group">
+                        <div class="flex justify-between items-start mb-4">
+                            <div class="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center group-hover:scale-110 transition-transform">
+                                <iconify-icon icon="solar:bag-3-linear" width="24" stroke-width="1.5" class=""></iconify-icon>
+                            </div>
+                            <span class="flex items-center text-xs font-semibold text-emerald-600 bg-emerald-50 px-2 py-1 rounded-full">
+                                +5.2% <iconify-icon icon="solar:arrow-right-up-linear" class="ml-1"></iconify-icon>
+                            </span>
+                        </div>
+                        <h3 class="text-slate-400 text-sm font-medium mb-1">Total Orders</h3>
+                        <p class="text-dark text-2xl font-bold font-poppins">1,254</p>
+                    </div>
+
+                    <!-- Card 3 -->
+                    <div class="bg-white rounded-2xl p-6 shadow-[0_2px_20px_-4px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_30px_-4px_rgba(88,2,247,0.08)] transition-all duration-300 border border-slate-50 group">
+                        <div class="flex justify-between items-start mb-4">
+                            <div class="w-12 h-12 rounded-xl bg-orange-50 text-orange-500 flex items-center justify-center group-hover:scale-110 transition-transform">
+                                <iconify-icon icon="solar:users-group-two-rounded-linear" width="24" stroke-width="1.5" class=""></iconify-icon>
+                            </div>
+                            <span class="flex items-center text-xs font-semibold text-rose-600 bg-rose-50 px-2 py-1 rounded-full">
+                                -2.1% <iconify-icon icon="solar:arrow-right-down-linear" class="ml-1"></iconify-icon>
+                            </span>
+                        </div>
+                        <h3 class="text-slate-400 text-sm font-medium mb-1">New Customers</h3>
+                        <p class="text-dark text-2xl font-bold font-poppins">856</p>
+                    </div>
+
+                    <!-- Card 4 -->
+                    <div class="bg-white rounded-2xl p-6 shadow-[0_2px_20px_-4px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_30px_-4px_rgba(88,2,247,0.08)] transition-all duration-300 border border-slate-50 group">
+                        <div class="flex justify-between items-start mb-4">
+                            <div class="w-12 h-12 rounded-xl bg-teal-50 text-teal-600 flex items-center justify-center group-hover:scale-110 transition-transform">
+                                <iconify-icon icon="solar:pie-chart-2-linear" width="24" stroke-width="1.5" class=""></iconify-icon>
+                            </div>
+                            <span class="flex items-center text-xs font-semibold text-emerald-600 bg-emerald-50 px-2 py-1 rounded-full">
+                                +8.4% <iconify-icon icon="solar:arrow-right-up-linear" class="ml-1"></iconify-icon>
+                            </span>
+                        </div>
+                        <h3 class="text-sm font-medium text-slate-400 mb-1">Conversion Rate</h3>
+                        <p class="text-dark text-2xl font-bold font-poppins">3.42%</p>
+                    </div>
+                </div>
+
+                <!-- Charts Section -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <!-- Main Chart -->
+                    <div class="lg:col-span-2 bg-white border-slate-50 border rounded-2xl pt-6 pr-6 pb-6 pl-6 shadow-[0_2px_20px_-4px_rgba(0,0,0,0.04)]">
+                        <div class="flex justify-between items-center mb-6">
+                            <div class="">
+                                <h3 class="text-dark text-lg font-semibold font-poppins">Revenue Analytics</h3>
+                                <p class="text-xs text-slate-400">Monthly revenue growth</p>
+                            </div>
+                            <button class="text-slate-400 hover:text-primary transition-colors">
+                                <iconify-icon icon="solar:menu-dots-linear" width="24"></iconify-icon>
+                            </button>
+                        </div>
+                        <div class="h-64 w-full relative">
+                            <canvas id="revenueChart" style="display: block; box-sizing: border-box; height: 256px; width: 738.7px;" width="923" height="320" class=""></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Side Widget/Chart -->
+                    <div class="bg-white rounded-2xl p-6 shadow-[0_2px_20px_-4px_rgba(0,0,0,0.04)] border border-slate-50 flex flex-col">
+                        <h3 class="text-dark text-lg font-semibold font-poppins mb-1">Traffic Source</h3>
+                        <p class="text-xs text-slate-400 mb-6">Device breakdown</p>
+                        
+                        <div class="relative h-48 w-full flex justify-center mb-4">
+                            <canvas id="deviceChart" style="display: block; box-sizing: border-box; height: 192px; width: 332.5px;" width="415" height="240" class=""></canvas>
+                        </div>
+                        
+                        <div class="mt-auto space-y-3">
+                            <div class="flex items-center justify-between text-sm">
+                                <div class="flex items-center gap-2">
+                                    <span class="w-3 h-3 rounded-full bg-primary"></span>
+                                    <span class="text-slate-600">Desktop</span>
+                                </div>
+                                <span class="font-semibold text-dark">65%</span>
+                            </div>
+                            <div class="flex items-center justify-between text-sm">
+                                <div class="flex items-center gap-2">
+                                    <span class="w-3 h-3 rounded-full bg-teal-400"></span>
+                                    <span class="text-slate-600">Mobile</span>
+                                </div>
+                                <span class="font-semibold text-dark">25%</span>
+                            </div>
+                            <div class="flex items-center justify-between text-sm">
+                                <div class="flex items-center gap-2">
+                                    <span class="w-3 h-3 rounded-full bg-orange-400"></span>
+                                    <span class="text-slate-600">Tablet</span>
+                                </div>
+                                <span class="font-semibold text-dark">10%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Orders Table -->
+                <div class="bg-white rounded-2xl shadow-[0_2px_20px_-4px_rgba(0,0,0,0.04)] border border-slate-50 overflow-hidden">
+                    <div class="p-6 border-b border-slate-50 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                        <div class="">
+                            <h3 class="text-dark text-lg font-semibold font-poppins">Recent Orders</h3>
+                            <p class="text-xs text-slate-400">Transaction history</p>
+                        </div>
+                        <div class="flex gap-2">
+                            <div class="relative">
+                                <iconify-icon icon="solar:magnifer-linear" class="absolute left-3 top-2.5 text-slate-400" width="16"></iconify-icon>
+                                <input type="text" placeholder="Search order..." class="pl-9 pr-4 py-2 text-sm border border-slate-200 rounded-lg focus:outline-none focus:border-primary/50 transition-colors w-full sm:w-48">
+                            </div>
+                            <button class="px-3 py-2 border border-slate-200 rounded-lg hover:bg-slate-50 text-slate-500">
+                                <iconify-icon icon="solar:filter-linear" width="18"></iconify-icon>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse">
+                            <thead class="">
+                                <tr class="bg-slate-50/50 border-b border-slate-100 text-xs uppercase tracking-wider text-slate-400 font-semibold">
+                                    <th class="px-6 py-4">Order ID</th>
+                                    <th class="px-6 py-4">Customer</th>
+                                    <th class="px-6 py-4">Product</th>
+                                    <th class="px-6 py-4">Date</th>
+                                    <th class="px-6 py-4">Amount</th>
+                                    <th class="px-6 py-4">Status</th>
+                                    <th class="px-6 py-4 text-right">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-sm">
+                                <tr class="group hover:bg-slate-50/80 transition-colors border-b border-slate-50 last:border-0">
+                                    <td class="px-6 py-4 font-mono text-slate-500">#ORD-001</td>
+                                    <td class="px-6 py-4">
+                                        <div class="flex items-center gap-3">
+                                            <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 text-xs font-bold">JD</div>
+                                            <span class="font-medium text-dark">John Doe</span>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 text-slate-600">Premium Subscription</td>
+                                    <td class="px-6 py-4 text-slate-500">Oct 24, 2023</td>
+                                    <td class="px-6 py-4 font-medium text-dark">$129.00</td>
+                                    <td class="px-6 py-4">
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-100 text-emerald-700">Completed</span>
+                                    </td>
+                                    <td class="px-6 py-4 text-right">
+                                        <button class="text-slate-400 hover:text-primary transition-colors"><iconify-icon icon="solar:menu-dots-linear" width="20"></iconify-icon></button>
+                                    </td>
+                                </tr>
+                                <tr class="group hover:bg-slate-50/80 transition-colors border-b border-slate-50 last:border-0">
+                                    <td class="px-6 py-4 font-mono text-slate-500">#ORD-002</td>
+                                    <td class="px-6 py-4">
+                                        <div class="flex items-center gap-3">
+                                            <div class="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center text-purple-600 text-xs font-bold">AS</div>
+                                            <span class="font-medium text-dark">Sarah Smith</span>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 text-slate-600">UI Design Kit</td>
+                                    <td class="px-6 py-4 text-slate-500">Oct 23, 2023</td>
+                                    <td class="px-6 py-4 font-medium text-dark">$49.00</td>
+                                    <td class="px-6 py-4">
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-orange-100 text-orange-700">Pending</span>
+                                    </td>
+                                    <td class="px-6 py-4 text-right">
+                                        <button class="text-slate-400 hover:text-primary transition-colors"><iconify-icon icon="solar:menu-dots-linear" width="20"></iconify-icon></button>
+                                    </td>
+                                </tr>
+                                <tr class="group hover:bg-slate-50/80 transition-colors border-b border-slate-50 last:border-0">
+                                    <td class="px-6 py-4 font-mono text-slate-500">#ORD-003</td>
+                                    <td class="px-6 py-4">
+                                        <div class="flex items-center gap-3">
+                                            <div class="w-8 h-8 rounded-full bg-rose-100 flex items-center justify-center text-rose-600 text-xs font-bold">MK</div>
+                                            <span class="font-medium text-dark">Mike K.</span>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 text-slate-600">Consultation Hour</td>
+                                    <td class="px-6 py-4 text-slate-500">Oct 23, 2023</td>
+                                    <td class="px-6 py-4 font-medium text-dark">$250.00</td>
+                                    <td class="px-6 py-4">
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-100 text-emerald-700">Completed</span>
+                                    </td>
+                                    <td class="px-6 py-4 text-right">
+                                        <button class="text-slate-400 hover:text-primary transition-colors"><iconify-icon icon="solar:menu-dots-linear" width="20"></iconify-icon></button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <!-- Pagination -->
+                    <div class="px-6 py-4 border-t border-slate-50 flex items-center justify-between">
+                        <p class="text-xs text-slate-500">Showing <span class="font-medium text-dark">1-3</span> of <span class="font-medium text-dark">128</span></p>
+                        <div class="flex gap-2">
+                            <button class="px-3 py-1 rounded-md border border-slate-200 text-slate-500 hover:border-primary hover:text-primary text-xs transition-colors">Prev</button>
+                            <button class="px-3 py-1 rounded-md bg-primary text-white text-xs shadow-md shadow-primary/20">1</button>
+                            <button class="px-3 py-1 rounded-md border border-slate-200 text-slate-500 hover:border-primary hover:text-primary text-xs transition-colors">2</button>
+                            <button class="px-3 py-1 rounded-md border border-slate-200 text-slate-500 hover:border-primary hover:text-primary text-xs transition-colors">Next</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Footer -->
+                <footer class="mt-8 pb-4 text-center sm:text-left flex flex-col sm:flex-row justify-between items-center text-xs text-slate-400">
+                    <p>© 2023 Aura Dashboard UI. All rights reserved.</p>
+                    <div class="flex gap-4 mt-2 sm:mt-0">
+                        <a href="#" class="hover:text-primary">Privacy Policy</a>
+                        <a href="#" class="hover:text-primary">Terms of Service</a>
+                    </div>
+                </footer>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        // --- Sidebar Logic ---
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('sidebar-overlay');
+
+        function toggleSidebar() {
+            // Mobile: Toggle Translate X
+            const isClosed = sidebar.classList.contains('-translate-x-full');
+            
+            if (isClosed) {
+                sidebar.classList.remove('-translate-x-full');
+                overlay.classList.remove('hidden');
+                // Small delay to allow display:block to apply before opacity transition
+                setTimeout(() => {
+                    overlay.classList.remove('opacity-0');
+                }, 10);
+            } else {
+                sidebar.classList.add('-translate-x-full');
+                overlay.classList.add('opacity-0');
+                setTimeout(() => {
+                    overlay.classList.add('hidden');
+                }, 300);
+            }
+        }
+
+        // --- Charts Configuration ---
+        document.addEventListener('DOMContentLoaded', function() {
+            Chart.defaults.font.family = "'Montserrat', sans-serif";
+            Chart.defaults.color = '#94a3b8';
+            Chart.defaults.scale.grid.color = '#f1f5f9';
+            Chart.defaults.scale.grid.borderColor = 'transparent';
+
+            // Revenue Chart (Line with Gradient)
+            const ctxRevenue = document.getElementById('revenueChart').getContext('2d');
+            
+            // Gradient
+            let gradient = ctxRevenue.createLinearGradient(0, 0, 0, 400);
+            gradient.addColorStop(0, 'rgba(88, 2, 247, 0.2)');
+            gradient.addColorStop(1, 'rgba(88, 2, 247, 0)');
+
+            new Chart(ctxRevenue, {
+                type: 'line',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct'],
+                    datasets: [{
+                        label: 'Revenue',
+                        data: [30000, 35000, 32000, 48000, 45000, 60000, 58000, 75000, 72000, 84254],
+                        borderColor: '#5802f7',
+                        backgroundColor: gradient,
+                        borderWidth: 2,
+                        pointBackgroundColor: '#ffffff',
+                        pointBorderColor: '#5802f7',
+                        pointRadius: 4,
+                        pointHoverRadius: 6,
+                        fill: true,
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: 'white',
+                            titleColor: '#1a1a1a',
+                            bodyColor: '#64748b',
+                            borderColor: '#e2e8f0',
+                            borderWidth: 1,
+                            padding: 12,
+                            displayColors: false,
+                            callbacks: {
+                                label: function(context) {
+                                    return '$ ' + context.parsed.y.toLocaleString();
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: { borderDash: [4, 4] },
+                            ticks: { callback: function(value) { return '$' + value / 1000 + 'k'; } }
+                        },
+                        x: {
+                            grid: { display: false }
+                        }
+                    }
+                }
+            });
+
+            // Device Chart (Doughnut)
+            const ctxDevice = document.getElementById('deviceChart').getContext('2d');
+            new Chart(ctxDevice, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Desktop', 'Mobile', 'Tablet'],
+                    datasets: [{
+                        data: [65, 25, 10],
+                        backgroundColor: [
+                            '#5802f7', // Primary
+                            '#2dd4bf', // Teal
+                            '#fb923c'  // Orange
+                        ],
+                        borderWidth: 0,
+                        hoverOffset: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '75%',
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: 'white',
+                            bodyColor: '#1a1a1a',
+                            borderColor: '#e2e8f0',
+                            borderWidth: 1,
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+
+</body></html>
